@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <string>
 
 using namespace std;
@@ -12,19 +13,23 @@ struct tokenNode {
   tokenNode* next;
 };
 
-int main() {
+int main(int argc, char *argv[]) {
+  // Opening file
+  ifstream inputFile;
+  inputFile.open(argv[1]);
+  // Declarations
   unsigned long line = 1;
   tokenNode* tokenStream = 0;
   tokenNode* lastToken = 0;
   string accum = "";
-  
-  // Open file here
-  
-  while(0) {
-    // Scanner process
+  char currentChar;
+  inputFile.get(currentChar);
+  // Scanner loop
+  while(!inputFile.eof()) {
+    cout << currentChar; 
+    inputFile.get(currentChar);
   }
-  
-  // Close file here
-  
+  // Close file
+  inputFile.close();
   return 0;
 }
