@@ -4,29 +4,29 @@
 
 using namespace std;
 
-enum tokenType {foo, bar};
+enum tokenType {foo, bar}; //Needs filled out
 
+/* Node for list of tokens--probably unnecessary
 struct tokenNode {
   string token;
   tokenType type;
   unsigned long line;
   tokenNode* next;
 };
+*/
 
 int main(int argc, char *argv[]) {
+  // Declarations
+  unsigned long line = 1;
+  string accum = "";
+  char currentChar;
   // Opening file
   ifstream inputFile;
   inputFile.open(argv[1]);
-  // Declarations
-  unsigned long line = 1;
-  tokenNode* tokenStream = 0;
-  tokenNode* lastToken = 0;
-  string accum = "";
-  char currentChar;
   inputFile.get(currentChar);
   // Scanner loop
   while(!inputFile.eof()) {
-    cout << currentChar; 
+    cout << currentChar;
     inputFile.get(currentChar);
   }
   // Close file
