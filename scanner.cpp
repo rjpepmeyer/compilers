@@ -8,8 +8,8 @@ using namespace std;
 // Takes a character as an argument
 // Returns TRUE if character matches a self deliminating token.
 bool isSelfDeliminator(char c) {
-  char selfDeliminators[] = "+-*/<=(),:{;}";
-  for(int i = 0; i < 13; i++) {
+  string selfDeliminators = "+-*/<=(),:{;}";
+  for(int i = 0; i < selfDeliminators.length(); i++) {
     if (c == selfDeliminators[i]) return true;
   }
   return false;
