@@ -13,5 +13,5 @@ Implementation language: C++14
     
 **Instructions**
     
-1. Compile with g++ scanner.cpp -o flairs
-2. Run with ./flairs name-of-input-file.flr
+1. Compile with `g++ scanner.cpp -o flairs`
+2. Run with `./flairs name-of-input-file.flr`
