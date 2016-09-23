@@ -1,0 +1,7 @@
+program testProgramTwo () boolean ;
+begin
+	var1 = true
+	var2 = 2
+	var3 = 3
+	return if var2 < var3 then var1 else not var2
+end .
