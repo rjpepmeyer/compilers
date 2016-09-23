@@ -98,15 +98,18 @@ string getType(string input) {
       return " <invalid>      ";
     }
     else {
-      int i = 0;
+      if (!isalpha(input.at(0))) {
+        return " <invalid>      ";
+      }
+      int i = 1;
       while(i < input.length()) {
-        if (!isalpha(input.at(i))) {
+        if (!isalnum(input.at(i))) {
           break;
         }
         i++;
       }
       if (i == input.length()) {
-        return " <identifer>    ";
+        return " <identifier>   ";
       }
       else {
         return " <invalid>      ";
