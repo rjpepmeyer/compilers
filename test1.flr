@@ -1,0 +1,4 @@
+program testProgramOne () integer;
+begin
+	return 1
+end.
