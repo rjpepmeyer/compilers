@@ -3,6 +3,7 @@
 #include <string>
 #include <ctype.h>
 #include <iomanip>
+#include "scanner.hpp"
 
 using namespace std;
 
@@ -16,37 +17,59 @@ bool isSelfDeliminator(char c) {
   return false;
 }
 
+// Returns string of enum
+string print(enum tokenType input) {
+  switch(input) {
+    case op:           return "<operator>   "; break;
+    case lessthan:     return "<less-than>  "; break;
+    case equals:       return "<equals>     "; break;
+    case leftparen:    return "<left-paren> "; break;
+    case rightparen:   return "<left-paren> "; break;
+    case separator:    return "<separator>  "; break;
+    case terminator:   return "<terminator> "; break;
+    case comma:        return "<comma>      "; break;
+    case invalid:      return "<invalid>    "; break;
+    case type:         return "<typename>   "; break;
+    case booleanvalue: return "<bool-value> "; break;
+    case booleanop:    return "<bool-op>    "; break;
+    case keyword:      return "<keyword>    "; break;
+    case number:       return "<number>     "; break;
+    case invalidnum:   return "<invalid-num>"; break;
+    case identifier:   return "<identifier> "; break;
+  }
+}
+
 // Function that takes as input a single character token,
 // and returns as output a string containing the type of
 // the token.
-string getType(char input) {
+enum tokenType getType(char input) {
   if (input == '+' || input == '-' || input == '*' || 
   input == '/') {
-    return " <operator>     ";
+    return op;
   }
   else if (input == '<') {
-    return " <less-than>     ";
+    return lessthan;
   }
   else if (input == '=') {
-    return " <equals>        ";
+    return equals;
   }
   else if (input == '(') {
-    return " <left-paren>    ";
+    return leftparen;
   }
   else if (input == ')') {
-    return " <right-paren>   ";
+    return rightparen;
   }
   else if (input == ':') {
-    return " <separator>     ";
+    return separator;
   }
   else if (input == ';') {
-    return " <terminator>    ";
+    return terminator;
   }
   else if (input == ',') {
-    return " <comma>         ";
+    return comma;
   }
   else {
-    return " <invalid>       ";
+    return invalid;
   }
 }
     
@@ -54,28 +77,28 @@ string getType(char input) {
 // and returns as output a string containing
 // the type of the token.
 
-string getType(string input) {
+enum tokenType getType(string input) {
   if (input == "integer" || input == "boolean") {
-    return " <typename>     ";
+    return op;
   }
   else if  (input == "true" || input == "false") {
-    return " <booleanvalue> ";
+    return lessthan;
   }
   else if (input == "and" || input == "or" || input == "not") {
-    return " <boolean-op>   ";
+    return equals;
   }
   else if (input == "if" || input == "then" || input == "else"
   || input == "print" || input == "program" ||
   input == "function" || input == "return" || input == "begin"
   || input == "end" || input == "end.") {
-    return " <keyword>      ";
+    return keyword;
   }
   else if (input.at(0) == '0') {
     if (input.length() == 1) {
-      return " <number>       ";
+      return number;
     }
     else {
-      return " <invalid-num>  ";
+      return invalidnum;
     }
   }
   else if (isdigit(input.at(0))) {
@@ -87,15 +110,15 @@ string getType(string input) {
       i++;
     }
     if (i == input.length()) {
-      return " <number>       ";
+      return number;
     }
     else {
-      return " <invalid>      ";
+      return invalid;
     }
   }
   else {
     if (input.length() > 255) {
-      return " <invalid>      ";
+      return invalidnum;
     }
     else {
       int i = 0;
@@ -106,10 +129,10 @@ string getType(string input) {
         i++;
       }
       if (i == input.length()) {
-        return " <identifer>    ";
+        return identifier;
       }
       else {
-        return " <invalid>      ";
+        return invalid;
       }
     }
   }
@@ -120,6 +143,10 @@ int main(int argc, char *argv[]) {
   string accum = "";      // characters read in of current token so far
   char currentChar;       // the current character being read
   bool isComment = false; // TRUE if scanning a comment
+  tokenList * output = 0;
+  tokenList * lastOutput = 0;
+  token currentToken;
+  
   // Opening file
   ifstream inputFile;
   inputFile.open(argv[1]);
@@ -132,18 +159,33 @@ int main(int argc, char *argv[]) {
       }
       else if (isspace(currentChar)) { // Found white space
         if (accum.length() > 0) { // If full, accum is token
-          cout << line << getType(accum) << accum << '\n';
+          currentToken.value = accum;
+          currentToken.type  = getType(accum);
+          currentToken.line  = line;
+          // TODO: Logic that adds current token to token list
+          cout << currentToken.line << " "
+           << print(currentToken.type) << currentToken.value << '\n';
         }
         accum = "";
         if (currentChar == '\n') line++; // increment line count
       }
       else if (isSelfDeliminator(currentChar)) { // Found deliminator
         if (accum.length() > 0) { // If full, accum is token
-          cout << line << getType(accum) << accum << '\n';
+          currentToken.value = accum;
+          currentToken.type  = getType(accum);
+          currentToken.line  = line;
+          // TODO: Logic that adds current token to token list
+          cout << currentToken.line << " "
+           << print(currentToken.type) << currentToken.value << '\n';
         }
         accum = "";
         if (currentChar != '{') { // Current char is a token
-          cout << line << getType(currentChar) << '\n';
+          currentToken.value = string(1, currentChar);
+          currentToken.type  = getType(currentChar);
+          currentToken.line  = line;
+          // TODO: Logic that adds current token to token list
+          cout << currentToken.line << " "
+           << print(currentToken.type) << currentToken.value << '\n';
         }
         else { // '{' indicates the beginning of a comment
           isComment = true;
