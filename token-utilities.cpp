@@ -1,8 +1,4 @@
-#include <iostream>
-#include <fstream>
 #include <string>
-#include <ctype.h>
-#include <iomanip>
 
 using namespace std;
 
