@@ -19,7 +19,8 @@ void add(tokenList * &root, tokenList * &current, token item) {
 void print(token item) {
   cout << item.line << " ";
   cout << toString(item.type);
-  if (item.value.length() > 1 || item.type == op) {
+  if (item.value.length() > 1 || item.type == op || item.type 
+  == number) {
     cout << item.value;
   }
   cout << '\n';

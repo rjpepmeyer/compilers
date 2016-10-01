@@ -13,6 +13,36 @@ bool isSelfDeliminator(char c) {
   return false;
 }
 
+// Takes a string and returns if it is a valid number
+bool isValidNum(string input) {
+  // If it starts with leading zeros, it's invalid
+  if (input.length() > 1 && input.front() == '0') {
+    return false;
+  }
+  // If it's longer than ten characters, it exceeds 2^32
+  else if (input.length() > 10) {
+    return false;
+  }
+  // If it's ten digits, but larger than 2^32-1 still
+  else if (input.length() == 10 && input > "4294967295") {
+    return false;
+  }
+  else {
+    // If it contains non digits, it's false
+    int i;
+    while(i < input.length()) {
+      if (!isdigit(input.at(i))) break;
+      i++;
+    }
+    if (i == input.length()) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+}
+
 // Returns string of enum
 string toString(enum tokenType input) {
   switch(input) {
@@ -30,7 +60,6 @@ string toString(enum tokenType input) {
     case booleanop:    return "<bool-op>    "; break;
     case keyword:      return "<keyword>    "; break;
     case number:       return "<number>     "; break;
-    case invalidnum:   return "<invalid-num>"; break;
     case identifier:   return "<identifier> "; break;
     case punctuation:  return "<punctuation>"; break;
   }
@@ -73,10 +102,8 @@ enum tokenType getType(char input) {
   }
 }
     
-// Big ugly function that takes as input a token,
-// and returns as output a string containing
-// the type of the token.
-
+// Big ugly function that takes as input a string,
+// and returns as output its token type.
 enum tokenType getType(string input) {
   if (input == "integer" || input == "boolean") {
     return op;
@@ -93,38 +120,15 @@ enum tokenType getType(string input) {
   || input == "end" || input == "end") {
     return keyword;
   }
-  else if (input.at(0) == '0') {
-    if (input.length() == 1) {
-      return number;
-    }
-    else {
-      return invalidnum;
-    }
-  }
-  else if (isdigit(input.at(0))) {
-    int i = 0;
-    if (input.length() < 10 || (input.length() == 10 &&
-    input <= "4294967295")) {
-      while(i < input.length()) {
-        if (!isdigit(input.at(i))) {
-          break;
-        }
-        i++;
-      }
-      if (i == input.length()) {
-        return number;
-      }
-    }
-    else {
-      return invalid;
-    }
+  else if (isValidNum(input)) {
+    return number;
   }
   else {
-    if (input.length() > 255) {
-      return invalidnum;
+    if (input.length() > MAX_IDENT_LENGTH) {
+      return invalid;
     }
     else {
-      if (!isalpha(input.at(0))) {
+      if (!isalpha(input.front())) {
         return invalid;
       }
       int i = 1;
