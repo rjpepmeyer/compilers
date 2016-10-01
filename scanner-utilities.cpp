@@ -50,7 +50,7 @@ string toString(enum tokenType input) {
     case lessthan:     return "<less-than>  "; break;
     case equals:       return "<equals>     "; break;
     case leftparen:    return "<left-paren> "; break;
-    case rightparen:   return "<left-paren> "; break;
+    case rightparen:   return "<right-paren>"; break;
     case separator:    return "<separator>  "; break;
     case terminator:   return "<terminator> "; break;
     case comma:        return "<comma>      "; break;
