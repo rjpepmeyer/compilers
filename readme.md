@@ -13,7 +13,7 @@ Implementation language: C++14
     
 **Instructions**
     
-1. Compile with `g++ scanner.cpp -o flairs`
+1. Compile with `g++ -std=c++14 compiler.cpp -o flairs`
 2. Run with `./flairs name-of-input-file.flr`
     
 **Explanations**
@@ -29,3 +29,6 @@ type is returned by two functions titled getType (one for
  single character tokens and one for strings). It 
 implements DFAs for the different token types using if/else 
 structures (similar to a case structure, but supporting strings). 
+    
+The stream of tokens is returned from the scanner in the form of 
+a linked list.
