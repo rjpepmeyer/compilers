@@ -1,8 +1,8 @@
 #include <string>
 
 enum tokenType { op, lessthan, equals, leftparen, rightparen, 
-separator, terminator, comma, invalid, type, booleanvalue, 
-booleanop, keyword, number, invalidnum, identifier};
+separator, terminator, comma, invalid, type, booleanvalue, booleanop, 
+keyword, number, invalidnum, identifier, punctuation};
 
 struct token {
   std::string value;

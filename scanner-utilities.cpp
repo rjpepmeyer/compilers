@@ -6,7 +6,7 @@ using namespace std;
 // Takes a character as an argument
 // Returns TRUE if character matches a self deliminating token.
 bool isSelfDeliminator(char c) {
-  string selfDeliminators = "+-*/<=(),:{;}";
+  string selfDeliminators = "+-*/<=(),:{;}.";
   for(int i = 0; i < selfDeliminators.length(); i++) {
     if (c == selfDeliminators[i]) return true;
   }
@@ -32,6 +32,7 @@ string toString(enum tokenType input) {
     case number:       return "<number>     "; break;
     case invalidnum:   return "<invalid-num>"; break;
     case identifier:   return "<identifier> "; break;
+    case punctuation:  return "<punctuation>"; break;
   }
 }
 
@@ -64,6 +65,9 @@ enum tokenType getType(char input) {
   else if (input == ',') {
     return comma;
   }
+  else if (input == '.') {
+    return punctuation;
+  }
   else {
     return invalid;
   }
@@ -86,7 +90,7 @@ enum tokenType getType(string input) {
   else if (input == "if" || input == "then" || input == "else"
   || input == "print" || input == "program" ||
   input == "function" || input == "return" || input == "begin"
-  || input == "end" || input == "end.") {
+  || input == "end" || input == "end") {
     return keyword;
   }
   else if (input.at(0) == '0') {
