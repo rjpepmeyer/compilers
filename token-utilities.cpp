@@ -2,6 +2,7 @@
 
 using namespace std;
 
+// Adds a tokenList node to a token list
 void add(tokenList * &root, tokenList * &current, token item) {
   tokenList * newNode = new tokenList;
   newNode->item = item;
@@ -16,6 +17,7 @@ void add(tokenList * &root, tokenList * &current, token item) {
   }
 }
 
+// Prints a token as a single line output
 void print(token item) {
   cout << item.line << " ";
   cout << toString(item.type);
@@ -26,6 +28,7 @@ void print(token item) {
   cout << '\n';
 }
 
+// Sets the values of a token
 token make(string val, enum tokenType type, unsigned long line) {
   token output;
   output.value = val;
