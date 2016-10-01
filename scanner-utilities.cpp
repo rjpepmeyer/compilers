@@ -106,13 +106,13 @@ enum tokenType getType(char input) {
 // and returns as output its token type.
 enum tokenType getType(string input) {
   if (input == "integer" || input == "boolean") {
-    return op;
+    return type;
   }
   else if  (input == "true" || input == "false") {
-    return lessthan;
+    return booleanvalue;
   }
   else if (input == "and" || input == "or" || input == "not") {
-    return equals;
+    return booleanop;
   }
   else if (input == "if" || input == "then" || input == "else"
   || input == "print" || input == "program" ||
