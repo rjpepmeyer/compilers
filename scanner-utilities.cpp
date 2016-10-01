@@ -99,14 +99,17 @@ enum tokenType getType(string input) {
   }
   else if (isdigit(input.at(0))) {
     int i = 0;
-    while(i < input.length()) {
-      if (!isdigit(input.at(i))) {
-        break;
+    if (input.length() < 10 || (input.length() == 10 &&
+    input <= "4294967295")) {
+      while(i < input.length()) {
+        if (!isdigit(input.at(i))) {
+          break;
+        }
+        i++;
       }
-      i++;
-    }
-    if (i == input.length()) {
-      return number;
+      if (i == input.length()) {
+        return number;
+      }
     }
     else {
       return invalid;

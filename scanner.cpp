@@ -20,14 +20,12 @@ tokenList *  scanner(char *inputFileName) {
   while(1) {
     inputFile.get(currentChar);
     if (!isComment) { // Skip to ELSE if reading a comment
-      if (inputFile.eof()) { // End of file -- breaks loop
-        break;
-      }
-      else if (isspace(currentChar)) { // Found white space
+      if (inputFile.eof() || isspace(currentChar)) {
         if (accum.length() > 0) { // If full, accum is token
           currentToken = make(accum, getType(accum), line);
           add(outputRoot, outputCurrent, currentToken);
         }
+        if (inputFile.eof()) break;
         accum = "";
         if (currentChar == '\n') line++; // increment line count
       }
