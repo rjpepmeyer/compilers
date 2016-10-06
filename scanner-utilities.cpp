@@ -62,6 +62,7 @@ string toString(enum tokenType input) {
     case number:       return "<number>     "; break;
     case identifier:   return "<identifier> "; break;
     case punctuation:  return "<punctuation>"; break;
+    case eos:          return "<$>";           break;
   }
 }
 
