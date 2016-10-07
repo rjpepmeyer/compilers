@@ -29,8 +29,8 @@ unsigned int table(tokenType row, token col) {
       if (col.value == "begin") return 11;
       else return 0;
     case statementlist:
-      if (col.value == "return") return 13;
-      else if (col.value == "print") return 12;
+      if (col.value == "print") return 12;
+      else if (col.value == "return") return 13;
       else return 0;
     case typent:
       if (col.type == type || col.value == "integer") return 14;
@@ -38,8 +38,8 @@ unsigned int table(tokenType row, token col) {
       else return 0;
     case expr:
       if (col.value == "if" || col.value == "not" || 
-      col.type == identifier || col.value == "number" ||
-      col.value == "boolean" || col.value == "-" || 
+      col.type == identifier || col.type == number ||
+      col.type == booleanvalue || col.value == "-" || 
       col.value == "(") return 17;
       else return 0;
     case exprprime:
@@ -48,8 +48,8 @@ unsigned int table(tokenType row, token col) {
       else return 0;
     case simpleexpr:
       if (col.value == "if" || col.value == "not" || 
-      col.type == identifier || col.value == "number" ||
-      col.value == "boolean" || col.value == "-" || 
+      col.type == identifier || col.type == number ||
+      col.type == booleanvalue || col.value == "-" || 
       col.value == "(") return 21;
       else return 0;
     case simpleexprprime:
@@ -59,8 +59,8 @@ unsigned int table(tokenType row, token col) {
       else return 0;
     case term:
       if (col.value == "if" || col.value == "not" || 
-      col.type == identifier || col.value == "number" ||
-      col.value == "boolean" || col.value == "-" || 
+      col.type == identifier || col.type == number ||
+      col.type == booleanvalue || col.value == "-" || 
       col.value == "(") return 26;
       else return 0;
     case termprime:
@@ -90,6 +90,25 @@ unsigned int table(tokenType row, token col) {
       col.value == "(" || col.value == "-" || col.type == identifier || 
       col.type == type) return 39;
       else return 0;
+	/*
+	case nonemptyactuals:
+	  if (col.type == booleanvalue || col.value == "if" || 
+	      col.value == "not" || col.value == "(" || 
+		  col.value == "-" || col.type == identifier || 
+		  col.type == number)return 40;
+	  else return 0;
+	case nonemptyactualsprime:
+	  if (col.value == ")") return 41;
+	  else if (col.value == ",") return 42;
+	  else return 0;
+	case literal:
+	  if (col.type == number) return 43;
+	  else if (col.type == booleanvalue) return 44;
+	  else return 0;
+	case print-statement:
+	  if (col.value == "print") return 45;
+	  else return 0;
+	*/
     default:
       return 0;
   }
