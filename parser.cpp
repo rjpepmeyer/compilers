@@ -19,10 +19,12 @@ bool parser(tokenList * input) {
         parserStack.pop();
         stream.advance();
       } else {
-        cout << "ERROR: encountered:" << currentToken.value << '\n';
-        cout << "But expected:" << toString(A.type) << " " <<
-        A.value;
-        cout << " at line " << currentToken.line << '\n';
+        cout << "ERROR: encountered: " << 
+        toString(currentToken.type) << currentToken.value << 
+        '\n';
+        cout << "But expected:       " << toString(A.type) << " " <<
+        A.value << '\n';
+        cout << " At line #" << currentToken.line << '\n';
         return false;
       }
     } else {
