@@ -36,3 +36,19 @@ token make(string val, enum tokenType type, unsigned long line) {
   output.line = line;
   return output;
 }
+
+token make(string val, enum tokenType type) {
+  token output;
+  output.value = val;
+  output.type = type;
+  output.line = 0;
+  return output;
+}
+
+token make(enum tokenType type) {
+  token output;
+  output.value = "";
+  output.type = type;
+  output.line = 0;
+  return output;
+}

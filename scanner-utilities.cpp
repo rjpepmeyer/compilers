@@ -16,7 +16,10 @@ bool isSelfDeliminator(char c) {
 // Takes a string and returns if it is a valid number
 bool isValidNum(string input) {
   // If it starts with leading zeros, it's invalid
-  if (input.length() > 1 && input.front() == '0') {
+  if (!isdigit(input.front())) {
+    return false;
+  }
+  else if (input.length() > 1 && input.front() == '0') {
     return false;
   }
   // If it's longer than ten characters, it exceeds 2^32

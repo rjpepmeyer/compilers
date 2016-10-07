@@ -1,5 +1,9 @@
 #include <string>
 
+bool isTerminal(token i) {
+  return (i.type <= eos);
+}
+
 unsigned int table(tokenType row, token col) {
   switch (row) {
     case program:
