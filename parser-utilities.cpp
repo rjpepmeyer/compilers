@@ -94,25 +94,23 @@ unsigned int table(tokenType row, token col) {
       col.value == "(" || col.value == "-" || col.type == identifier || 
       col.type == type) return 39;
       else return 0;
-	/*
-	case nonemptyactuals:
-	  if (col.type == booleanvalue || col.value == "if" || 
-	      col.value == "not" || col.value == "(" || 
-		  col.value == "-" || col.type == identifier || 
-		  col.type == number)return 40;
-	  else return 0;
-	case nonemptyactualsprime:
-	  if (col.value == ")") return 41;
-	  else if (col.value == ",") return 42;
-	  else return 0;
-	case literal:
-	  if (col.type == number) return 43;
-	  else if (col.type == booleanvalue) return 44;
-	  else return 0;
-	case print-statement:
-	  if (col.value == "print") return 45;
-	  else return 0;
-	*/
+	  case nonemptyactuals:
+	    if (col.type == booleanvalue || col.value == "if" || 
+	        col.value == "not" || col.value == "(" || 
+		    col.value == "-" || col.type == identifier || 
+		    col.type == number)return 40;
+	    else return 0;
+	  case nonemptyactualsprime:
+	    if (col.value == ")") return 41;
+	    else if (col.value == ",") return 42;
+	    else return 0;
+	  case literal:
+	    if (col.type == number) return 43;
+	    else if (col.type == booleanvalue) return 44;
+	    else return 0;
+	  case printstatement:
+	    if (col.type == printstatement) return 45;
+	    else return 0;	  
     default:
       return 0;
   }
