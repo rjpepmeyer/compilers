@@ -54,7 +54,6 @@ string toString(enum tokenType input) {
     case separator:    return "<separator>  "; break;
     case terminator:   return "<terminator> "; break;
     case comma:        return "<comma>      "; break;
-    case invalid:      return "<invalid>    "; break;
     case type:         return "<typename>   "; break;
     case booleanvalue: return "<bool-value> "; break;
     case booleanop:    return "<bool-op>    "; break;
@@ -63,6 +62,7 @@ string toString(enum tokenType input) {
     case identifier:   return "<identifier> "; break;
     case punctuation:  return "<punctuation>"; break;
     case eos:          return "<$>";           break;
+    default:           return "<invalid>    "; break;
   }
 }
 
