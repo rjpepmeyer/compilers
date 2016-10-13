@@ -1,0 +1,29 @@
+{
+  FILE  : euclid.flr
+  AUTHOR: Eugene Wallingford
+  DATE  : 2016/08/24
+  TASK  : Finds the GCD of two integers using Euclid's algorithm
+          Based on a program by former student Chuck Hoffman.
+}
+
+program euclid(a : integer, b : integer);
+
+   function remainder(a : integer, b : integer) : integer
+      begin
+         return if a < b then
+                   a
+                else
+                   remainder(a-b, b)
+      end;
+
+   function gcd(a : integer, b : integer) : integer
+      begin
+         return if b = 0 then
+                   a
+                else
+                   gcd(b, remainder(a, b))
+      end;
+
+begin
+   return gcd(a,b)
+end.

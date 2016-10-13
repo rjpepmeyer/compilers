@@ -1,0 +1,124 @@
+{
+  This library of useful Flair functions began as a port of the MinimL
+  library, a collection of utility routines written in MinimL for
+  MinimL by MinimL creator Doug Baldwin.  On its way to Flair, it was
+  first ported to another teaching language, Klein, created by Eugene
+  Wallingford.
+
+  Note the convention that the names of library functions are in all
+  upper case letters, to help programmers avoid defining conflicting
+  names of their own.
+
+  History:
+    January  2002 -- MinimL library created by Doug Baldwin
+    December 2007 -- Klein library ported by Eugene Wallingford
+    October  2013 -- Klein library updated by Eugene Wallingford
+    October  2015 -- EXP function added by Eugene Wallingford
+    August   2016 -- Flair library ported by Eugene Wallingford
+
+  Flair has fewer functions in its library than Klein or MinimL
+  because it contains () for forcing the order of execution.
+
+  I include a main program below because Flair's language specification
+  requires one.  Otherwise, we would not be able to compile this file
+  and test its functions.  (Adding separate compilation of  a file of
+  functions without a main would be an interesting extension to Flair!)
+}
+
+program lib(testArgument : integer);
+
+  { --------------------------------------------------------------------
+    boolean functions
+    -------------------------------------------------------------------- }
+
+  function LE( p : integer, q : integer ) : boolean
+  begin
+    return (p < q) or (p = q)
+  end;
+
+  function GE( p : integer, q : integer ) : boolean
+  begin
+    return not (p < q)
+  end;
+
+  { --------------------------------------------------------------------
+    arithmetic functions
+    -------------------------------------------------------------------- }
+
+  function ABS( n : integer ) : integer
+  begin
+    return if 0 < n then n else -n
+  end;
+
+  function MOD( m : integer, n : integer ) : integer
+  begin
+    return m - m/n * n
+  end;
+
+  function EXP( m : integer, n : integer ) : integer
+  begin
+    return if n = 0 then 1 else m * EXP(m, n-1)
+  end;
+
+  { --------------------------------------------------------------------
+    ODD  This is based on the idea that n = 2 * floor( n/2 ) only if
+         n is even, and n is never less than 2 * floor( n/2 ).  Thus
+         asking if n <= 2 * floor( n/2 ) is equivalent to asking if
+         n is even; n being odd is simply the complement of this.
+         This function also does a bit of sign-checking to accomodate
+         negative as well as positive arguments, since the function
+         it uses to calculate floor( n/2 ) only handles natural numbers.
+    -------------------------------------------------------------------- }
+
+  function ODD( n : integer ) : boolean
+  begin
+    return if LE(0, n) then
+              ( 2 * (n/2) ) < n
+           else
+              ODD(-n)
+  end;
+
+  { --------------------------------------------------------------------
+    SQRT  The algorithm uses binary search.  It takes advantage of the
+          fact that for the naturals, 0 <= sqrt(n) <= n, to initialize
+          the bounds for the search.  When the search reaches a point
+          where the bounds are within one of each other, it chooses the
+          one that is closest to the true square root to return.
+
+    The function SQRTSEARCH directs the binary search, while SQRTSPLIT
+    splits the range within this search, done in a separate function so
+    that the program does not have to recompute the midpoint repeatedly.
+    -------------------------------------------------------------------- }
+
+  function SQRT( n : integer ) : integer
+  begin
+    return SQRTSEARCH( n, 0, n )
+  end;
+
+  function SQRTSEARCH( n    : integer,
+                       low  : integer,
+                       high : integer ) : integer
+  begin
+    return if LE( high, low + 1 ) then
+              if LE( n - (low*low), (high*high) - n )
+                 then low
+                 else high
+            else
+              SQRTSPLIT( n, low, high, (low + high)/2 )
+  end;
+
+  function SQRTSPLIT( n    : integer,
+                      low  : integer,
+                      high : integer,
+                      mid  : integer ) : integer
+  begin
+    return if LE( mid*mid, n ) then
+              SQRTSEARCH( n, mid, high )
+           else
+              SQRTSEARCH( n, low, mid )
+  end;
+
+begin
+    print( SQRT(testArgument) );
+    return ODD(testArgument)
+end.

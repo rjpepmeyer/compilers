@@ -1,0 +1,48 @@
+{
+  FILE  : factors.flr
+  AUTHOR: Eugene Wallingford
+  DATE  : 2010/11/11
+  TASK  : all the factors of an integer n less than n
+          and returns n (the largest factor)
+
+  UPDATE: 2016/08/24    ported to Flair
+}
+
+program factors( n : integer );
+
+   function loopToN(n : integer, current : integer) : integer
+   begin
+      return if n = current then n
+                            else testAndLoop(n, current)
+   end;
+
+   function testAndLoop(n : integer, current : integer) : integer
+   begin
+      return if divides( current, n ) then
+                printAndLoop(n, current)
+             else
+                loopToN(n, current+1)
+   end;
+
+   function printAndLoop(n : integer, current : integer) : integer
+   begin
+      print(current);
+      return loopToN(n, current+1)
+   end;
+
+   function divides( a : integer, b : integer) : boolean
+   begin
+      return remainder(b, a) = 0
+   end;
+
+   function remainder( num : integer, den : integer) : integer
+   begin
+      return if num < den then
+                num
+             else
+                remainder( num-den, den)
+   end;
+
+begin
+   return loopToN(n, 1)
+end.

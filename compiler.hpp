@@ -7,7 +7,7 @@ separator, terminator, comma, invalid, type, booleanvalue, booleanop,
 keyword, number, identifier, punctuation, eos, program, definitions, 
 def, formals, nonemptyformals, nonemptyformalsprime, formal, body, 
 statementlist, typent, expr, exprprime, simpleexpr, simpleexprprime, 
-term, termprime, factor, factorprime, actuals, nonemptyactuals, 
+term, termprime, factor, factorprime, factorprime2, actuals, nonemptyactuals, 
 nonemptyactualsprime, literal, printstatement};
 /*
 enum nonTerminalTokenType {program, definitions, def, formals, 

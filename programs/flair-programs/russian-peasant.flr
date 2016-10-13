@@ -1,0 +1,29 @@
+program RussianPeasant(m : integer, n : integer);
+
+   {--- MOD is a library function copied in ---}
+
+   function MOD( m : integer, n : integer ) : integer
+   begin
+      return m - m/n * n
+   end;
+
+   function multWithAccum(m : integer, n : integer, accum : integer) : integer
+   begin
+      return if n = 0 then
+                accum
+             else if MOD(n, 2) = 1 then
+                multWithAccum(m*2, n/2, accum+m)
+             else
+                multWithAccum(m*2, n/2, accum)
+   end;
+
+   function mult(m : integer, n : integer) : integer
+   begin
+      return multWithAccum(m, n, 0)
+   end;
+
+begin
+   print(m);
+   print(n);
+   return mult(m, n)
+end.

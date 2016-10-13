@@ -199,6 +199,7 @@ bool parser(tokenList * input, bool debug) {
         case 36:
           break;
         case 37:
+          parserStack.push(make(factorprime2));
           parserStack.push(make(")",rightparen));
           parserStack.push(make(actuals));
           parserStack.push(make("(",leftparen));
@@ -230,6 +231,8 @@ bool parser(tokenList * input, bool debug) {
           parserStack.push(make(expr));
           parserStack.push(make("(",leftparen));
           parserStack.push(make("print",keyword));
+          break;
+        case 46:
           break;
         default: 
           cout << "ERROR at line #" << currentToken.line << " -- "

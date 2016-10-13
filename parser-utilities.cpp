@@ -82,13 +82,23 @@ unsigned int table(tokenType row, token col) {
       else if (col.value == "(") return 35;
       else return 0;
     case factorprime:
+      if (col.value == "<")   return 18;
+      if (col.value == "=")   return 19;
+      if (col.value == ",")   return 42;
+      if (col.value == "or")  return 22;
+      if (col.value == "+")   return 23;
+      if (col.value == "-")   return 24;
+      if (col.value == "and") return 27;
+      if (col.value == "*")   return 28;
+      if (col.value == "/")   return 29;
       if (col.value == "end" || col.value == "then" || 
-      col.value == "else" || col.value == "and" || col.value == "or" ||
-      col.value == ")" || col.value == "<" || col.value == "=" ||
-      col.value == "+" || col.value == "-" || col.value == "*" || 
-      col.value == "/") return 36;
+      col.value == "else" || col.value == ")") return 36;
       else if (col.value == "(") return 37;
       else return 0;
+    case factorprime2:
+      if (col.value == "<") return 18;
+      if (col.value == "=") return 19;
+      else return 46;
     case actuals:
       if (col.value == ")") return 38;
       else  if (col.value == "if" || col.value == "not" || 
@@ -110,7 +120,7 @@ unsigned int table(tokenType row, token col) {
 	    else if (col.type == booleanvalue) return 44;
 	    else return 0;
 	  case printstatement:
-	    if (col.type == printstatement) return 45;
+	    if (col.value == "print") return 45;
 	    else return 0;	  
     default:
       return 0;

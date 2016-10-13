@@ -1,0 +1,57 @@
+{
+  FILE  : sieve.flr
+  AUTHOR: Eugene Wallingford
+  DATE  : 2007/09/25
+  TASK  : computes and prints a Sieve of Eratosthenes
+  UPDATE: 2016/08/24   ported to Flair
+  UPDATE: 2016/10/07   fixed two syntax errors
+}
+
+program sieve( n : integer );
+
+   function sieveAt(current : integer, max : integer) : boolean
+   begin
+      return if max < current
+                then true
+                else doSieveAt(current, max)
+   end;
+
+   {
+      doSieveAt exists only because calls to print are allowed
+      only as the first expression in the body of function.
+   }
+
+   function doSieveAt(current : integer, max : integer) : boolean
+   begin
+      print( if isPrime(current) then current else 0 );
+      return sieveAt(current+1, max)
+   end;
+
+   function isPrime( n : integer ) : boolean
+   begin
+      return not hasDivisorFrom(2, n)
+   end;
+
+   function hasDivisorFrom( i : integer, n : integer) : boolean
+   begin
+      return if i < n
+                then divides(i, n) or hasDivisorFrom(i+1, n)
+                else false
+   end;
+
+   function divides( a : integer, b : integer) : boolean
+   begin
+      return rem(b, a) = 0
+   end;
+
+   function rem( num : integer, den : integer) : integer
+   begin
+      return
+          if num < den
+             then num
+             else rem( num-den, den)
+   end;
+
+begin
+   return sieveAt(2, n)
+end.
