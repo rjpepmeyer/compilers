@@ -76,7 +76,8 @@ unsigned int table(tokenType row, token col) {
       if (col.value == "if") return 30;
       else if (col.value == "not") return 31;
       else if (col.type == identifier) return 32;
-      else if (col.type == type) return 33;
+      else if (col.type == booleanvalue) return 33;
+      else if (col.type == number) return 33;
       else if (col.value == "-") return 34;
       else if (col.value == "(") return 35;
       else return 0;

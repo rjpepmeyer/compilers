@@ -1,7 +1,7 @@
 #include <string>
 #include "parser-utilities.cpp"
 
-bool parser(tokenList * input) {
+bool parser(tokenList * input, bool debug) {
   tokenList stream = *input;        // Input stream!
   token currentToken = stream.item; // Current token!
   tokenStack parserStack;           // Parser stack!
@@ -14,8 +14,21 @@ bool parser(tokenList * input) {
   // Step 3
   token A = parserStack.peek();
   while (A.type != eos) {
+  //DEBUGGING
+  if (debug) {
+    cout << '\n' << "Top of stack " << toString(A.type) << " " << A.value 
+    << '\n';
+    cout << "Next token   " << toString(currentToken.type) << " " <<
+    currentToken.value << '\n' << '\n';
+  }
+  
     if (isTerminal(A)) {
-      if (parserStack.peek().type == currentToken.type) {
+      if (parserStack.peek().type == currentToken.type ||
+      parserStack.peek().value == currentToken.value) {
+        //DEBUGGING
+        if (debug) {
+          cout << "POP AND ADVANCE" << '\n';
+        }
         parserStack.pop();
         stream.advance();
       } else {
@@ -29,6 +42,11 @@ bool parser(tokenList * input) {
       }
     } else {
       A = parserStack.pop();
+      //DEBUGGING
+      if (debug) {
+        cout << "IMPLEMENTING RULE " << table(A.type,currentToken) 
+        << '\n';
+      }
       switch (table(A.type,currentToken)) {
         case 1:
           parserStack.push(make(".", punctuation));
