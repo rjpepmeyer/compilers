@@ -83,7 +83,6 @@ string toString(enum tokenType input) {
     case termprime:      return "<term'>      "; break;
     case factor:         return "<factor>     "; break;
     case factorprime:    return "<factor'>    "; break;
-    case factorprime2:   return "<factor''>   "; break;
     case actuals:        return "<actuals>    "; break;
     case nonemptyactuals:return "<neactuals>  "; break;
     case nonemptyactualsprime:return "<neactuals'> "; break;

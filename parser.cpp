@@ -117,54 +117,59 @@ bool parser(tokenList * input, bool debug) {
           break;
         case 16:
           parserStack.push(make(exprprime));
-          parserStack.push(make(expr));
-          break;
-        case 17:
           parserStack.push(make(simpleexpr));
           break;
+        case 17:
+          break;
         case 18:
+          parserStack.push(make(exprprime));
           parserStack.push(make(simpleexpr));
           parserStack.push(make("<",lessthan));
           break;
         case 19:
+          parserStack.push(make(exprprime));
           parserStack.push(make(simpleexpr));
           parserStack.push(make("=",equals));
           break;
         case 20:
           parserStack.push(make(simpleexprprime));
-          parserStack.push(make(simpleexpr));
-          break;
-        case 21:
           parserStack.push(make(term));
           break;
+        case 21:
+          break;
         case 22:
+          parserStack.push(make(simpleexprprime));
           parserStack.push(make(term));
           parserStack.push(make("or",keyword));
           break;
         case 23:
+          parserStack.push(make(simpleexprprime));
           parserStack.push(make(term));
           parserStack.push(make("+",op));
           break;
         case 24:
+          parserStack.push(make(simpleexprprime));
           parserStack.push(make(term));
           parserStack.push(make("-",op));
           break;
         case 25:
           parserStack.push(make(termprime));
-          parserStack.push(make(term));
-          break;
-        case 26:
           parserStack.push(make(factor));
           break;
+        case 26:
+          break;
         case 27:
+          parserStack.push(make(termprime));
           parserStack.push(make(factor));
           parserStack.push(make("and",keyword));
           break;
         case 28:
+          parserStack.push(make(termprime));
           parserStack.push(make(factor));
           parserStack.push(make("*",op));
           break;
         case 29:
+          parserStack.push(make(termprime));
           parserStack.push(make(factor));
           parserStack.push(make("/",op));
           break;
@@ -199,7 +204,6 @@ bool parser(tokenList * input, bool debug) {
         case 36:
           break;
         case 37:
-          parserStack.push(make(factorprime2));
           parserStack.push(make(")",rightparen));
           parserStack.push(make(actuals));
           parserStack.push(make("(",leftparen));
@@ -231,8 +235,6 @@ bool parser(tokenList * input, bool debug) {
           parserStack.push(make(expr));
           parserStack.push(make("(",leftparen));
           parserStack.push(make("print",keyword));
-          break;
-        case 46:
           break;
         default: 
           cout << "ERROR at line #" << currentToken.line << " -- "

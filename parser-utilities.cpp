@@ -44,34 +44,34 @@ unsigned int table(tokenType row, token col) {
       if (col.value == "if" || col.value == "not" || 
       col.type == identifier || col.type == number ||
       col.type == booleanvalue || col.value == "-" || 
-      col.value == "(") return 17;
+      col.value == "(") return 16;
       else return 0;
     case exprprime:
       if (col.value == "<") return 18;
       else if (col.value == "=") return 19;
-      else return 0;
+      else return 17;
     case simpleexpr:
       if (col.value == "if" || col.value == "not" || 
       col.type == identifier || col.type == number ||
       col.type == booleanvalue || col.value == "-" || 
-      col.value == "(") return 21;
+      col.value == "(") return 20;
       else return 0;
     case simpleexprprime:
       if (col.value == "or") return 22;
       else if (col.value == "+") return 23;
       else if (col.value == "-") return 24;
-      else return 0;
+      else return 21;
     case term:
       if (col.value == "if" || col.value == "not" || 
       col.type == identifier || col.type == number ||
       col.type == booleanvalue || col.value == "-" || 
-      col.value == "(") return 26;
+      col.value == "(") return 25;
       else return 0;
     case termprime:
       if (col.value == "and") return 27;
       else if (col.value ==  "*") return 28;
       else if (col.value == "/") return 29;
-      else return 0;
+      else return 26;
     case factor:
       if (col.value == "if") return 30;
       else if (col.value == "not") return 31;
@@ -95,10 +95,6 @@ unsigned int table(tokenType row, token col) {
       col.value == "else" || col.value == ")") return 36;
       else if (col.value == "(") return 37;
       else return 0;
-    case factorprime2:
-      if (col.value == "<") return 18;
-      if (col.value == "=") return 19;
-      else return 46;
     case actuals:
       if (col.value == ")") return 38;
       else  if (col.value == "if" || col.value == "not" || 

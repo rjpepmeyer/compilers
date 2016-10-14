@@ -4,11 +4,13 @@ const int MAX_IDENT_LENGTH = 255;
 
 enum tokenType { op = 0, lessthan, equals, leftparen, rightparen, 
 separator, terminator, comma, invalid, type, booleanvalue, booleanop, 
-keyword, number, identifier, punctuation, eos, program, definitions, 
-def, formals, nonemptyformals, nonemptyformalsprime, formal, body, 
-statementlist, typent, expr, exprprime, simpleexpr, simpleexprprime, 
-term, termprime, factor, factorprime, factorprime2, actuals, nonemptyactuals, 
-nonemptyactualsprime, literal, printstatement};
+keyword, number, identifier, punctuation, eos, 
+
+program, definitions, def, formals, nonemptyformals, 
+nonemptyformalsprime, formal, body, statementlist, typent, expr, 
+exprprime, simpleexpr, simpleexprprime, term, termprime, factor, 
+factorprime, actuals, nonemptyactuals, nonemptyactualsprime, 
+literal, printstatement};
 /*
 enum nonTerminalTokenType {program, definitions, def, formals, 
 nonemptyformals, nonemptyformals-prime, formal, body, statement-list, 
