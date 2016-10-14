@@ -98,8 +98,9 @@ unsigned int table(tokenType row, token col) {
     case actuals:
       if (col.value == ")") return 38;
       else  if (col.value == "if" || col.value == "not" || 
-      col.value == "(" || col.value == "-" || col.type == identifier || 
-      col.type == type) return 39;
+      col.value == "(" || col.value == "-" || col.type == booleanvalue || 
+      col.type == number || col.type == type || col.type == identifier) 
+      return 39;
       else return 0;
 	  case nonemptyactuals:
 	    if (col.type == booleanvalue || col.value == "if" || 
