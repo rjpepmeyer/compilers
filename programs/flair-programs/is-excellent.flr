@@ -1,0 +1,86 @@
+{---------------------------------------------------------------
+
+ This program determines if its command-line argument, a number,
+ is "excellent": when split in half n=ab, b*b - a*a = n.  For
+ example, 48 is excellent, because 8**2 - 4**2 == 48.
+
+ http://programmingpraxis.com/2015/03/24/excellent-numbers/
+
+---------------------------------------------------------------}
+
+program IsExcellent(n : integer);
+
+  { ----------------------------------------------
+    functions from the Flair library
+    ---------------------------------------------- }
+
+  function LE( p : integer, q : integer ) : boolean
+  begin
+    return (p < q) or (p = q)
+  end;
+
+  function MOD( m : integer, n : integer ) : integer
+  begin
+    return m - m/n * n
+  end;
+
+  function EXP( m : integer, n : integer ) : integer
+  begin
+    return if n = 0 then 1 else m * EXP(m, n-1)
+  end;
+
+  function ODD( n : integer ) : boolean
+  begin
+    return if LE(0, n) then
+              ( 2 * (n/2) ) < n
+           else
+              ODD(-n)
+  end;
+
+  { ----------------------------------------------
+    helper functions
+    ---------------------------------------------- }
+
+  function length(n : integer) : integer
+  begin
+    return if n < 10
+              then 1
+              else 1 + length(n / 10)
+  end;
+
+  function a(n : integer) : integer
+    { we could implement this with take }
+  begin
+    return n / EXP(10, length(n)/2)
+  end;
+
+  function b(n : integer) : integer
+    { we could implement this with drop }
+  begin
+    return MOD(n, EXP(10, length(n)/2))
+  end;
+
+  function excellentDiff(a : integer, b : integer) : integer
+  begin
+    return b*b - a*a
+  end;
+
+{  ----------------------------------------------
+   primary functions
+   ----------------------------------------------  }
+
+  function isExcellentSwitch(n : integer, length : integer) : boolean
+  begin
+    return if ODD(length)
+              then false
+              else n = excellentDiff(a(n), b(n))
+  end;
+
+  function isExcellent(n : integer) : boolean
+  begin
+    return isExcellentSwitch(n, length(n))
+  end;
+
+begin
+  return isExcellent(n)
+end.

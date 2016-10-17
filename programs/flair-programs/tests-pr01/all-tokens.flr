@@ -1,0 +1,8 @@
+    integer   boolean   true     false
+    +         -         *        /
+    <         =         (        )
+    print     ,         {        }
+    if        then      else
+    not       or        and
+    program   function  return   :
+    begin     end       ;        .

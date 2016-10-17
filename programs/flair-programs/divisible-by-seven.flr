@@ -1,0 +1,29 @@
+program DivisibleBySeven( n : integer );
+
+   function divisibleByParts( left : integer, right : integer ) : boolean
+   begin
+      return divisibleByDifference( left - right * 2 )
+   end;
+
+   function divisibleByDifference( diff : integer ) : boolean
+   begin
+      return if ((diff = 7) or (diff = 0) or (diff = -7) or (diff = -14))
+                then true
+                else if diff < 14
+                        then false
+                        else divisibleByParts( diff / 10 , MOD(diff, 10) )
+                             { if main body were a function, call it }
+   end;
+
+   { ------------------------------
+     recurring utility from lib.flr
+     ------------------------------ }
+
+   function MOD( m : integer, n : integer ) : integer
+   begin
+      return m - m/n * n
+   end;
+
+begin
+   return divisibleByParts( n / 10 , MOD(n, 10) )
+end.

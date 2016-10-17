@@ -1,0 +1,46 @@
+program palindome(number : integer);
+
+   { ----------------------------------------------
+     functions from the Flair library
+     ---------------------------------------------- }
+
+   function MOD(m : integer, n : integer) : integer
+   begin
+      return m - n*(m/n)
+   end;
+
+   { ----------------------------------------------
+     reverse a number
+     ---------------------------------------------- }
+
+   function reverse(n : integer) : integer
+   begin
+      return reverseL(n, 0)
+   end;
+
+   function reverseL(n : integer, nR : integer) : integer
+   begin
+      return if n = 0 then
+                nR
+             else
+                reverseL(n / 10, 10 * nR + MOD(n, 10))
+   end;
+
+   { ----------------------------------------------
+     determine if a number is a palndrome
+     ---------------------------------------------- }
+
+   function isPalindrome(n : integer) : boolean
+   begin
+      return 0 = (n - reverse(n))
+   else;
+
+{ ----------------------------------------------
+  main function: takes command-line argument
+  ---------------------------------------------- }
+
+begin
+   print(number);
+   print(reverse(number));
+   return isPalindrome(number)
+end.

@@ -16,7 +16,10 @@ bool isSelfDeliminator(char c) {
 // Takes a string and returns if it is a valid number
 bool isValidNum(string input) {
   // If it starts with leading zeros, it's invalid
-  if (input.length() > 1 && input.front() == '0') {
+  if (!isdigit(input.front())) {
+    return false;
+  }
+  else if (input.length() > 1 && input.front() == '0') {
     return false;
   }
   // If it's longer than ten characters, it exceeds 2^32
@@ -47,22 +50,46 @@ bool isValidNum(string input) {
 string toString(enum tokenType input) {
   switch(input) {
     case op:           return "<operator>   "; break;
-    case lessthan:     return "<less-than>  "; break;
-    case equals:       return "<equals>     "; break;
-    case leftparen:    return "<left-paren> "; break;
-    case rightparen:   return "<right-paren>"; break;
-    case separator:    return "<separator>  "; break;
-    case terminator:   return "<terminator> "; break;
-    case comma:        return "<comma>      "; break;
-    case type:         return "<typename>   "; break;
-    case booleanvalue: return "<bool-value> "; break;
-    case booleanop:    return "<bool-op>    "; break;
-    case keyword:      return "<keyword>    "; break;
-    case number:       return "<number>     "; break;
-    case identifier:   return "<identifier> "; break;
-    case punctuation:  return "<punctuation>"; break;
-    case eos:          return "<$>";           break;
-    default:           return "<invalid>    "; break;
+    case lessthan:       return "<less-than>  "; break;
+    case equals:         return "<equals>     "; break;
+    case leftparen:      return "<left-paren> "; break;
+    case rightparen:     return "<right-paren>"; break;
+    case separator:      return "<separator>  "; break;
+    case terminator:     return "<terminator> "; break;
+    case comma:          return "<comma>      "; break;
+    case type:           return "<typename>   "; break;
+    case booleanvalue:   return "<bool-value> "; break;
+    case booleanop:      return "<bool-op>    "; break;
+    case keyword:        return "<keyword>    "; break;
+    case number:         return "<number>     "; break;
+    case identifier:     return "<identifier> "; break;
+    case punctuation:    return "<punctuation>"; break;
+    case eos:            return "<$>          "; break;
+    case program:        return "<program>    "; break;
+    case definitions:    return "<definitions>"; break;
+    case def:            return "<def>        "; break;
+    case formals:        return "<formals>    "; break;
+    case nonemptyformals:return "<neformals>  "; break;
+    case nonemptyformalsprime:return "<neformals'> "; break;
+    case formal:         return "<formal>     "; break;
+    case body:           return "<body>       "; break;
+    case statementlist:  return "<statmnt-lst>"; break;
+    case typent:         return "<type>       "; break;
+    case expr:           return "<expression> "; break;
+    case exprprime:      return "<expression'>"; break;
+    case simpleexpr:     return "<simpleexpr> "; break;
+    case simpleexprprime:return "<simpleexpr'>"; break;
+    case term:           return "<term>       "; break;
+    case termprime:      return "<term'>      "; break;
+    case factor:         return "<factor>     "; break;
+    case factorprime:    return "<factor'>    "; break;
+    case actuals:        return "<actuals>    "; break;
+    case nonemptyactuals:return "<neactuals>  "; break;
+    case nonemptyactualsprime:return "<neactuals'> "; break;
+    case literal:        return "<literal>    "; break;
+    case printstatement: return "<prntstatmnt>"; break;
+    default:             return "<invalid>    "; break;
+    
   }
 }
 

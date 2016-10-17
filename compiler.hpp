@@ -2,12 +2,15 @@
 
 const int MAX_IDENT_LENGTH = 255;
 
-enum tokenType { op, lessthan, equals, leftparen, rightparen, 
+enum tokenType { op = 0, lessthan, equals, leftparen, rightparen, 
 separator, terminator, comma, invalid, type, booleanvalue, booleanop, 
-keyword, number, identifier, punctuation, eos, program, definitions, 
-def, formals, nonemptyformals, nonemptyformalsprime, formal, body, 
-statementlist, typent, expr, exprprime, simpleexpr, simpleexprprime, 
-term, termprime, factor, factorprime, actuals};
+keyword, number, identifier, punctuation, eos, 
+
+program, definitions, def, formals, nonemptyformals, 
+nonemptyformalsprime, formal, body, statementlist, typent, expr, 
+exprprime, simpleexpr, simpleexprprime, term, termprime, factor, 
+factorprime, actuals, nonemptyactuals, nonemptyactualsprime, 
+literal, printstatement};
 /*
 enum nonTerminalTokenType {program, definitions, def, formals, 
 nonemptyformals, nonemptyformals-prime, formal, body, statement-list, 
@@ -39,6 +42,7 @@ class tokenStack {
   public:
     void push (token);
     token pop ();
+    token peek ();
 };
 
 void tokenStack::push(token input) {
@@ -54,4 +58,8 @@ token tokenStack::pop() {
   top = top->next;
   delete toFree;
   return result;
+}
+
+token tokenStack::peek() {
+  return (*top).item;
 }

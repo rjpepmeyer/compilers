@@ -1,0 +1,74 @@
+{ ------------------------------------------------------------------
+
+  Eugene Wallingford 2013-1203, ported to Flair 2016-0824
+
+  This program demonstrates how we can factor large numbers
+  that are the products of large primes.  This is one way
+  in which public-key cryptography can work.
+
+  http://en.wikipedia.org/wiki/Public-key_cryptography
+
+  ------------------------------------------------------------------ }
+
+program PublicPrivate( publicKey : integer,  privateKey : integer );
+
+   { ------------------------------------------------------------------
+     the main function for the program
+     ------------------------------------------------------------------ }
+
+   function factor( publicKey  : integer,
+                    privateKey : integer ) : integer
+   {
+      gcd(publicKey, privateKey) should work, even if
+      you have a small stack space and no optimization!
+   }
+   begin
+      return displayAndPrint( publicKey,
+                              privateKey,
+                              gcd(publicKey, privateKey) )
+   end;
+
+   { ------------------------------------------------------------------
+     a helper to show the result of the program
+     ------------------------------------------------------------------ }
+
+   function displayAndPrint( publicKey    : integer,
+                             privateKey   : integer,
+                             commonFactor : integer ) : integer
+   begin
+      print( publicKey  / commonFactor );
+      print( privateKey / commonFactor );
+      return commonFactor
+   end;
+
+   { ------------------------------------------------------------------
+     The following functions are copied from euclid.flr
+     ------------------------------------------------------------------ }
+
+   function remainder(a : integer, b : integer) : integer
+      begin
+         return if a < b then
+                   a
+                else
+                   remainder(a-b, b)
+      end;
+
+   function gcd(a : integer, b : integer) : integer
+      begin
+         return if b = 0 then
+                   a
+                else
+                   gcd(b, remainder(a, b))
+      end;
+
+{ ------------------------------------------------------------------
+  main program
+  ------------------------------------------------------------------ }
+
+begin
+   return if publicKey = 0            {  as a flag for no arguments  }
+             then factor( 4283440703,    {  public key  }
+                          4282786213 )   {  private key }
+             else factor( publicKey,
+                          privateKey )
+end.

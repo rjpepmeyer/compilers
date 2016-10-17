@@ -1,0 +1,12 @@
+program modulus(m : integer, n : integer);
+
+   function mod(m : integer, n : integer) : integer
+   begin
+      return if m < n then m
+                      else mod(m-n, n)
+   end;
+
+begin
+  print( m / n );
+  return mod(m,n)
+end.

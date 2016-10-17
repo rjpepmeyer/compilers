@@ -1,0 +1,50 @@
+{
+  FILE  : sum-factors.flr
+  AUTHOR: Eugene Wallingford
+  DATE  : 2016/08/31
+  TASK  : sums the factors of an integer n less than n
+          and returns n - sum()
+}
+
+program SumFactors( n : integer );
+
+   function loopToN(n : integer, current : integer, sum : integer) : integer
+   begin
+      return if n = current then n - sum
+                            else testAndLoop(n, current, sum)
+   end;
+
+   function testAndLoop(n : integer,
+                        current : integer,
+                        sum : integer) : integer
+   begin
+      return if divides( current, n ) then
+                printCurrentAndLoop(n, current, sum+current)
+             else
+                loopToN(n, current+1, sum)
+   end;
+
+   function printCurrentAndLoop(n : integer,
+                                current : integer,
+                                sum : integer) : integer
+   begin
+      print(current);
+      return loopToN(n, current+1, sum)
+   end;
+
+   function divides( a : integer, b : integer) : boolean
+   begin
+      return remainder(b, a) = 0
+   end;
+
+   function remainder( num : integer, den : integer) : integer
+   begin
+      return if num < den then
+                num
+             else
+                remainder( num-den, den)
+   end;
+
+begin
+   return loopToN(n, 1, 0)      { n, current, sum }
+end.

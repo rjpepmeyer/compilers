@@ -1,0 +1,47 @@
+{
+  This uses Newton's general method to approximate a square root
+  in Flair's wonderful world of integers.  The generalized method
+  can be used to compute the roots of any (real-valued) function.
+  If we know that we are computing a square root, an even simpler
+  form of Newton's method works: guess = (n/guess + guess) / 2.
+}
+
+program SquareRoot(n : integer, epsilon : integer);
+
+   { ----------------------------------------------
+     functions from the Flair library
+     ---------------------------------------------- }
+
+   function ABS( n : integer ) : integer
+   begin
+      return if n < 0 then -n
+                      else  n
+   end;
+
+   function f( x : integer, n : integer ) : integer
+   begin
+      return x * x - n
+   end;
+
+   function df( x : integer ) : integer
+   begin
+      return 2 * x
+   end;
+
+   function newtonAux( guess   : integer, previous : integer,
+                       epsilon : integer, n        : integer ) : integer
+   begin
+      return if epsilon < ABS(previous-guess) then
+                   newtonAux( guess - f(guess,n)/df(guess), guess, epsilon, n )
+                else
+                   guess
+   end;
+
+   function newton( guess : integer, epsilon : integer, n : integer ) : integer
+   begin
+      return newtonAux( guess - f(guess,n)/df(guess), guess, epsilon, n )
+   end;
+
+begin
+   return newton(n/2, epsilon, n)
+end.
