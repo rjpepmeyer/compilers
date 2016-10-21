@@ -8,36 +8,13 @@ class Node {
 			for(int x = i*3;i>0;i--){
 				cout << " ";
 			}
-			cout << this.name << '\n';
+			cout << this->name << '\n';
 		}
 	protected:
 		std::string       name = "Generic Node, this should never be seen";
 };
 
-class program_Node : public Node {
-	public:
-		void addIdentifier(){
-			identifier = new identifier_Node;
-		}
-		void print(){
-			Node::print(0);
-			identifier.print(1);
-			for(int i=0;i<formals.length();i++){formals[i].print(1);}
-			for(int i=0;i<definitions.length();i++){definitions[i].print(1);}
-			body.print(1);
-		}
-	
-	protected:
-	    std::string       name = "Program";
-		identifier_Node   identifier;
-		formal_Node[]     formals;
-		body_Node         body;
-		
-	private:
-		def_Node[]        definitions;
-};
-
-class formal_Node : public Node: {
+class Formal_Node : public Node: {
 	public:
 		void print(int i){
 			Node::print(i);
@@ -46,11 +23,11 @@ class formal_Node : public Node: {
 		}
 		
 	protected: 
-		identifier_Node     identifier;
-		type_Node           type;
+		Identifier_Node     identifier;
+		Type_Node           type;
 };
 
-class def_Node : public program_Node {
+class Def_Node : public program_Node {
 	public:
 		void print(int i){
 			Node::print(i);
@@ -61,13 +38,13 @@ class def_Node : public program_Node {
 		}
 	protected:
 	    std::string       name = "Definition";
-	//  identifier_Node   identifier;
-	//  formal_Node[]     formals;
-		type_Node         type;
-	//  body_Node         body;
+	//  Identifier_Node   identifier;
+	//  Formal_Node[]     formals;
+		Type_Node         type;
+	//  Body_Node         body;
 };
 
-class body_Node : public Node {
+class Body_Node : public Node {
 	public:
 		void print(int i){
 			Node::print(i);
@@ -75,10 +52,10 @@ class body_Node : public Node {
 		}
 	protected:
 		std::string       name = "Body";
-		statement_Node[]  statements;
+		Statement_Node[]  statements;
 };
 
-class statement_Node : public Node {
+class Statement_Node : public Node {
 	public:
 		void print(int i){
 			Node::print(i);
@@ -87,11 +64,11 @@ class statement_Node : public Node {
 		}
 	protected:
 		std::string       name = "Statement";
-		print_Node        print;
-		return_Node       returnVal;
+		Print_Node        print;
+		Return_Node       returnVal;
 };
 
-class print_Node : public Node {
+class Print_Node : public Node {
 	public:
 		void print(int i){
 			Node::print(i);
@@ -99,18 +76,18 @@ class print_Node : public Node {
 		}
 	protected:
 		std::string       name = "Print";
-		expr_Node_Type    exprOne;
+		Expr_Node_Type    exprOne;
 };
 
-class return_Node : public print_Node {
+class Return_Node : public print_Node {
 	//ublic:
 	//  void print()
 	protected:
 		std::string       name = "Return";
-	//  expr_Node_Type    exprOne
+	//  Expr_Node_Type    exprOne
 };
 
-class if_Node : public print_Node {
+class If_Node : public print_Node {
 	public:
 		void print(int i){
 			Node::print(i);
@@ -121,19 +98,19 @@ class if_Node : public print_Node {
 	protected:
 		std::string       name = "If";
 	//  expr_Node_Type    exprOne
-		expr_Node_Type    exprTwo;
-		expr_Node_Type    exprThree;
+		Expr_Node_Type    exprTwo;
+		Expr_Node_Type    exprThree;
 };
 
-class not_Node : public print_Node {
+class Not_Node : public print_Node {
 	//blic:
 	//  void print()
 	protected:
 		std::string       name = "Not";
-	//  expr_Node_Type    exprOne
+	//  Expr_Node_Type    exprOne
 }; 
 
-class function_Call_Node : public Node {
+class Function_Call_Node : public Node {
 	public:
 		void print(int i){
 			Node::print(i);
@@ -142,47 +119,48 @@ class function_Call_Node : public Node {
 		}
 	protected:
 		std::string       name = "Function Call";
-		identifier_Node   identifier;
-		expr_Node_Type[]  expresions;
+		Identifier_Node   identifier;
+		Expr_Node_Type[]  expresions;
 };
 
-class negate_Node : public print_Node {
+class Negate_Node : public print_Node {
 	//blic:
 	//  void print()
 	protected:
 		std::string       name = "Negate";
-	//  expr_Node_Type    exprOne
+	//  Expr_Node_Type    exprOne
 };
 
-class block_Node : public print_Node {
+class Block_Node : public print_Node {
 	//blic:
 	//  void print()
 	protected:
 		std::string       name = "Block";
-	//  expr_Node_Type    exprOne
+	//  Expr_Node_Type    exprOne
 };
 
-class binary_Expr_Node : public print_Node {
+class Binary_Expr_Node : public print_Node {
 	public:
 		void print(int i){
 			Node::print(i);
 			exprOne.print(i+1);
 			op.print(i+1);
 			exprTwo.print(i+1);
+		}
 	protected:
 		std::string       name = "Binary Expression";
-	//  expr_Node_Type    exprOne
-		expr_Node_Type    exprTwo;
-		operator_Node     op;
+	//  Expr_Node_Type    exprOne
+		Expr_Node_Type    exprTwo;
+		Operator_Node     op;
 };
 
-class expr_Node_Type : public Node {
+class Expr_Node_Type : public Node {
 	protected:
 		Node              expression;
 };
 
 // Simple nodes
-class identifier_Node : public Node {
+class Identifier_Node : public Node {
 	public:
 		void setVal(std::string val){
 			value = val;
@@ -192,17 +170,17 @@ class identifier_Node : public Node {
 		std::string       value;
 };
 
-class type_Node : public Node {
+class Type_Node : public Node {
 	public:
 		void setVal(tokenType val){
 			value = val;
 		}
 	private:
 	    std::string       name = "Type";
-		tokenType         value;
+		TokenType         value;
 };
 
-class number_Node : public Node {
+class Number_Node : public Node {
 	public:
 		void setVal(unsigned long val){
 			value = val;
@@ -212,7 +190,7 @@ class number_Node : public Node {
 		unsigned long     value;
 };
 
-class boolean_Node : public Node {
+class Boolean_Node : public Node {
 	public:
 		void setVal(bool val){
 			value = val;
@@ -222,7 +200,7 @@ class boolean_Node : public Node {
 		bool              value;
 };
 
-class operator_Node : public Node {
+class Operator_Node : public Node {
 	public:
 		void setVal(char val){
 			value = val;
@@ -230,4 +208,28 @@ class operator_Node : public Node {
 	private:
 	    std::string       name = "Operator";
 		char              value;
+};
+
+class Program_Node : public Node {
+	public:
+		void addIdentifier(std::string val){
+			identifier = new identifier_Node.setVal(val);
+		}
+		
+		void print(){
+			Node::print(0);
+			identifier.print(1);
+			for(int i=0;i<formals.length();i++){formals[i].print(1);}
+			for(int i=0;i<definitions.length();i++){definitions[i].print(1);}
+			body.print(1);
+		}
+	
+	protected:
+	    std::string       name = "Program";
+		Identifier_Node   identifier;
+		Formal_Node[]     formals;
+		Body_Node         body;
+		
+	private:
+		Def_Node[]        definitions;
 };
