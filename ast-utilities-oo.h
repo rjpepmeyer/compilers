@@ -6,22 +6,49 @@ class Node {
 };
 
 class program_Node : public Node {
-	public identifier_Node   identifier;
-    public formal_Node[]     formal;	
-	public def_Node[]        definitions;
-	public body_Node         body;
+	public:
+		void print(){
+			cout << "Program";
+			identifier.print(1);
+			//TODO loop for formal node array
+			//TODO loop for def node array
+			body.print(1);
+		}
+	
+	protected:
+		identifier_Node   identifier;
+		formal_Node[]     formal;	
+		def_Node[]        definitions;
+		body_Node         body;
 };
 
 class formal_Node : public Node: {
-  public identifier_Node     identifier;
-  public type_Node           type;
+	public:
+		void print(int i){
+			for(int x = i*3;i>0;i--){
+				cout << " ";
+			}
+			cout << "Formal";
+			
+			indentifier.print(i + 1);
+			type.print(i + 1);
+		}
+		
+	protected: 
+		identifier_Node     identifier;
+		type_Node           type;
 };
 
 class def_Node : public program_Node {
-	//blic identifier_Node   identifier;
-	//blic formal_Node[]     formal;
-	public type_Node         type;
-	//blic body_Node         body;
+	public:
+		void print(int i){
+			
+		}
+	protected:
+	//  identifier_Node   identifier;
+	//  formal_Node[]     formal;
+		type_Node         type;
+	//  body_Node         body;
 };
 
 class body_Node : public Node {
@@ -29,49 +56,59 @@ class body_Node : public Node {
 };
 
 class statement_Node : public Node {
-	public print_Node        print;
-	public return_Node       returnVal;
+	protected:
+		print_Node        print;
+		return_Node       returnVal;
 };
 
 class print_Node : public Node {
-	public expr_Node_Type    exprOne;
+	protected:
+		expr_Node_Type    exprOne;
 };
 
 class return_Node : public print_Node {
-	//blic expr_Node_Type    exprOne
+	//rotected:
+	//  expr_Node_Type    exprOne
 };
 
 class if_Node : public print_Node {
-	//blic expr_Node_Type    exprOne
-	public expr_Node_Type    exprTwo;
-	public expr_Node_Type    exprThree;
+	protected:
+	//  expr_Node_Type    exprOne
+		expr_Node_Type    exprTwo;
+		expr_Node_Type    exprThree;
 };
 
 class not_Node : public print_Node {
-	//blic expr_Node_Type    exprOne
+	//rotected:
+	//  expr_Node_Type    exprOne
 }; 
 
 class function_Call_Node : public Node {
-    public identifier_Node   identifier;
-	public expr_Node_Type[]  expresions;
+	protected:
+		identifier_Node   identifier;
+		expr_Node_Type[]  expresions;
 };
 
 class negate_Node : public print_Node {
-	//blic expr_Node_Type    exprOne
+	//rotected:
+	//  expr_Node_Type    exprOne
 };
 
 class block_Node : public print_Node {
-	//blic expr_Node_Type    exprOne
+	//rotected:
+	//  expr_Node_Type    exprOne
 };
 
 class binary_Expr_Node : public print_Node {
-	//blic expr_Node_Type    exprOne
-	public expr_Node_Type    exprTwo;
-	public operator_Node     op;
+	protected:
+	//  expr_Node_Type    exprOne
+		expr_Node_Type    exprTwo;
+		operator_Node     op;
 };
 
 class expr_Node_Type : public Node {
-	public Node              expression;
+	protected: 
+		Node              expression;
 };
 
 // Simple nodes
