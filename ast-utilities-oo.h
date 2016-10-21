@@ -11,7 +11,7 @@ class Node {
 			cout << this.name << '\n';
 		}
 	protected:
-		std::string       name = "Generic Node";
+		std::string       name = "Generic Node, this should never be seen";
 };
 
 class program_Node : public Node {
@@ -90,19 +90,31 @@ class statement_Node : public Node {
 
 class print_Node : public Node {
 	public:
-		
+		void print(int i){
+			Node::print(i);
+			exprOne.print(i+1);
+		}
 	protected:
 		std::string       name = "Print";
 		expr_Node_Type    exprOne;
 };
 
 class return_Node : public print_Node {
+	//ublic:
+	//  void print()
 	protected:
 		std::string       name = "Return";
 	//  expr_Node_Type    exprOne
 };
 
 class if_Node : public print_Node {
+	public:
+		void print(int i){
+			Node::print(i);
+			exprOne.print(i+1);
+			exprTwo.print(i+1);
+			exprThree.print(i+1);
+		}
 	protected:
 		std::string       name = "If";
 	//  expr_Node_Type    exprOne
@@ -111,13 +123,20 @@ class if_Node : public print_Node {
 };
 
 class not_Node : public print_Node {
-	public:
+	//blic:
+	//  void print()
 	protected:
 		std::string       name = "Not";
 	//  expr_Node_Type    exprOne
 }; 
 
 class function_Call_Node : public Node {
+	public:
+		void print(int i){
+			Node::print(i);
+			identifier.print(i+1);
+			for(int x=0;x<expresions.length();x++){expressions[x].print(i+1);}
+		}
 	protected:
 		std::string       name = "Function Call";
 		identifier_Node   identifier;
@@ -125,18 +144,28 @@ class function_Call_Node : public Node {
 };
 
 class negate_Node : public print_Node {
+	//blic:
+	//  void print()
 	protected:
 		std::string       name = "Negate";
 	//  expr_Node_Type    exprOne
 };
 
 class block_Node : public print_Node {
+	//blic:
+	//  void print()
 	protected:
 		std::string       name = "Block";
 	//  expr_Node_Type    exprOne
 };
 
 class binary_Expr_Node : public print_Node {
+	public:
+		void print(int i){
+			Node::print(i);
+			exprOne.print(i+1);
+			op.print(i+1);
+			exprTwo.print(i+1);
 	protected:
 		std::string       name = "Binary Expression";
 	//  expr_Node_Type    exprOne
@@ -150,8 +179,52 @@ class expr_Node_Type : public Node {
 };
 
 // Simple nodes
-class identifier_Node : public Node {std::string   value;};
-class type_Node : public Node       {tokenType     value;};
-class number_Node : public Node     {unsigned long value;};
-class boolean_Node : public Node    {bool          value;};
-class operator_Node : public Node   {char          value;};
+class identifier_Node : public Node {
+	public:
+		void setVal(std::string val){
+			value = val;
+		}
+	private:
+	    std::string       name = "Identifier";
+		std::string       value;
+};
+
+class type_Node : public Node {
+	public:
+		void setVal(tokenType val){
+			value = val;
+		}
+	private:
+	    std::string       name = "Type";
+		tokenType         value;
+};
+
+class number_Node : public Node {
+	public:
+		void setVal(unsigned long val){
+			value = val;
+		}
+	private:
+	    std::string       name = "Number";
+		unsigned long     value;
+};
+
+class boolean_Node : public Node {
+	public:
+		void setVal(bool val){
+			value = val;
+		}
+	private:
+	    std::string       name = "Boolean";
+		bool              value;
+};
+
+class operator_Node : public Node {
+	public:
+		void setVal(char val){
+			value = val;
+		}
+	private:
+	    std::string       name = "Operator";
+		char              value;
+};
