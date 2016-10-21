@@ -18,3 +18,4 @@ class Number_Node;
 class Boolean_Node;
 class Operator_Node;
 class Program_Node;
+class xNode;

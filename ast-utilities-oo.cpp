@@ -16,17 +16,33 @@ class Node {
 		std::string       name = "Generic Node, this should never be seen";
 };
 
+class xNode : public Node, public Expr_Node_Type, public Identifier_Node, 
+	public Type_Node, public Number_Node, public Boolean_Node, 
+	public Operator_Node, public Formal_Node, public Function_Call_Node, 
+	public Print_Node, public Return_Node, public Statement_Node, 
+	public Body_Node, public If_Node, public Not_Node, public Negate_Node,
+	public Block_Node, public Binary_Expression_Node, public Def_Node {
+	public:
+		bool isVoid(){
+			return true;
+		}
+};
+
 class Expr_Node_Type : public Node {
 	public:
 		void print(int i){
 			Node::print(i);
 			this->next.print(i);
+		}
 	protected:
 		Node              expression;
 		Node		  next;
 };
 
-// Simple nodes
+/*****************
+***Simple Nodes***
+*****************/
+
 class Identifier_Node : public Node {
 	public:
 		void setVal(std::string val){
@@ -39,6 +55,9 @@ class Identifier_Node : public Node {
 
 class Type_Node : public Node {
 	public:
+		Type_Node(tokenType val){
+			setVal(val);
+		}
 		void setVal(tokenType val){
 			this->value = val;
 		}
@@ -77,19 +96,32 @@ class Operator_Node : public Node {
 		char              value;
 };
 
+/******************
+***Complex Nodes***
+******************/
+
 class Formal_Node : public Node {
 	public:
+		Formal_Node(std::string id, tokenType type){
+			if(!this->identifier.isVoid()){
+				this->identifier = 
+					new Identifier_Node(id);
+				this->type = new Type_Node(type);
+			} else {
+			   this->next = 
+			      new Formal_Node(id,type);
+			}
+		}
 		void print(int i){
 			Node::print(i);
 			this->identifier.print(i + 1);
 			this->type.print(i + 1);
-			this->next.print(i);
-		}
-		
+			this->next->print(i);
+		}	
 	protected: 
-		Identifier_Node     identifier;
-		Type_Node           type;
-		Formal_Node	    next;
+		Identifier_Node     identifier = new xNode;
+		Type_Node           type = new xNode;
+		Formal_Node         *next = new xNode;
 };
 
 class Function_Call_Node : public Node {
@@ -130,13 +162,13 @@ class Statement_Node : public Node {
 			Node::print(i);
 			this->printVal.print(i+1);
 			this->returnVal.print(i+1);
-			this->next.print(i);
+			this->next->print(i);
 		}
 	protected:
 		std::string       name = "Statement";
 		Print_Node        printVal;
 		Return_Node       returnVal;
-		Statement_Node    next;
+		Statement_Node    *next;
 };
 
 class Body_Node : public Node {
@@ -212,7 +244,7 @@ class Def_Node : public Node {
 			this->formal.print(i+1);
 			this->type.print(i+1);
 			this->body.print(i+1);
-			this->next.print(i);
+			this->next->print(i);
 		}
 	protected:
 	    std::string       name = "Definition";
@@ -220,22 +252,29 @@ class Def_Node : public Node {
 	    Formal_Node       formal;
 	    Type_Node         type;
 	    Body_Node         body;
-	    Def_Node	      next;
+	    Def_Node	      *next;
 };
 
 class Program_Node : public Node {
 	public:
+		void addFormal(std::string id, tokenType type){
+			this->formals = new Formal_Node(id,type);
+		}
+
 		void addIdentifier(std::string val){
-			this->identifier = new identifier_Node.setVal(val);
+			this->identifier = new Identifier_Node;
+			this->identifier.setVal(val);
 		}
 		
 		void print(){
 			Node::print(0);
 			this->identifier.print(1);
-			this->formals.print(1)
+			this->formals.print(1);
 			this->definitions.print(1);
 			this->body.print(1);
 		}
+
+		
 	
 	protected:
 	    std::string       name = "Program";
@@ -246,4 +285,3 @@ class Program_Node : public Node {
 	private:
 		Def_Node          definitions;
 };
-
