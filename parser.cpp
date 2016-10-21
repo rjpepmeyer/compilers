@@ -1,6 +1,6 @@
 #include <string>
 #include "parser-utilities.cpp"
-#include "ast-utilities.cpp"
+#include "ast-utilities-oo.h"
 
 bool parser(tokenList * input, bool debug) {
   tokenList stream = *input;        // Input stream!
