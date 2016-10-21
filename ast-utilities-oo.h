@@ -16,6 +16,9 @@ class Node {
 
 class program_Node : public Node {
 	public:
+		void addIdentifier(){
+			identifier = new identifier_Node;
+		}
 		void print(){
 			Node::print(0);
 			identifier.print(1);
