@@ -7,9 +7,9 @@ class Node {
 
 class program_Node : public Node {
 	public identifier_Node   identifier;
-	public Node              body;
+    public formal_Node[]     formal;	
 	public def_Node[]        definitions;
-    public formal_Node[]     formal;
+	public body_Node         body;
 };
 
 class formal_Node : public Node: {
@@ -17,8 +17,11 @@ class formal_Node : public Node: {
   public type_Node           type;
 };
 
-class def_Node : public Node {
+class def_Node : public program_Node {
+	//blic identifier_Node   identifier;
+	//blic formal_Node[]     formal;
 	public type_Node         type;
+	//blic body_Node         body;
 };
 
 class body_Node : public Node {
@@ -35,16 +38,17 @@ class print_Node : public Node {
 };
 
 class return_Node : public print_Node {
-	//nothing new
+	//blic expr_Node_Type    exprOne
 };
 
 class if_Node : public print_Node {
+	//blic expr_Node_Type    exprOne
 	public expr_Node_Type    exprTwo;
 	public expr_Node_Type    exprThree;
 };
 
 class not_Node : public print_Node {
-	//nothing new
+	//blic expr_Node_Type    exprOne
 }; 
 
 class function_Call_Node : public Node {
@@ -53,14 +57,15 @@ class function_Call_Node : public Node {
 };
 
 class negate_Node : public print_Node {
-	//nothing new
+	//blic expr_Node_Type    exprOne
 };
 
 class block_Node : public print_Node {
-	//nothing new
+	//blic expr_Node_Type    exprOne
 };
 
 class binary_Expr_Node : public print_Node {
+	//blic expr_Node_Type    exprOne
 	public expr_Node_Type    exprTwo;
 	public operator_Node     op;
 };
@@ -75,20 +80,3 @@ class type_Node : public Node       {tokenType     value;};
 class number_Node : public Node     {unsigned long value;};
 class boolean_Node : public Node    {bool          value;};
 class operator_Node : public Node   {char          value;};
-
-
-
-class if_Node : public Node {
-  leftChild      then_Node : public Node;// then expression node
-  rightChild     else_Node : public Node;// else expression node
-};
-
-class then_Node : public Node {
-    leftChild    expr_Node : public Node;//expr with boolean result
-    rightChild   expr_Node : public Node;//expr to perform if L-child is true
-};
-
-class else-ast {
-    leftChild    expr_Node : public Node;//expr with boolean result
-    rightChild   expr_Node : public Node;//expr to perform if L-child is false
-};
