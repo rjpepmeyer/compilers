@@ -3,12 +3,21 @@
 // Base node
 class Node {
 	//abstract class prototype
+	public:
+		void print(int i){
+			for(int x = i*3;i>0;i--){
+				cout << " ";
+			}
+			cout << this.name;
+		}
+	protected:
+		std::string       name = "Generic Node";
 };
 
 class program_Node : public Node {
 	public:
 		void print(){
-			cout << "Program";
+			Node::print(0);
 			identifier.print(1);
 			//TODO loop for formal node array
 			//TODO loop for def node array
@@ -16,20 +25,19 @@ class program_Node : public Node {
 		}
 	
 	protected:
+	    std::string       name = "Program";
 		identifier_Node   identifier;
-		formal_Node[]     formal;	
-		def_Node[]        definitions;
+		formal_Node[]     formal;
 		body_Node         body;
+		
+	private:
+		def_Node[]        definitions;
 };
 
 class formal_Node : public Node: {
 	public:
 		void print(int i){
-			for(int x = i*3;i>0;i--){
-				cout << " ";
-			}
-			cout << "Formal";
-			
+			Node::print(i+1);
 			indentifier.print(i + 1);
 			type.print(i + 1);
 		}
@@ -42,9 +50,18 @@ class formal_Node : public Node: {
 class def_Node : public program_Node {
 	public:
 		void print(int i){
+			for(int x = i*3;i>0;i--){
+				cout << " ";
+			}
+			cout << "Definition";
 			
+			identifier.print(i+1);
+			formals.print(i+1); //TODO adjust for array
+			type.print(i+1);
+			body.print(i+1);
 		}
 	protected:
+	    c
 	//  identifier_Node   identifier;
 	//  formal_Node[]     formal;
 		type_Node         type;
