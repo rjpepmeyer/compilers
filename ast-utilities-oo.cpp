@@ -10,7 +10,7 @@ class Node {
 			for(int x = i*3;i>0;i--){
 				cout << " ";
 			}
-			cout << this->name << '\n';
+		cout << this->name << '\n';
 		}
 	protected:
 		std::string       name = "Generic Node, this should never be seen";
@@ -49,7 +49,7 @@ class Identifier_Node : public Node {
 			this->value = val;
 		}
 	private:
-	    std::string       name = "Identifier";
+		std::string       name = "Identifier";
 		std::string       value;
 };
 
@@ -62,7 +62,7 @@ class Type_Node : public Node {
 			this->value = val;
 		}
 	private:
-	    std::string       name = "Type";
+		std::string       name = "Type";
 		tokenType         value;
 };
 
@@ -72,7 +72,7 @@ class Number_Node : public Node {
 			this->value = val;
 		}
 	private:
-	    std::string       name = "Number";
+		std::string       name = "Number";
 		unsigned long     value;
 };
 
@@ -82,7 +82,7 @@ class Boolean_Node : public Node {
 			this->value = val;
 		}
 	private:
-	    std::string       name = "Boolean";
+		std::string       name = "Boolean";
 		bool              value;
 };
 
@@ -92,7 +92,7 @@ class Operator_Node : public Node {
 			this->value = val;
 		}
 	private:
-	    std::string       name = "Operator";
+		std::string       name = "Operator";
 		char              value;
 };
 
@@ -192,33 +192,33 @@ class If_Node : public Print_Node {
 		}
 	protected:
 		std::string       name = "If";
-	//  expr_Node_Type    exprOne
+	//  	expr_Node_Type    exprOne
 		Expr_Node_Type    exprTwo;
 		Expr_Node_Type    exprThree;
 };
 
 class Not_Node : public Print_Node {
 	//blic:
-	//  void print()
+	//  	void print()
 	protected:
 		std::string       name = "Not";
-	//  Expr_Node_Type    exprOne
+	//  	Expr_Node_Type    exprOne
 }; 
 
 class Negate_Node : public Print_Node {
 	//blic:
-	//  void print()
+	//  	void print()
 	protected:
 		std::string       name = "Negate";
-	//  Expr_Node_Type    exprOne
+	//  	Expr_Node_Type    exprOne
 };
 
 class Block_Node : public Print_Node {
 	//blic:
-	//  void print()
+	//  	void print()
 	protected:
 		std::string       name = "Block";
-	//  Expr_Node_Type    exprOne
+	// 	Expr_Node_Type    exprOne
 };
 
 class Binary_Expr_Node : public Print_Node {
@@ -231,7 +231,7 @@ class Binary_Expr_Node : public Print_Node {
 		}
 	protected:
 		std::string       name = "Binary Expression";
-	//  Expr_Node_Type    exprOne
+	//  	Expr_Node_Type    exprOne
 		Expr_Node_Type    exprTwo;
 		Operator_Node     op;
 };
