@@ -1,6 +1,6 @@
 #include <string>
 #include "parser-utilities.cpp"
-#include "ast-utilities-3.cpp"
+#include "ast-utilities.cpp"
 
 bool parser(tokenList * input, bool debug) {
   tokenList stream = *input;        // Input stream!
@@ -249,24 +249,12 @@ bool parser(tokenList * input, bool debug) {
     A = parserStack.peek();
     currentToken = stream.item;
   }
+
   if (currentToken.type != eos) {
     cout << "ERROR at line #" << currentToken.line << " -- " <<
     "unexpected token " << toString(currentToken.type) << " " <<
     "at end of file." << '\n';
   }
-  
-  /**************************************
-        TEST printing of TEST tree
-  **************************************/
-  IdentifierNode *testName = new IdentifierNode("main");
-  NumberNode     *testNum  = new NumberNode("1");
-  ExpressionNode *testExpr = new ExpressionNode(testNum);
-  ReturnStmtNode *testRtrn = new ReturnStmtNode(testExpr);
-  StatementNode  *testStmt = new StatementNode(testRtrn);
-  StatementList  *testSLst = new StatementList(testStmt);
-  BodyNode       *testBody = new BodyNode(testSLst);
-  ProgramNode    *testPrgm = new ProgramNode(testName, NULL, NULL, testBody);
-  testPrgm->print(0);
     
   return (A.type == eos && currentToken.type == eos);
 }
