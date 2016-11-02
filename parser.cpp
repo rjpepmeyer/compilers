@@ -1,5 +1,6 @@
 #include <string>
 #include "parser-utilities.cpp"
+#include "ast-utilities.cpp"
 
 bool parser(tokenList * input, bool debug) {
   tokenList stream = *input;        // Input stream!
@@ -248,10 +249,12 @@ bool parser(tokenList * input, bool debug) {
     A = parserStack.peek();
     currentToken = stream.item;
   }
+
   if (currentToken.type != eos) {
     cout << "ERROR at line #" << currentToken.line << " -- " <<
     "unexpected token " << toString(currentToken.type) << " " <<
     "at end of file." << '\n';
   }
+    
   return (A.type == eos && currentToken.type == eos);
 }
