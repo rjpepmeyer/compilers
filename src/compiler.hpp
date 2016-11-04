@@ -10,13 +10,13 @@ program, definitions, def, formals, nonemptyformals,
 nonemptyformalsprime, formal, body, statementlist, typent, expr, 
 exprprime, simpleexpr, simpleexprprime, term, termprime, factor, 
 factorprime, actuals, nonemptyactuals, nonemptyactualsprime, 
-literal, printstatement};
-/*
-enum nonTerminalTokenType {program, definitions, def, formals, 
-nonemptyformals, nonemptyformals-prime, formal, body, statement-list, 
-type, expr, expr-prime, simple-expr, simple-expr-prime, term, 
-term-prime, factor, factor-prime, actuals};
-*/
+literal, printstatement,
+
+makeprogram, makeformal, makeformals, makedef, makedefs, makebody,
+makestatement, makestatements, makeprint, makereturn, makeif, makenot, 
+makefncall, makenegate, makeblock, makebinexp, makeexpr, makeidentifier,
+maketype, makeoperator, makenumber, makeboolean};
+
 class token {
   public:
     std::string value;

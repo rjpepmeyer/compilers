@@ -2,7 +2,7 @@
 #include "parser-utilities.cpp"
 #include "ast-utilities.cpp"
 
-bool parser(tokenList * input, bool debug) {
+bool parser(tokenList * input, bool debug, ProgramNode * ast) {
   tokenList stream = *input;        // Input stream!
   token currentToken = stream.item; // Current token!
   tokenStack parserStack;           // Parser stack!

@@ -52,6 +52,9 @@ tokenList *  scanner(char *inputFileName) {
       if (currentChar == '}') isComment = false; // End comment
     }
   }
+  // Add end of stream
+  currentToken = make("", eos, line);
+  add(outputRoot, outputCurrent, currentToken);
   // Close file
   inputFile.close();
   return outputRoot;
