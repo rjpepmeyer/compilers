@@ -16,6 +16,7 @@ Implementation language: C++ (at minimum, std=0x for some string methods)
 *Instructions:*
         
 Compiling: `make flairs`
+    
 Running: `./flairs file-name.flr`
     
 Produces as output a list of tokens, including the type of the token and the line number where it occured.
@@ -25,6 +26,7 @@ Produces as output a list of tokens, including the type of the token and the lin
 *Instructions:*
         
 Compiling: `make flairv`
+    
 Running: `./flairv file-name.flr`
     
 Produces as output whether the input file represents a valid flair program, syntactically.
@@ -34,6 +36,7 @@ Produces as output whether the input file represents a valid flair program, synt
 *Instructions:*
         
 Compiling: `make flairp`
+    
 Running: `./flairp file-name.flr`
     
 Produces as output an abstract syntax tree representing the input program.
