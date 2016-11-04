@@ -9,26 +9,29 @@ For Translation of Programming Languages CS 4550
 * Devin Nemec
 * Ronald Pepmeyer
     
-Implementation language: C++14
+Implementation language: C++ (at minimum, std=0x for some string methods)
     
-**Instructions**
+**Scanner**
     
-1. Compile with `g++ -std=c++14 compiler.cpp -o flairs`
-2. Run with `./flairs name-of-input-file.flr`
+*Instructions:*
+        
+Compiling: `make flairs`
+Running: `./flairs file-name.flr`
     
-**Explanations**
-This program takes as input a flair program and produces as 
-output a list of tokens, each one starting with the line 
-number, followed by the token type, and if applicable, the 
-exact token. It processes the input character by character, 
-separating sequences of characters based on white space and 
-also self-deliminating tokens. There is a function 
-isSelfDeliminator that returns if a character matches a 
-single-character self deliminating token. The token 
-type is returned by two functions titled getType (one for
- single character tokens and one for strings). It 
-implements DFAs for the different token types using if/else 
-structures (similar to a case structure, but supporting strings). 
+Produces as output a list of tokens, including the type of the token and the line number where it occured.
+**Verifying parser**
     
-The stream of tokens is returned from the scanner in the form of 
-a linked list.
+*Instructions:*
+        
+Compiling: `make flairv`
+Running: `./flairv file-name.flr`
+    
+Produces as output whether the input file represents a valid flair program, syntactically.
+**Tree-producing parser**
+    
+*Instructions:*
+        
+Compiling: `make flairp`
+Running: `./flairp file-name.flr`
+    
+Produces as output an abstract syntax tree representing the input program.
