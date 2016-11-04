@@ -19,6 +19,7 @@ Compiling: `make flairs`
 Running: `./flairs file-name.flr`
     
 Produces as output a list of tokens, including the type of the token and the line number where it occured.
+    
 **Verifying parser**
     
 *Instructions:*
@@ -27,6 +28,7 @@ Compiling: `make flairv`
 Running: `./flairv file-name.flr`
     
 Produces as output whether the input file represents a valid flair program, syntactically.
+    
 **Tree-producing parser**
     
 *Instructions:*
