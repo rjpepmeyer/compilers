@@ -556,3 +556,95 @@ void ProgramNode::print(int d) {
   if (defs != NULL) {(*defs).print(d+1);}
   (*body).print(d+1);
 }
+
+/**************************************
+            Semantic stack
+**************************************/
+
+enum SType {sprogram, sformal, sdef, sbody, sstatement, sprint, sreturn, sif,
+  snot, sfncall, snegate, sblock, sbinexp, sexpr, sidentifier, stype,
+  soperator, snumber, sboolean, sformals, sdefs, sstatements, sexprs};
+
+class SemanticObject {
+  protected:
+    SType  type;
+    void * item;
+  public:
+    SemanticObject(ProgramNode      * p) {type = sprogram;    item = p;}
+    SemanticObject(FormalParamNode  * f) {type = sformal;     item = f;}
+    SemanticObject(DefNode          * d) {type = sdef;        item = d;}
+    SemanticObject(BodyNode         * b) {type = sbody;       item = b;}
+    SemanticObject(StatementNode    * s) {type = sstatement;  item = s;}
+    SemanticObject(PrintStmtNode    * p) {type = sprint;      item = p;}
+    SemanticObject(ReturnStmtNode   * r) {type = sreturn;     item = r;}
+    SemanticObject(IfExprNode       * i) {type = sif;         item = i;}
+    SemanticObject(NotExprNode      * n) {type = snot;        item = n;}
+    SemanticObject(FunctionCallNode * f) {type = sfncall;     item = f;}
+    SemanticObject(NegateExprNode   * n) {type = snegate;     item = n;}
+    SemanticObject(BlockExprNode    * b) {type = sblock;      item = b;}
+    SemanticObject(BinaryExprNode   * b) {type = sbinexp;     item = b;}
+    SemanticObject(ExpressionNode   * e) {type = sexpr;       item = e;}
+    SemanticObject(IdentifierNode   * i) {type = sidentifier; item = i;}
+    SemanticObject(TypeNode         * t) {type = stype;       item = t;}
+    SemanticObject(BinaryOpNode     * o) {type = soperator;   item = o;}
+    SemanticObject(NumberNode       * n) {type = snumber;     item = n;}
+    SemanticObject(BooleanNode      * b) {type = sboolean;    item = b;}
+    SemanticObject(FormalList       * l) {type = sformals;    item = l;}
+    SemanticObject(DefList          * l) {type = sdefs;       item = l;}
+    SemanticObject(StatementList    * l) {type = sstatements; item = l;}
+    SemanticObject(ExpressionList   * l) {type = sexprs;      item = l;}
+    SemanticObject() {type = sprogram; item = NULL;}
+    SType  getType() {return type;}
+    void * getPtr()  {return item;}
+};
+
+class SemanticStack {
+  protected:
+    SemanticNode * item;
+  public:
+    void push(SemanticObject i);
+    SemanticObject pop();
+    SType  peekType();
+    void * peekPtr();
+};
+
+class SemanticNode {
+  protected:
+    SemanticObject   value;
+    SemanticNode   * next;
+  public:
+    SemanticNode(SemanticObject o, SemanticNode * p) {
+      value = o;
+      next  = p;
+    }
+    SemanticObject getValue() {
+      return value;
+    }
+    SemanticNode * getNext() {
+      return next;
+    }
+};
+
+SType SemanticStack::peekType() {
+  return (*item).getValue().getType();
+}
+
+void * SemanticStack::peekPtr() {
+  return (*item).getValue().getPtr();
+}
+
+
+void SemanticStack::push(SemanticObject i) {
+  item = new SemanticNode(i, item);
+}
+
+SemanticObject SemanticStack::pop() {
+  SemanticNode * copy = item;
+  SemanticObject value = (*item).getValue();
+}
+
+/**************************************
+           Semantic actions
+**************************************/
+
+

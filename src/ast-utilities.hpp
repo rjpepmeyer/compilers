@@ -20,3 +20,4 @@ class PrintStmtNode;
 class ReturnStmtNode;
 class ExpressionNode;
 class ExpressionList;
+class SemanticNode;
