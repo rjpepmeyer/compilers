@@ -7,10 +7,10 @@ flairv:
 # Alias of flairv
 
 flairf:
-	g++ -std=c++0x src/flairf.cpp -o flairf
+	g++ -std=c++0x src/flairv.cpp -o flairf
 
 flairp:
-	g++ -std=c++0x src/flairf.cpp -o flairp
+	g++ -std=c++0x src/flairp.cpp -o flairp
 
 clean:
 	rm -f *~
