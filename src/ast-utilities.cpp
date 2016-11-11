@@ -219,9 +219,16 @@ class BodyNode : public Node {
     void print(int);
 };
 
-enum StatementType {printstmt, returnstmt};
+class StatementNode : public Node {
+  protected:
+    std::string      name;
+    ExpressionNode * value;
+  public:
+    void setValue(ExpressionNode *e) {value = e;}
+    virtual void print(int) =0;
+};
 
-class PrintStmtNode : public Node {
+class PrintStmtNode : public StatementNode {
   protected:
     std::string     name = "Print Statement";
     ExpressionNode *value;
@@ -231,7 +238,7 @@ class PrintStmtNode : public Node {
     void print(int);
 };
 
-class ReturnStmtNode : public Node {
+class ReturnStmtNode : public StatementNode {
   protected:
     std::string     name = "Return Statement";
     ExpressionNode *value;
@@ -241,32 +248,6 @@ class ReturnStmtNode : public Node {
     void print(int);
 };
 
-class StatementNode : public Node {
-  protected:
-    std::string    name = "Statement";
-    StatementType  type;
-    void          *value;
-  public:
-    void setValue(PrintStmtNode *p) {
-      type  = printstmt;
-      value = p;
-    }
-    void setValue(ReturnStmtNode *r) {
-      type = returnstmt;
-      value = r;
-    }
-    StatementNode(PrintStmtNode  *p) {setValue(p);}
-    StatementNode(ReturnStmtNode *r) {setValue(r);}
-    void print(int d) {
-      switch(type) {
-        case printstmt:
-          (*static_cast<PrintStmtNode*>(value)).print(d);break;
-        case returnstmt:
-          (*static_cast<ReturnStmtNode*>(value)).print(d);break;
-      }
-    }
-};
-
 class StatementList : public Node {
   protected:
     std::string    name = "Statement List";
@@ -274,9 +255,9 @@ class StatementList : public Node {
     StatementList *next;
   public:
     StatementList(StatementNode *s) {value = s;}
-    void addStatement(StatementNode s) {
+    void addStatement(StatementNode *s) {
       if (next == NULL) {
-        next = new StatementList(&s);
+        next = new StatementList(s);
       }
       else {
         (*next).addStatement(s);
