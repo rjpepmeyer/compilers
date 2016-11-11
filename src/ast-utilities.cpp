@@ -269,7 +269,14 @@ class StatementList : public Node {
     }
 };
 
-class IfExprNode : public Node {
+class ExpressionNode : public Node {
+  protected:
+    std:: string name;
+  public:
+    virtual void print(int)=0;
+};
+
+class IfExprNode : public ExpressionNode {
   protected:
     std::string     name = "If Expression";
     ExpressionNode *test;
@@ -287,7 +294,7 @@ class IfExprNode : public Node {
     void print(int);
 };
 
-class NotExprNode : public Node {
+class NotExprNode : public ExpressionNode {
   protected:
     std::string     name = "Not Expression";
     ExpressionNode *value;
@@ -297,7 +304,7 @@ class NotExprNode : public Node {
     void print(int);
 };
 
-class FunctionCallNode : public Node {
+class FunctionCallNode : public ExpressionNode {
   protected:
     std::string     name = "Function Call";
     IdentifierNode  functionName;
@@ -312,7 +319,7 @@ class FunctionCallNode : public Node {
     void print(int);
 };
 
-class NegateExprNode : public Node {
+class NegateExprNode : public ExpressionNode {
   protected:
     std::string     name = "Negate Expression";
     ExpressionNode *value;
@@ -322,7 +329,7 @@ class NegateExprNode : public Node {
     void print(int);
 };
 
-class BlockExprNode : public Node {
+class BlockExprNode : public ExpressionNode {
   protected:
     std::string     name = "Block Expression";
     ExpressionNode *value;
@@ -332,7 +339,7 @@ class BlockExprNode : public Node {
     void print(int);
 };
 
-class BinaryExprNode : public Node {
+class BinaryExprNode : public ExpressionNode {
   protected:
     std::string     name = "Binary Expression";
     ExpressionNode *left;
@@ -350,90 +357,6 @@ class BinaryExprNode : public Node {
     void print(int);
 };
 
-/**************************************
-           Expression node!
-         (this one's a doozy)
-**************************************/
-
-enum ExpressionType {binaryexpr, ifexpr, notexpr, functioncall,
-identifierexpr, numberexpr, booleanexpr, negateexpr, blockexpr};
-
-class ExpressionNode : public Node {
-  protected:
-    std::string     name = "Expression";
-    ExpressionType  type;
-    void           *value;
-  public:
-    void setValue(BinaryExprNode *b) {
-      type = binaryexpr;
-      value = b;
-    }
-    void setValue(IfExprNode *i) {
-      type = ifexpr;
-      value = i;
-    }
-    void setValue(NotExprNode *n) {
-      type = notexpr;
-      value = n;
-    }
-    void setValue(FunctionCallNode *f) {
-      type = functioncall;
-      value = f;
-    }
-    void setValue(IdentifierNode *i) {
-      type = identifierexpr;
-      value = i;
-    }
-    void setValue(NumberNode *n) {
-      type = numberexpr;
-      value = n;
-    }
-    void setValue(BooleanNode *b) {
-      type = booleanexpr;
-      value = b;
-    }
-    void setValue(NegateExprNode *n) {
-      type = negateexpr;
-      value = n;
-    }
-    void setValue(BlockExprNode *b) {
-      type = blockexpr;
-      value = b;
-    }
-    ExpressionNode(BinaryExprNode   *e) {setValue(e);}
-    ExpressionNode(IfExprNode       *e) {setValue(e);}
-    ExpressionNode(NotExprNode      *e) {setValue(e);}
-    ExpressionNode(FunctionCallNode *e) {setValue(e);}
-    ExpressionNode(IdentifierNode   *e) {setValue(e);}
-    ExpressionNode(NumberNode       *e) {setValue(e);}
-    ExpressionNode(BooleanNode      *e) {setValue(e);}
-    ExpressionNode(NegateExprNode   *e) {setValue(e);}
-    ExpressionNode(BlockExprNode    *e) {setValue(e);}
-    void print(int d) {
-      switch(type) {
-        case binaryexpr:
-          (*static_cast<BinaryExprNode*>(value)).print(d);break;
-        case ifexpr:
-          (*static_cast<IfExprNode*>(value)).print(d);break;
-        case notexpr:
-          (*static_cast<NotExprNode*>(value)).print(d);break;
-        case functioncall:
-          (*static_cast<FunctionCallNode*>(value)).print(d);break;
-        case identifierexpr:
-          (*static_cast<IdentifierNode*>(value)).print(d);break;
-        case numberexpr:
-          (*static_cast<NumberNode*>(value)).print(d);break;
-        case booleanexpr:
-          (*static_cast<BooleanNode*>(value)).print(d);break;
-        case negateexpr:
-          (*static_cast<NegateExprNode*>(value)).print(d);break;
-        case blockexpr:
-          (*static_cast<BlockExprNode*>(value)).print(d);break;
-        default: break;
-      }
-    }
-};
-
 class ExpressionList : public Node {
   protected:
     std::string     name = "Expression List";
@@ -443,9 +366,9 @@ class ExpressionList : public Node {
     ExpressionList(ExpressionNode *e) {
       value = e;
     }
-    void addExpression(ExpressionNode e) {
+    void addExpression(ExpressionNode *e) {
       if (next == NULL) {
-        next = new ExpressionList(&e);
+        next = new ExpressionList(e);
       }
       else {
         (*next).addExpression(e);
