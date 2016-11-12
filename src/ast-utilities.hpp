@@ -12,6 +12,9 @@ class Node {
     }
 };
 
+class IdentifierNode;
+class BooleanNode;
+class NumberNode;
 class FormalList;
 class DefList;
 class BodyNode;

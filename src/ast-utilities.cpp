@@ -7,23 +7,6 @@
            BASIC NODE TYPES
 **************************************/
 
-class IdentifierNode : public Node {
-  protected:
-    std::string name = "Identifier";
-    std::string value;
-  public:
-    IdentifierNode() {
-      value = "";
-    }
-    IdentifierNode(std::string val) {
-      value = val;
-    }
-    void print(int d) {
-      pad(d);
-      cout << name <<  ": " << value << '\n';
-    }
-};
-
 class TypeNode : public Node {
   protected:
     std::string name = "Type";
@@ -61,54 +44,15 @@ class BinaryOpNode : public Node {
     }
 };
 
-class NumberNode : public Node {
-  protected:
-    std::string  name = "Number";
-    unsigned int value;
-  public:
-    NumberNode(std::string val) {
-      istringstream(val) >> value;
-    }
-    void print(int d) {
-      pad(d);
-      cout << name << ": " << value << '\n';
-    }
-};
-
-class BooleanNode : public Node {
-  protected:
-    std::string name = "Boolean";
-    bool        value;
-  public:
-    BooleanNode(std::string val) {
-      if (val.front() == 't') {
-        value = true;
-      }
-      else {
-        value = false;
-      }
-    }
-    void print(int d) {
-      pad(d);
-      cout << name << ": ";
-      if (value) cout << "true"; else cout << "false";
-      cout << '\n';
-    }
-};
-
-/***************************************
-            Complex nodes!
-***************************************/
-
 class ProgramNode : public Node {
   protected:
     std::string     name = "Program";
-    IdentifierNode  value;
+    IdentifierNode *value;
     FormalList     *formals;
     DefList        *defs;
     BodyNode       *body;
   public:
-    void setValue(IdentifierNode *i) {value = *i;};
+    void setValue(IdentifierNode *i) {value = i;};
     void setFormals(FormalList *i) {formals = i;};
     void setDefs(DefList *i) {defs = i;};
     void setBody(BodyNode *i) {body = i;};
@@ -123,22 +67,23 @@ class ProgramNode : public Node {
 
 class FormalParamNode : public Node {
   protected:
-    std::string    name = "Formal Parameter";
-    IdentifierNode value;
-    TypeNode       type;
+    std::string      name = "Formal Parameter";
+    IdentifierNode * value;
+    TypeNode         type;
   public:
-    void setValue(IdentifierNode i) {value = i;}
+    void setValue(IdentifierNode * i) {value = i;}
     void setType(TypeNode t) {type = t;}
-    FormalParamNode(IdentifierNode i, TypeNode t) {
+    FormalParamNode(IdentifierNode * i, TypeNode t) {
       setValue(i);
       setType(t);
     }
-    void print(int d) {
+    void print(int d);
+/*    void print(int d) {
       pad(d);
       cout << name << '\n';
-      value.print(d+1);
+      value->print(d+1);
       type.print(d+1);
-    }
+    }*/
 };
 
 class FormalList : public Node {
@@ -166,13 +111,13 @@ class FormalList : public Node {
 
 class DefNode : public Node {
   protected:
-    std::string     name = "Definition";
-    IdentifierNode  value;
-    FormalList     *formals;
-    TypeNode        type;
-    BodyNode       *body;
+    std::string      name = "Definition";
+    IdentifierNode * value;
+    FormalList     * formals;
+    TypeNode         type;
+    BodyNode       * body;
   public:
-    void setValue(IdentifierNode *v) {value = *v;};
+    void setValue(IdentifierNode *v) {value = v;};
     void setFormals(FormalList *f) {formals = f;};
     void setType(TypeNode *t) {type = *t;};
     void setBody(BodyNode *b) {body = b;};
@@ -276,6 +221,58 @@ class ExpressionNode : public Node {
     virtual void print(int)=0;
 };
 
+class IdentifierNode : public ExpressionNode {
+  protected:
+    std::string name = "Identifier";
+    std::string value;
+  public:
+    IdentifierNode() {
+      value = "";
+    }
+    IdentifierNode(std::string val) {
+      value = val;
+    }
+    void print(int d) {
+      pad(d);
+      cout << name <<  ": " << value << '\n';
+    }
+};
+
+class NumberNode : public ExpressionNode {
+  protected:
+    std::string  name = "Number";
+    unsigned int value;
+  public:
+    NumberNode(std::string val) {
+      istringstream(val) >> value;
+    }
+    void print(int d) {
+      pad(d);
+      cout << name << ": " << value << '\n';
+    }
+};
+
+class BooleanNode : public ExpressionNode {
+  protected:
+    std::string name = "Boolean";
+    bool        value;
+  public:
+    BooleanNode(std::string val) {
+      if (val.front() == 't') {
+        value = true;
+      }
+      else {
+        value = false;
+      }
+    }
+    void print(int d) {
+      pad(d);
+      cout << name << ": ";
+      if (value) cout << "true"; else cout << "false";
+      cout << '\n';
+    }
+};
+
 class IfExprNode : public ExpressionNode {
   protected:
     std::string     name = "If Expression";
@@ -307,10 +304,10 @@ class NotExprNode : public ExpressionNode {
 class FunctionCallNode : public ExpressionNode {
   protected:
     std::string     name = "Function Call";
-    IdentifierNode  functionName;
+    IdentifierNode *functionName;
     ExpressionList *functionBody;
   public:
-    void setName(IdentifierNode *i) {functionName = *i;}
+    void setName(IdentifierNode *i) {functionName = i;}
     void setBody(ExpressionList *e) {functionBody = e;}
     FunctionCallNode(IdentifierNode *i, ExpressionList *e) {
       setName(i);
@@ -408,7 +405,7 @@ void NegateExprNode::print(int d) {
 void FunctionCallNode::print(int d) {
   pad(d);
   cout << name << '\n';
-  functionName.print(d+1);
+  functionName->print(d+1);
   (*functionBody).print(d+1);
 }
 
@@ -447,7 +444,7 @@ void BodyNode::print(int d) {
 void DefNode::print(int d) {
   pad(d);
   cout << name << '\n';
-  value.print(d+1);
+  value->print(d+1);
   if (formals != NULL) {(*formals).print(d+1);}
   type.print(d+1);
   (*body).print(d+1);
@@ -461,6 +458,13 @@ void ProgramNode::print(int d) {
   (*body).print(d+1);
 }
 
+
+void FormalParamNode::print(int d) {
+  pad(d);
+  cout << name << '\n';
+  value->print(d+1);
+  type.print(d+1);
+}
 /**************************************
             Semantic stack
 **************************************/
