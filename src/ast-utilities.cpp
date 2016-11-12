@@ -3,10 +3,6 @@
 #include <sstream>
 #include "ast-utilities.hpp"
 
-/**************************************
-           BASIC NODE TYPES
-**************************************/
-
 class TypeNode : public Node {
   protected:
     std::string name = "Type";
@@ -78,12 +74,6 @@ class FormalParamNode : public Node {
       setType(t);
     }
     void print(int d);
-/*    void print(int d) {
-      pad(d);
-      cout << name << '\n';
-      value->print(d+1);
-      type.print(d+1);
-    }*/
 };
 
 class FormalList : public Node {
@@ -469,6 +459,10 @@ void FormalParamNode::print(int d) {
             Semantic stack
 **************************************/
 
+/*
+
+// TO REIMPLEMENT USING ABSTRACT CLASSES
+
 enum SType {sprogram, sformal, sdef, sbody, sstatement, sprint, sreturn, sif,
   snot, sfncall, snegate, sblock, sbinexp, sexpr, sidentifier, stype,
   soperator, snumber, sboolean, sformals, sdefs, sstatements, sexprs};
@@ -549,10 +543,4 @@ void SemanticStack::push(SemanticObject i) {
 SemanticObject SemanticStack::pop() {
   SemanticNode * copy = item;
   SemanticObject value = (*item).getValue();
-}
-
-/**************************************
-           Semantic actions
-**************************************/
-
-
+}*/
