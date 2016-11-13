@@ -108,16 +108,16 @@ class DefNode : public Node {
   protected:
     std::string      name = "Definition";
     Node_Type        nt   = n_def;
-    IdentifierNode * value;
-    FormalList     * formals;
-    TypeNode         type;
-    BodyNode       * body;
+    Node * value;
+    Node * formals;
+    Node * type;
+    Node * body;
   public:
-    void setValue(IdentifierNode *v) {value = v;};
-    void setFormals(FormalList *f) {formals = f;};
-    void setType(TypeNode *t) {type = *t;};
-    void setBody(BodyNode *b) {body = b;};
-    DefNode(IdentifierNode *v, FormalList *f, TypeNode *t, BodyNode *b) {
+    void setValue  (Node *v) {value = v;};
+    void setFormals(Node *f) {formals = f;};
+    void setType   (Node *t) {type = t;};
+    void setBody   (Node *b) {body = b;};
+    DefNode(Node *v, Node *f, Node *t, Node *b) {
       setValue(v);
       setFormals(f);
       setType(t);
@@ -130,18 +130,18 @@ class DefList : public Node {
   protected:
     std::string  name = "Definitions List";
     Node_Type    nt   = n_defs;
-    DefNode     *value;
-    DefList     *next;
+    Node    *value;
+    DefList *next;
   public:
-    DefList(DefNode *d) {
+    DefList(Node *d) {
       value = d;
     }
-    void addDef(DefNode d) {
+    void add(DefNode *d) {
       if (next == NULL) {
-        next = new DefList(&d);
+        next = new DefList(d);
       }
       else {
-        (*next).addDef(d);
+        next->add(d);
       }
     }
     void print(int d) {
@@ -154,9 +154,9 @@ class BodyNode : public Node {
   protected:
     std::string    name = "Body";
     Node_Type      nt   = n_body;
-    StatementList *value;
+    Node *value;
   public:
-    BodyNode(StatementList *s) {
+    BodyNode(Node *s) {
       value = s;
     }
     void print(int);
@@ -187,10 +187,10 @@ class ReturnStmtNode : public StatementNode {
   protected:
     std::string     name = "Return Statement";
     Node_Type       nt   = n_return;
-    ExpressionNode *value;
+    Node *value;
   public:
-    void setValue(ExpressionNode *e) {value = e;}
-    ReturnStmtNode (ExpressionNode *e) {setValue(e);}
+    void setValue(Node *e) {value = e;}
+    ReturnStmtNode (Node *e) {setValue(e);}
     void print(int);
 };
 
@@ -458,9 +458,9 @@ void DefNode::print(int d) {
   pad(d);
   cout << name << '\n';
   value->print(d+1);
-  if (formals != NULL) {(*formals).print(d+1);}
-  type.print(d+1);
-  (*body).print(d+1);
+  if (formals != NULL) {formals->print(d+1);}
+  type->print(d+1);
+  body->print(d+1);
 }
 
 void ProgramNode::print(int d) {
@@ -517,10 +517,31 @@ void SemanticStack::push(Node * i) {
   item = new SemanticNode(i, item);
 }
 
+class InvalidNode : public Node {
+  protected:
+    Node_Type nt = n_invalid;
+  public:
+    void print(int d) {pad(d); cout << "INVALID NODE!";}
+};
+
 Node * SemanticStack::pop() {
   Node * n;
-  n = (*item).getValue();
-  // TODO: fix memory leak
-  item = (*item).getNext();
-  return n;
+  if (item != NULL) {
+    n = (*item).getValue();
+    // TODO: fix memory leak
+    item = (*item).getNext();
+    return n;
+  }
+  else {
+    return new InvalidNode();
+  }
+}
+
+Node * SemanticStack::peek() {
+  if (item != NULL) {
+    return item->getValue();
+  }
+  else {
+    return new InvalidNode();
+  }
 }

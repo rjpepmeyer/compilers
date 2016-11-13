@@ -2,7 +2,7 @@
 #include "parser-utilities.cpp"
 #include "ast-utilities.cpp"
 
-bool parser(tokenList * input, bool debug, ProgramNode * ast) {
+bool parser(tokenList * input, bool debug, Node ** ast) {
   tokenList stream = *input;        // Input stream!
   token currentToken = stream.item; // Current token!
   tokenStack parserStack;           // Parser stack!
@@ -259,7 +259,7 @@ bool parser(tokenList * input, bool debug, ProgramNode * ast) {
       Node * node2;
       Node * node3;
       Node * node4;
-      
+
       switch(A.type) {
         case makeprogram:
           node4 = semStack.pop();
@@ -268,21 +268,21 @@ bool parser(tokenList * input, bool debug, ProgramNode * ast) {
           node1 = semStack.pop();
           node1 = new ProgramNode(node1, node2, node3, node4);
           semStack.push(node1);
+          *ast = node1;
           break;
-        case makedefs:/*
+        case makedefs:
           if (semStack.peek()->getType() == n_def) {
-            node1 = new DefList(semStack.pop());
+            node1 = new DefList(static_cast<DefNode*>(semStack.pop()));
             // TODO: loop
           }
           else {
-            node1= new DefList(NULL);
+            node1 = new DefList(NULL);
           }
           semStack.push(node1);
           break;
         case makeformals:
-          FormalList node1;
           if (semStack.peek()->getType() == n_formal) {
-            node1 = new FormalList(semStack.pop());
+            node1 = new FormalList(static_cast<FormalParamNode*>(semStack.pop()));
             // TODO: loop
           }
           else {
@@ -291,14 +291,13 @@ bool parser(tokenList * input, bool debug, ProgramNode * ast) {
           semStack.push(node1);
           break;
         case makebody:
-          StatementList node1 = semStack.pop();
-          BodyNode      node2 = new BodyNode(node1);
+          node1 = semStack.pop();
+          node2 = new BodyNode(node1);
           semStack.push(node2);
           break;
         case makestatements:
-          StatementList node1;
           if (isStatement(semStack.peek()->getType())) {
-            node1 = new StatementList(semStack.pop());
+            node1 = new StatementList(static_cast<StatementNode*>(semStack.pop()));
             // TODO: loop
           }
           else {
@@ -307,34 +306,36 @@ bool parser(tokenList * input, bool debug, ProgramNode * ast) {
           semStack.push(node1);
           break;
         case makereturn:
-          ExpressionNode node1 = semStack.pop();
-          ReturnNode     node2 = new ReturnNode(node1);
+          node1 = semStack.pop();
+          node2 = new ReturnStmtNode(node1);
           semStack.push(node2);
           break;
         case makenumber:
-          NumberNode node1 = new NumberNode(B.value);
+          node1 = new NumberNode(B.value);
           semStack.push(node1);
           break;
         case makeidentifier:
-          IdentifierNode node1 = new IdentifierNode(B.value);
+          node1 = new IdentifierNode(B.value);
           semStack.push(node1);
-          break;*/
+          break;
         default:
           break;
       }
-      if (debug) {cout << "Applying a semantic action\n";}
+      if (debug) {
+        cout << "APPLYING SEMANTIC ACTION\n\n";
+        semStack.peek()->print(0);
+        cout << '\n';
+      }
       parserStack.pop();  
     }
     //Advance stream
     A = parserStack.peek();
     currentToken = stream.item;
   }
-
   if (currentToken.type != eos) {
     cout << "ERROR at line #" << currentToken.line << " -- " <<
     "unexpected token " << toString(currentToken.type) << " " <<
     "at end of file." << '\n';
   }
-    
   return (A.type == eos && currentToken.type == eos);
 }

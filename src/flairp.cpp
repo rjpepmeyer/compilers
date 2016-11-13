@@ -15,9 +15,10 @@ int main(int argc, char *argv[]) {
   // Run scanner on input file
   tokenList * streamOfTokens = scanner(argv[1]);
 
-  ProgramNode * ast;
-  if (parser(streamOfTokens,debug,ast)) {
-    // Print AST
+  Node * ast;
+  if (parser(streamOfTokens,debug,&ast)) {
+    cout << "ABSTRACT SYNTAX TREE OF PROGRAM:\n\n";
+    ast->print(0);
   }
   else {
     cout << "Invalid flair program" << '\n';
@@ -26,7 +27,7 @@ int main(int argc, char *argv[]) {
   /************************************
    *     Hard code print_one.flr      * 
    ***********************************/
-
+  /*
   // Declarations
   ProgramNode    * program;
   IdentifierNode * program_name;
@@ -42,8 +43,8 @@ int main(int argc, char *argv[]) {
   body             = new BodyNode(statement_list);
   program_name     = new IdentifierNode("main");
   program          = new ProgramNode(program_name, NULL, NULL, body);
-  //program->print(0);
-
+  program->print(0);
+  */
   //TODO: Free memory from stream of tokens
   return 0;
 }
