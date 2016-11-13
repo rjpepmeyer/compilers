@@ -46,16 +46,16 @@ class ProgramNode : public Node {
   protected:
     std::string     name = "Program";
     Node_Type       nt   = n_program;
-    IdentifierNode *value;
-    FormalList     *formals;
-    DefList        *defs;
-    BodyNode       *body;
+    Node * value;
+    Node * formals;
+    Node * defs;
+    Node * body;
   public:
-    void setValue(IdentifierNode *i) {value = i;};
-    void setFormals(FormalList *i) {formals = i;};
-    void setDefs(DefList *i) {defs = i;};
-    void setBody(BodyNode *i) {body = i;};
-    ProgramNode(IdentifierNode *v, FormalList *f, DefList *d, BodyNode *b){
+    void setValue  (Node *i) {value   = i;};
+    void setFormals(Node *i) {formals = i;};
+    void setDefs   (Node *i) {defs    = i;};
+    void setBody   (Node *i) {body    = i;};
+    ProgramNode(Node * v, Node * f, Node * d, Node * b){
       setValue(v);
       setFormals(f);
       setDefs(d);

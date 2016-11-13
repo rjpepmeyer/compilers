@@ -4,6 +4,10 @@ bool isTerminal(token i) {
   return (i.type <= eos);
 }
 
+bool isMake(token i) {
+  return (i.type >= makeprogram);
+}
+
 unsigned int table(tokenType row, token col) {
   switch (row) {
     case program:

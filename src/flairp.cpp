@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
   body             = new BodyNode(statement_list);
   program_name     = new IdentifierNode("main");
   program          = new ProgramNode(program_name, NULL, NULL, body);
-  program->print(0);
+  //program->print(0);
 
   //TODO: Free memory from stream of tokens
   return 0;

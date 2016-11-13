@@ -9,6 +9,10 @@ enum Node_Type {
   n_boolean, n_formals, n_defs,       n_statements, n_exprs
 };
 
+bool isStatement(Node_Type n) {
+  return (n == n_statement || n == n_print || n == n_return);
+}
+
 // Used by semantic actions
 int widthOf(Node_Type n) {
   switch(n) {
@@ -35,10 +39,7 @@ class Node {
     Node_Type   nt;
   public:
     Node_Type getType() {return nt;}
-    void print(int d) {
-      pad(d);
-      cout << name << '\n';
-    }
+    virtual void print(int)=0;
 };
 
 class IdentifierNode;

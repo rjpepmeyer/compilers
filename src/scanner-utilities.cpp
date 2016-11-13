@@ -88,6 +88,28 @@ string toString(enum tokenType input) {
     case nonemptyactualsprime:return "<neactuals'> "; break;
     case literal:        return "<literal>    "; break;
     case printstatement: return "<prntstatmnt>"; break;
+    case makeprogram:    return "<make-program>";break;
+    case makeformal:     return "<make-formal>"; break;
+    case makeformals:    return "<make-formals>";break;
+    case makedef:        return "<make-def>   "; break;
+    case makedefs:       return "<make-defs>  "; break;
+    case makebody:       return "<make-body>  "; break;
+    case makestatement:  return "<make-statement>";break;
+    case makestatements: return "<make-statements>";break;
+    case makeprint:      return "<make-print> "; break;
+    case makereturn:     return "<make-return>"; break;
+    case makeif:         return "<make-if>    "; break;
+    case makenot:        return "<make-not>   "; break;
+    case makefncall:     return "<make-fncall>"; break;
+    case makenegate:     return "<make-negate>"; break;
+    case makeblock:      return "<make-block> "; break;
+    case makebinexp:     return "<make-binexp>"; break;
+    case makeexpr:       return "<make-expr>  "; break;
+    case makeidentifier: return "<make-identifier>";break;
+    case maketype:       return "<make-type>  "; break;
+    case makeoperator:   return "<make-operator>";break;
+    case makenumber:     return "<make-number>"; break;
+    case makeboolean:    return "<make-boolean>";break;
     default:             return "<invalid>    "; break;
     
   }
