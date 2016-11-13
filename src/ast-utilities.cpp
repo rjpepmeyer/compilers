@@ -5,6 +5,7 @@
 
 class TypeNode : public Node {
   protected:
+    Node_Type   nt   = n_type;
     std::string name = "Type";
     std::string value;
   public:
@@ -28,6 +29,7 @@ class TypeNode : public Node {
 class BinaryOpNode : public Node {
   protected:
     std::string name = "Binary Operator";
+    Node_Type   nt   = n_operator; 
     char        value;
   public:
     BinaryOpNode(char val) {
@@ -43,6 +45,7 @@ class BinaryOpNode : public Node {
 class ProgramNode : public Node {
   protected:
     std::string     name = "Program";
+    Node_Type       nt   = n_program;
     IdentifierNode *value;
     FormalList     *formals;
     DefList        *defs;
@@ -64,6 +67,7 @@ class ProgramNode : public Node {
 class FormalParamNode : public Node {
   protected:
     std::string      name = "Formal Parameter";
+    Node_Type        nt   = n_formal;
     IdentifierNode * value;
     TypeNode         type;
   public:
@@ -79,6 +83,7 @@ class FormalParamNode : public Node {
 class FormalList : public Node {
   protected:
     std::string      name = "List of formal parameters";
+    Node_Type        nt   = n_formals;
     FormalParamNode *value;
     FormalList      *next;
   public:
@@ -102,6 +107,7 @@ class FormalList : public Node {
 class DefNode : public Node {
   protected:
     std::string      name = "Definition";
+    Node_Type        nt   = n_def;
     IdentifierNode * value;
     FormalList     * formals;
     TypeNode         type;
@@ -123,6 +129,7 @@ class DefNode : public Node {
 class DefList : public Node {
   protected:
     std::string  name = "Definitions List";
+    Node_Type    nt   = n_defs;
     DefNode     *value;
     DefList     *next;
   public:
@@ -146,6 +153,7 @@ class DefList : public Node {
 class BodyNode : public Node {
   protected:
     std::string    name = "Body";
+    Node_Type      nt   = n_body;
     StatementList *value;
   public:
     BodyNode(StatementList *s) {
@@ -157,6 +165,7 @@ class BodyNode : public Node {
 class StatementNode : public Node {
   protected:
     std::string      name;
+    Node_Type        nt;
     ExpressionNode * value;
   public:
     void setValue(ExpressionNode *e) {value = e;}
@@ -166,6 +175,7 @@ class StatementNode : public Node {
 class PrintStmtNode : public StatementNode {
   protected:
     std::string     name = "Print Statement";
+    Node_Type       nt   = n_print;
     ExpressionNode *value;
   public:
     void setValue(ExpressionNode *e) {value = e;}
@@ -176,6 +186,7 @@ class PrintStmtNode : public StatementNode {
 class ReturnStmtNode : public StatementNode {
   protected:
     std::string     name = "Return Statement";
+    Node_Type       nt   = n_return;
     ExpressionNode *value;
   public:
     void setValue(ExpressionNode *e) {value = e;}
@@ -186,6 +197,7 @@ class ReturnStmtNode : public StatementNode {
 class StatementList : public Node {
   protected:
     std::string    name = "Statement List";
+    Node_Type      nt   = n_statements;
     StatementNode *value;
     StatementList *next;
   public:
@@ -206,7 +218,8 @@ class StatementList : public Node {
 
 class ExpressionNode : public Node {
   protected:
-    std:: string name;
+    std::string name;
+    Node_Type   nt;
   public:
     virtual void print(int)=0;
 };
@@ -214,6 +227,7 @@ class ExpressionNode : public Node {
 class IdentifierNode : public ExpressionNode {
   protected:
     std::string name = "Identifier";
+    Node_Type   nt   = n_identifier;
     std::string value;
   public:
     IdentifierNode() {
@@ -231,6 +245,7 @@ class IdentifierNode : public ExpressionNode {
 class NumberNode : public ExpressionNode {
   protected:
     std::string  name = "Number";
+    Node_Type    nt   = n_number;
     unsigned int value;
   public:
     NumberNode(std::string val) {
@@ -245,6 +260,7 @@ class NumberNode : public ExpressionNode {
 class BooleanNode : public ExpressionNode {
   protected:
     std::string name = "Boolean";
+    Node_Type   nt   = n_boolean; 
     bool        value;
   public:
     BooleanNode(std::string val) {
@@ -266,6 +282,7 @@ class BooleanNode : public ExpressionNode {
 class IfExprNode : public ExpressionNode {
   protected:
     std::string     name = "If Expression";
+    Node_Type       nt   = n_if;
     ExpressionNode *test;
     ExpressionNode *thenClause;
     ExpressionNode *elseClause;
@@ -284,6 +301,7 @@ class IfExprNode : public ExpressionNode {
 class NotExprNode : public ExpressionNode {
   protected:
     std::string     name = "Not Expression";
+    Node_Type       nt   = n_not;
     ExpressionNode *value;
   public:
     void setValue(ExpressionNode *e) {value = e;}
@@ -294,6 +312,7 @@ class NotExprNode : public ExpressionNode {
 class FunctionCallNode : public ExpressionNode {
   protected:
     std::string     name = "Function Call";
+    Node_Type       nt   = n_fncall;
     IdentifierNode *functionName;
     ExpressionList *functionBody;
   public:
@@ -309,6 +328,7 @@ class FunctionCallNode : public ExpressionNode {
 class NegateExprNode : public ExpressionNode {
   protected:
     std::string     name = "Negate Expression";
+    Node_Type       nt   = n_negate;
     ExpressionNode *value;
   public:
     void setValue(ExpressionNode *e) {value = e;}
@@ -319,6 +339,7 @@ class NegateExprNode : public ExpressionNode {
 class BlockExprNode : public ExpressionNode {
   protected:
     std::string     name = "Block Expression";
+    Node_Type       nt   = n_block;
     ExpressionNode *value;
   public:
     void setValue(ExpressionNode *e) {value = e;}
@@ -329,6 +350,7 @@ class BlockExprNode : public ExpressionNode {
 class BinaryExprNode : public ExpressionNode {
   protected:
     std::string     name = "Binary Expression";
+    Node_Type       nt   = n_binexp;
     ExpressionNode *left;
     BinaryOpNode    op;
     ExpressionNode *right;
@@ -347,6 +369,7 @@ class BinaryExprNode : public ExpressionNode {
 class ExpressionList : public Node {
   protected:
     std::string     name = "Expression List";
+    Node_Type       nt   = n_exprs;
     ExpressionNode *value;
     ExpressionList *next;
   public:
@@ -459,67 +482,30 @@ void FormalParamNode::print(int d) {
             Semantic stack
 **************************************/
 
-/*
-
-// TO REIMPLEMENT USING ABSTRACT CLASSES
-
 enum SType {sprogram, sformal, sdef, sbody, sstatement, sprint, sreturn, sif,
   snot, sfncall, snegate, sblock, sbinexp, sexpr, sidentifier, stype,
   soperator, snumber, sboolean, sformals, sdefs, sstatements, sexprs};
-
-class SemanticObject {
-  protected:
-    SType  type;
-    void * item;
-  public:
-    SemanticObject(ProgramNode      * p) {type = sprogram;    item = p;}
-    SemanticObject(FormalParamNode  * f) {type = sformal;     item = f;}
-    SemanticObject(DefNode          * d) {type = sdef;        item = d;}
-    SemanticObject(BodyNode         * b) {type = sbody;       item = b;}
-    SemanticObject(StatementNode    * s) {type = sstatement;  item = s;}
-    SemanticObject(PrintStmtNode    * p) {type = sprint;      item = p;}
-    SemanticObject(ReturnStmtNode   * r) {type = sreturn;     item = r;}
-    SemanticObject(IfExprNode       * i) {type = sif;         item = i;}
-    SemanticObject(NotExprNode      * n) {type = snot;        item = n;}
-    SemanticObject(FunctionCallNode * f) {type = sfncall;     item = f;}
-    SemanticObject(NegateExprNode   * n) {type = snegate;     item = n;}
-    SemanticObject(BlockExprNode    * b) {type = sblock;      item = b;}
-    SemanticObject(BinaryExprNode   * b) {type = sbinexp;     item = b;}
-    SemanticObject(ExpressionNode   * e) {type = sexpr;       item = e;}
-    SemanticObject(IdentifierNode   * i) {type = sidentifier; item = i;}
-    SemanticObject(TypeNode         * t) {type = stype;       item = t;}
-    SemanticObject(BinaryOpNode     * o) {type = soperator;   item = o;}
-    SemanticObject(NumberNode       * n) {type = snumber;     item = n;}
-    SemanticObject(BooleanNode      * b) {type = sboolean;    item = b;}
-    SemanticObject(FormalList       * l) {type = sformals;    item = l;}
-    SemanticObject(DefList          * l) {type = sdefs;       item = l;}
-    SemanticObject(StatementList    * l) {type = sstatements; item = l;}
-    SemanticObject(ExpressionList   * l) {type = sexprs;      item = l;}
-    SemanticObject() {type = sprogram; item = NULL;}
-    SType  getType() {return type;}
-    void * getPtr()  {return item;}
-};
 
 class SemanticStack {
   protected:
     SemanticNode * item;
   public:
-    void push(SemanticObject i);
-    SemanticObject pop();
-    SType  peekType();
-    void * peekPtr();
+    SemanticStack() {item = NULL;}
+    void push(Node * i);
+    Node * pop();
+    Node * peek();
 };
 
 class SemanticNode {
   protected:
-    SemanticObject   value;
+    Node           * value;
     SemanticNode   * next;
   public:
-    SemanticNode(SemanticObject o, SemanticNode * p) {
-      value = o;
+    SemanticNode(Node * n, SemanticNode * p) {
+      value = n;
       next  = p;
     }
-    SemanticObject getValue() {
+    Node * getValue() {
       return value;
     }
     SemanticNode * getNext() {
@@ -527,20 +513,14 @@ class SemanticNode {
     }
 };
 
-SType SemanticStack::peekType() {
-  return (*item).getValue().getType();
-}
-
-void * SemanticStack::peekPtr() {
-  return (*item).getValue().getPtr();
-}
-
-
-void SemanticStack::push(SemanticObject i) {
+void SemanticStack::push(Node * i) {
   item = new SemanticNode(i, item);
 }
 
-SemanticObject SemanticStack::pop() {
-  SemanticNode * copy = item;
-  SemanticObject value = (*item).getValue();
-}*/
+Node * SemanticStack::pop() {
+  Node * n;
+  n = (*item).getValue();
+  // TODO: fix memory leak
+  item = (*item).getNext();
+  return n;
+}
