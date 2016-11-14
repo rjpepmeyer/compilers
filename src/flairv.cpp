@@ -15,9 +15,9 @@ int main(int argc, char *argv[]) {
   // Run scanner on input file
   tokenList * streamOfTokens = scanner(argv[1]);
 
-  ProgramNode * ast; //Dummy value in this context
+  Node * ast; //Dummy value in this context
   // Check if is valid program
-  if (parser(streamOfTokens,debug,ast)) {
+  if (parser(streamOfTokens,debug,&ast)) {
     cout << "Valid flair program" << '\n';
   }
   else {

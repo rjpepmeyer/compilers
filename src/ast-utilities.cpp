@@ -9,6 +9,7 @@ class TypeNode : public Node {
     std::string name = "Type";
     std::string value;
   public:
+    Node_Type getType() {return nt;}
     TypeNode() {
       value = "";
     }
@@ -32,6 +33,7 @@ class BinaryOpNode : public Node {
     Node_Type   nt   = n_operator; 
     char        value;
   public:
+    Node_Type getType() {return nt;}
     BinaryOpNode(char val) {
       value = val;
     }
@@ -51,6 +53,7 @@ class ProgramNode : public Node {
     Node * defs;
     Node * body;
   public:
+    Node_Type getType() {return nt;}
     void setValue  (Node *i) {value   = i;};
     void setFormals(Node *i) {formals = i;};
     void setDefs   (Node *i) {defs    = i;};
@@ -68,12 +71,13 @@ class FormalParamNode : public Node {
   protected:
     std::string      name = "Formal Parameter";
     Node_Type        nt   = n_formal;
-    IdentifierNode * value;
-    TypeNode         type;
+    Node * value;
+    Node * type;
   public:
-    void setValue(IdentifierNode * i) {value = i;}
-    void setType(TypeNode t) {type = t;}
-    FormalParamNode(IdentifierNode * i, TypeNode t) {
+    Node_Type getType() {return nt;}
+    void setValue(Node *i) {value = i;}
+    void setType (Node *t) {type  = t;}
+    FormalParamNode(Node * i, Node * t) {
       setValue(i);
       setType(t);
     }
@@ -82,37 +86,41 @@ class FormalParamNode : public Node {
 
 class FormalList : public Node {
   protected:
-    std::string      name = "List of formal parameters";
+    std::string      name = "Formal parameters";
     Node_Type        nt   = n_formals;
     FormalParamNode *value;
     FormalList      *next;
   public:
+    Node_Type getType() {return nt;}
     FormalList(FormalParamNode *f) {
       value = f;
     }
-    void addFormal(FormalParamNode f) {
+    void add(FormalParamNode * f) {
       if (next == NULL) {
-        next = new FormalList(&f);
+        next = new FormalList(f);
       }
       else {
-        (*next).addFormal(f);
+        next->add(f);
       }
     }
     void print(int d) {
-      if (value != NULL) {(*value).print(d);}
-      if (next != NULL) {(*next).print(d);}
+      pad(d);
+      cout << name << ":" << '\n';
+      if (value != NULL) {(*value).print(d+1);}
+      if (next != NULL) {(*next).print(d+1);}
     }
 };
 
 class DefNode : public Node {
   protected:
-    std::string      name = "Definition";
+    std::string      name = "Function definition";
     Node_Type        nt   = n_def;
     Node * value;
     Node * formals;
     Node * type;
     Node * body;
   public:
+    Node_Type getType() {return nt;}
     void setValue  (Node *v) {value = v;};
     void setFormals(Node *f) {formals = f;};
     void setType   (Node *t) {type = t;};
@@ -128,11 +136,12 @@ class DefNode : public Node {
 
 class DefList : public Node {
   protected:
-    std::string  name = "Definitions List";
+    std::string  name = "Function definitions";
     Node_Type    nt   = n_defs;
     Node    *value;
     DefList *next;
   public:
+    Node_Type getType() {return nt;}
     DefList(Node *d) {
       value = d;
     }
@@ -145,8 +154,10 @@ class DefList : public Node {
       }
     }
     void print(int d) {
-      if (value != NULL) {(*value).print(d);}
-      if (next  != NULL) { (*next).print(d);}
+      pad(d);
+      cout << name << ":" << '\n';
+      if (value != NULL) {(*value).print(d+1);}
+      if (next  != NULL) { (*next).print(d+1);}
     }
 };
 
@@ -156,6 +167,7 @@ class BodyNode : public Node {
     Node_Type      nt   = n_body;
     Node *value;
   public:
+    Node_Type getType() {return nt;}
     BodyNode(Node *s) {
       value = s;
     }
@@ -168,16 +180,18 @@ class StatementNode : public Node {
     Node_Type        nt;
     ExpressionNode * value;
   public:
+    Node_Type getType() {return nt;}
     void setValue(ExpressionNode *e) {value = e;}
     virtual void print(int) =0;
 };
 
 class PrintStmtNode : public StatementNode {
   protected:
-    std::string     name = "Print Statement";
+    std::string     name = "Print statement";
     Node_Type       nt   = n_print;
     ExpressionNode *value;
   public:
+    Node_Type getType() {return nt;}
     void setValue(ExpressionNode *e) {value = e;}
     PrintStmtNode (ExpressionNode *e) {setValue(e);}
     void print(int);
@@ -185,10 +199,11 @@ class PrintStmtNode : public StatementNode {
 
 class ReturnStmtNode : public StatementNode {
   protected:
-    std::string     name = "Return Statement";
+    std::string     name = "Return statement";
     Node_Type       nt   = n_return;
     Node *value;
   public:
+    Node_Type getType() {return nt;}
     void setValue(Node *e) {value = e;}
     ReturnStmtNode (Node *e) {setValue(e);}
     void print(int);
@@ -196,23 +211,26 @@ class ReturnStmtNode : public StatementNode {
 
 class StatementList : public Node {
   protected:
-    std::string    name = "Statement List";
+    std::string    name = "Statement list";
     Node_Type      nt   = n_statements;
     StatementNode *value;
     StatementList *next;
   public:
+    Node_Type getType() {return nt;}
     StatementList(StatementNode *s) {value = s;}
-    void addStatement(StatementNode *s) {
+    void add(StatementNode *s) {
       if (next == NULL) {
         next = new StatementList(s);
       }
       else {
-        (*next).addStatement(s);
+        (*next).add(s);
       }
     }
     void print(int d) {
-      if (value != NULL) {(*value).print(d);}
-      if (next  != NULL) { (*next).print(d);}
+      pad(d);
+      cout << name << ":\n";
+      if (value != NULL) {(*value).print(d+1);}
+      if (next  != NULL) { (*next).print(d+1);}
     }
 };
 
@@ -221,6 +239,7 @@ class ExpressionNode : public Node {
     std::string name;
     Node_Type   nt;
   public:
+    Node_Type getType() {return nt;}
     virtual void print(int)=0;
 };
 
@@ -230,6 +249,7 @@ class IdentifierNode : public ExpressionNode {
     Node_Type   nt   = n_identifier;
     std::string value;
   public:
+    Node_Type getType() {return nt;}
     IdentifierNode() {
       value = "";
     }
@@ -248,6 +268,7 @@ class NumberNode : public ExpressionNode {
     Node_Type    nt   = n_number;
     unsigned int value;
   public:
+    Node_Type getType() {return nt;}
     NumberNode(std::string val) {
       istringstream(val) >> value;
     }
@@ -263,6 +284,7 @@ class BooleanNode : public ExpressionNode {
     Node_Type   nt   = n_boolean; 
     bool        value;
   public:
+    Node_Type getType() {return nt;}
     BooleanNode(std::string val) {
       if (val.front() == 't') {
         value = true;
@@ -281,12 +303,13 @@ class BooleanNode : public ExpressionNode {
 
 class IfExprNode : public ExpressionNode {
   protected:
-    std::string     name = "If Expression";
+    std::string     name = "If statement";
     Node_Type       nt   = n_if;
     ExpressionNode *test;
     ExpressionNode *thenClause;
     ExpressionNode *elseClause;
   public:
+    Node_Type getType() {return nt;}
     void setTest(ExpressionNode *e) {test = e;}
     void setThen(ExpressionNode *e) {thenClause = e;}
     void setElse(ExpressionNode *e) {elseClause = e;}
@@ -300,10 +323,11 @@ class IfExprNode : public ExpressionNode {
 
 class NotExprNode : public ExpressionNode {
   protected:
-    std::string     name = "Not Expression";
+    std::string     name = "Not expression";
     Node_Type       nt   = n_not;
     ExpressionNode *value;
   public:
+    Node_Type getType() {return nt;}
     void setValue(ExpressionNode *e) {value = e;}
     NotExprNode (ExpressionNode *e) {setValue(e);}
     void print(int);
@@ -311,11 +335,12 @@ class NotExprNode : public ExpressionNode {
 
 class FunctionCallNode : public ExpressionNode {
   protected:
-    std::string     name = "Function Call";
+    std::string     name = "Function call";
     Node_Type       nt   = n_fncall;
     IdentifierNode *functionName;
     ExpressionList *functionBody;
   public:
+    Node_Type getType() {return nt;}
     void setName(IdentifierNode *i) {functionName = i;}
     void setBody(ExpressionList *e) {functionBody = e;}
     FunctionCallNode(IdentifierNode *i, ExpressionList *e) {
@@ -327,10 +352,11 @@ class FunctionCallNode : public ExpressionNode {
 
 class NegateExprNode : public ExpressionNode {
   protected:
-    std::string     name = "Negate Expression";
+    std::string     name = "Negation expression";
     Node_Type       nt   = n_negate;
     ExpressionNode *value;
   public:
+    Node_Type getType() {return nt;}
     void setValue(ExpressionNode *e) {value = e;}
     NegateExprNode(ExpressionNode *e) {setValue(e);}
     void print(int);
@@ -338,10 +364,11 @@ class NegateExprNode : public ExpressionNode {
 
 class BlockExprNode : public ExpressionNode {
   protected:
-    std::string     name = "Block Expression";
+    std::string     name = "Block";
     Node_Type       nt   = n_block;
     ExpressionNode *value;
   public:
+    Node_Type getType() {return nt;}
     void setValue(ExpressionNode *e) {value = e;}
     BlockExprNode(ExpressionNode *e) {setValue(e);}
     void print(int);
@@ -349,12 +376,13 @@ class BlockExprNode : public ExpressionNode {
 
 class BinaryExprNode : public ExpressionNode {
   protected:
-    std::string     name = "Binary Expression";
+    std::string     name = "Binary expression";
     Node_Type       nt   = n_binexp;
     ExpressionNode *left;
     BinaryOpNode    op;
     ExpressionNode *right;
   public:
+    Node_Type getType() {return nt;}
     void setLeft (ExpressionNode *e) {left  = e;}
     void setOp   (BinaryOpNode *o)   {op    = *o;}
     void setRight(ExpressionNode *e) {right = e;}
@@ -368,25 +396,27 @@ class BinaryExprNode : public ExpressionNode {
 
 class ExpressionList : public Node {
   protected:
-    std::string     name = "Expression List";
+    std::string     name = "Expression list";
     Node_Type       nt   = n_exprs;
     ExpressionNode *value;
     ExpressionList *next;
   public:
+    Node_Type getType() {return nt;}
     ExpressionList(ExpressionNode *e) {
       value = e;
     }
-    void addExpression(ExpressionNode *e) {
+    void add(ExpressionNode *e) {
       if (next == NULL) {
         next = new ExpressionList(e);
       }
       else {
-        (*next).addExpression(e);
+        (*next).add(e);
       }
     }
     void print(int d) {
-      if (value != NULL) {(*value).print(d);}
-      if (next  != NULL) { (*next).print(d);}
+      cout << name << ":\n";
+      if (value != NULL) {(*value).print(d+1);}
+      if (next  != NULL) { (*next).print(d+1);}
     }
 };
 
@@ -398,9 +428,13 @@ down here to avoid forward declarations
 void BinaryExprNode::print(int d) {
   pad(d);
   cout << name << '\n';
-  (*left ).print(d+1);
+  pad(d+1);
+  cout << "Left\n";
+  (*left ).print(d+2);
   op.print(d+1);
-  (*right).print(d+1);
+  pad(d+1);
+  cout << "Right\n";
+  (*right).print(d+2);
 }
 
 void BlockExprNode::print(int d) {
@@ -418,8 +452,12 @@ void NegateExprNode::print(int d) {
 void FunctionCallNode::print(int d) {
   pad(d);
   cout << name << '\n';
-  functionName->print(d+1);
-  (*functionBody).print(d+1);
+  pad(d+1);
+  cout << "Function name\n";
+  functionName->print(d+2);
+  pad(d+1);
+  cout << "Function body\n";
+  (*functionBody).print(d+2);
 }
 
 void NotExprNode::print(int d) {
@@ -431,9 +469,12 @@ void NotExprNode::print(int d) {
 void IfExprNode::print(int d) {
   pad(d);
   cout << name << '\n';
-  (*test).print(d+1);
-  (*thenClause).print(d+1);
-  (*elseClause).print(d+1);
+  pad(d+1); cout << "Test\n";
+  (*test).print(d+2);
+  pad(d+1); cout << "Then clause\n";
+  (*thenClause).print(d+2);
+  pad(d+1); cout << "Else clause\n";
+  (*elseClause).print(d+2);
 }
 
 void ReturnStmtNode::print(int d) {
@@ -451,32 +492,41 @@ void PrintStmtNode::print(int d) {
 void BodyNode::print(int d) {
   pad(d);
   cout << name << '\n';
-  (*value).print(d+1);
+  value->print(d+1);
 }
 
 void DefNode::print(int d) {
   pad(d);
   cout << name << '\n';
-  value->print(d+1);
-  if (formals != NULL) {formals->print(d+1);}
-  type->print(d+1);
-  body->print(d+1);
+  pad(d+1); cout << "Function name\n";
+  value->print(d+2);
+  pad(d+1); cout << "Function parameters\n";
+  if (formals != NULL) {formals->print(d+2);}
+  pad(d+1); cout << "Function type\n";
+  type->print(d+2);
+  pad(d+1); cout << "Function body\n";
+  body->print(d+2);
 }
 
 void ProgramNode::print(int d) {
   pad(d);
   cout << name << '\n';
-  if (formals != NULL) {(*formals).print(d+1);}
-  if (defs != NULL) {(*defs).print(d+1);}
-  (*body).print(d+1);
+  pad(d+1); cout << "Program parameters\n";
+  if (formals != NULL) {(*formals).print(d+2);}
+  pad(d+1); cout << "Program function definitions\n";
+  if (defs != NULL) {(*defs).print(d+2);}
+  pad(d+1); cout << "Program body\n";
+  (*body).print(d+2);
 }
 
 
 void FormalParamNode::print(int d) {
   pad(d);
   cout << name << '\n';
-  value->print(d+1);
-  type.print(d+1);
+  pad(d+1); cout << "Parameter identifier\n";
+  value->print(d+2);
+  pad(d+1); cout << "Parameter type\n";
+  type->print(d+2);
 }
 /**************************************
             Semantic stack
@@ -519,8 +569,11 @@ void SemanticStack::push(Node * i) {
 
 class InvalidNode : public Node {
   protected:
+    std::string name = "Invalid Node";
     Node_Type nt = n_invalid;
   public:
+    InvalidNode() {/*Nothing*/};
+    Node_Type getType() {return nt;}
     void print(int d) {pad(d); cout << "INVALID NODE!";}
 };
 

@@ -13,6 +13,12 @@ bool isStatement(Node_Type n) {
   return (n == n_statement || n == n_print || n == n_return);
 }
 
+bool isExpression(Node_Type n) {
+  return (n == n_binexp     || n == n_if     || n == n_not     || n == n_fncall
+      ||  n == n_identifier || n == n_number || n == n_boolean || n == n_negate 
+      ||  n == n_block);
+}
+
 // Used by semantic actions
 int widthOf(Node_Type n) {
   switch(n) {
@@ -38,7 +44,7 @@ class Node {
     std::string name = "Node";
     Node_Type   nt;
   public:
-    Node_Type getType() {return nt;}
+    virtual Node_Type getType()=0;
     virtual void print(int)=0;
 };
 
