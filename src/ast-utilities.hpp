@@ -6,7 +6,8 @@ enum Node_Type {
   n_program, n_formal,  n_def,        n_body,       n_statement, n_print,
   n_return,  n_if,      n_not,        n_fncall,     n_negate,    n_block,
   n_binexp,  n_expr,    n_identifier, n_type,       n_operator,  n_number,
-  n_boolean, n_formals, n_defs,       n_statements, n_exprs,     n_invalid
+  n_boolean, n_formals, n_defs,       n_statements, n_exprs,     n_stop,
+  n_invalid
 };
 
 bool isStatement(Node_Type n) {

@@ -16,31 +16,28 @@ bool parser(tokenList * input, bool debug, Node ** ast) {
   SemanticStack semStack;
   token A = parserStack.peek();
   token B = A; // last terminal
-  while (A.type != eos) {
+  while (A.type != eos) {/*
   //DEBUGGING
   if (debug) {
     cout << '\n' << "Top of stack " << toString(A.type) << " " << A.value 
     << '\n';
     cout << "Next token   " << toString(currentToken.type) << " " <<
     currentToken.value << '\n' << '\n';
-  }
+  }*/
   
     if (isTerminal(A)) {
       if (parserStack.peek().type == currentToken.type ||
-      parserStack.peek().value == currentToken.value) {
+      parserStack.peek().value == currentToken.value) {/*
         //DEBUGGING
         if (debug) {
           cout << "POP AND ADVANCE" << '\n';
-        }
+        }*//*
         if (A.type == number || A.type == booleanvalue || A.type == typent || 
-            A.type == identifier) {
+            A.type == identifier || A.type == booleanop || A.type == equals ||
+            A.type == lessthan || A.type == op) {
           B = currentToken;
-          if (debug) {
-           cout << "\nTERMINAL VALUE ENCOUNTERED\n\n";
-           print(B);
-           cout << '\n';
-          }
-        }
+        }*/
+        B = currentToken;
         parserStack.pop();
         stream.advance();
       } else {
@@ -53,12 +50,12 @@ bool parser(tokenList * input, bool debug, Node ** ast) {
         return false;
       }
     } else if (!isMake(A)) {
-      A = parserStack.pop();
+      A = parserStack.pop();/*
       //DEBUGGING
       if (debug) {
         cout << "IMPLEMENTING RULE " << table(A.type,currentToken) 
         << '\n';
-      }
+      }*/
       switch (table(A.type,currentToken)) {
         case 1:
           parserStack.push(make(makeprogram));
@@ -69,6 +66,7 @@ bool parser(tokenList * input, bool debug, Node ** ast) {
           parserStack.push(make(")", rightparen));
           parserStack.push(make(formals));
           parserStack.push(make("(", leftparen));
+          parserStack.push(make(makeidentifier));
           parserStack.push(make(identifier));
           parserStack.push(make("program",keyword));
           break;
@@ -88,6 +86,7 @@ bool parser(tokenList * input, bool debug, Node ** ast) {
           parserStack.push(make(")",rightparen));
           parserStack.push(make(formals));
           parserStack.push(make("(",leftparen));
+          parserStack.push(make(makeidentifier));
           parserStack.push(make(identifier));
           parserStack.push(make("function",keyword));
           break;
@@ -102,6 +101,7 @@ bool parser(tokenList * input, bool debug, Node ** ast) {
           parserStack.push(make(formal));
           break;
         case 8:
+          parserStack.push(make(makeformals));
           break;
         case 9:
           parserStack.push(make(nonemptyformals));
@@ -111,6 +111,7 @@ bool parser(tokenList * input, bool debug, Node ** ast) {
           parserStack.push(make(makeformal));
           parserStack.push(make(typent));
           parserStack.push(make(":",separator));
+          parserStack.push(make(makeidentifier));
           parserStack.push(make(identifier));
           break;
         case 11:
@@ -144,15 +145,15 @@ bool parser(tokenList * input, bool debug, Node ** ast) {
         case 17:
           break;
         case 18:
-          parserStack.push(make(makebinexp));
           parserStack.push(make(exprprime));
+          parserStack.push(make(makebinexp));
           parserStack.push(make(simpleexpr));
           parserStack.push(make(makeoperator));
           parserStack.push(make("<",lessthan));
           break;
         case 19:
-          parserStack.push(make(makebinexp));
           parserStack.push(make(exprprime));
+          parserStack.push(make(makebinexp));
           parserStack.push(make(simpleexpr));
           parserStack.push(make(makeoperator));
           parserStack.push(make("=",equals));
@@ -164,22 +165,22 @@ bool parser(tokenList * input, bool debug, Node ** ast) {
         case 21:
           break;
         case 22:
-          parserStack.push(make(makebinexp));
           parserStack.push(make(simpleexprprime));
+          parserStack.push(make(makebinexp));
           parserStack.push(make(term));
           parserStack.push(make(makeoperator));
           parserStack.push(make("or",keyword));
           break;
         case 23:
-          parserStack.push(make(makebinexp));
           parserStack.push(make(simpleexprprime));
+          parserStack.push(make(makebinexp));
           parserStack.push(make(term));
           parserStack.push(make(makeoperator));
           parserStack.push(make("+",op));
           break;
         case 24:
-          parserStack.push(make(makebinexp));
           parserStack.push(make(simpleexprprime));
+          parserStack.push(make(makebinexp));
           parserStack.push(make(term));
           parserStack.push(make(makeoperator));
           parserStack.push(make("-",op));
@@ -191,22 +192,22 @@ bool parser(tokenList * input, bool debug, Node ** ast) {
         case 26:
           break;
         case 27:
-          parserStack.push(make(makebinexp));
           parserStack.push(make(termprime));
+          parserStack.push(make(makebinexp));
           parserStack.push(make(factor));
           parserStack.push(make(makeoperator));
           parserStack.push(make("and",keyword));
           break;
         case 28:
-          parserStack.push(make(makebinexp));
           parserStack.push(make(termprime));
+          parserStack.push(make(makebinexp));
           parserStack.push(make(factor));
           parserStack.push(make(makeoperator));
           parserStack.push(make("*",op));
           break;
         case 29:
-          parserStack.push(make(makebinexp));
           parserStack.push(make(termprime));
+          parserStack.push(make(makebinexp));
           parserStack.push(make(factor));
           parserStack.push(make(makeoperator));
           parserStack.push(make("/",op));
@@ -251,6 +252,7 @@ bool parser(tokenList * input, bool debug, Node ** ast) {
           parserStack.push(make(")",rightparen));
           parserStack.push(make(actuals));
           parserStack.push(make("(",leftparen));
+          parserStack.push(make(makestop));
           break;
         case 38:
           parserStack.push(make(makeexprs));
@@ -263,6 +265,7 @@ bool parser(tokenList * input, bool debug, Node ** ast) {
           parserStack.push(make(expr));
           break;
         case 41:
+          parserStack.push(make(makeexprs));
           break;
         case 42:
           parserStack.push(make(nonemptyactuals));
@@ -298,11 +301,6 @@ bool parser(tokenList * input, bool debug, Node ** ast) {
       Node * node3;
       Node * node4;
 
-      if (debug) {
-        cout << "BEFORE SEMANTIC ACTION\n\n";
-        semStack.peek()->print(0);
-        cout << '\n';
-      }
       switch(A.type) {
         case makeprogram:
           node4 = semStack.pop();
@@ -392,6 +390,7 @@ bool parser(tokenList * input, bool debug, Node ** ast) {
           else {
             node1 = new ExpressionList(NULL);
           }
+          if (semStack.peek()->getType() == n_stop) {semStack.pop();}
           semStack.push(node1);
           break;
         case makefncall:
@@ -421,6 +420,25 @@ bool parser(tokenList * input, bool debug, Node ** ast) {
         case maketype:
           node1 = new TypeNode(B.type);
           semStack.push(node1);
+          break;
+        case makebinexp:
+          node3 = semStack.pop();
+          node2 = semStack.pop();
+          node1 = semStack.pop();
+          node1 = new BinaryExprNode(
+              static_cast<ExpressionNode*>(node1),
+              static_cast<BinaryOpNode*>(node2),
+              static_cast<ExpressionNode*>(node3));
+          semStack.push(node1);
+          break;
+        case makeoperator:
+          node1 = new BinaryOpNode(B.value);
+          semStack.push(node1);
+          break;
+        case makestop:
+          node1 = new StopNode();
+          semStack.push(node1);
+          break;
         default:
           break;
       }

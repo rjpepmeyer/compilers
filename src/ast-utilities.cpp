@@ -29,12 +29,12 @@ class TypeNode : public Node {
 
 class BinaryOpNode : public Node {
   protected:
-    std::string name = "Binary Operator";
-    Node_Type   nt   = n_operator; 
-    char        value;
+    std::string  name = "Binary Operator";
+    Node_Type    nt   = n_operator; 
+    std::string  value;
   public:
     Node_Type getType() {return nt;}
-    BinaryOpNode(char val) {
+    BinaryOpNode(std::string val) {
       value = val;
     }
     BinaryOpNode() {}
@@ -379,12 +379,12 @@ class BinaryExprNode : public ExpressionNode {
     std::string     name = "Binary expression";
     Node_Type       nt   = n_binexp;
     ExpressionNode *left;
-    BinaryOpNode    op;
+    BinaryOpNode   *op;
     ExpressionNode *right;
   public:
     Node_Type getType() {return nt;}
     void setLeft (ExpressionNode *e) {left  = e;}
-    void setOp   (BinaryOpNode *o)   {op    = *o;}
+    void setOp   (BinaryOpNode *o)   {op    = o;}
     void setRight(ExpressionNode *e) {right = e;}
     BinaryExprNode(ExpressionNode *l, BinaryOpNode *o, ExpressionNode *r) {
       setLeft(l);
@@ -414,9 +414,8 @@ class ExpressionList : public Node {
       }
     }
     void print(int d) {
-      cout << name << ":\n";
-      if (value != NULL) {(*value).print(d+1);}
-      if (next  != NULL) { (*next).print(d+1);}
+      if (value != NULL) {(*value).print(d);}
+      if (next  != NULL) { (*next).print(d);}
     }
 };
 
@@ -430,11 +429,11 @@ void BinaryExprNode::print(int d) {
   cout << name << '\n';
   pad(d+1);
   cout << "Left\n";
-  (*left ).print(d+2);
-  op.print(d+1);
+  left->print(d+2);
+  op->print(d+1);
   pad(d+1);
   cout << "Right\n";
-  (*right).print(d+2);
+  right->print(d+2);
 }
 
 void BlockExprNode::print(int d) {
@@ -456,7 +455,7 @@ void FunctionCallNode::print(int d) {
   cout << "Function name\n";
   functionName->print(d+2);
   pad(d+1);
-  cout << "Function body\n";
+  cout << "Function arguments\n";
   (*functionBody).print(d+2);
 }
 
@@ -574,7 +573,17 @@ class InvalidNode : public Node {
   public:
     InvalidNode() {/*Nothing*/};
     Node_Type getType() {return nt;}
-    void print(int d) {pad(d); cout << "INVALID NODE!";}
+    void print(int d) {pad(d); cout << "INVALID NODE\n";}
+};
+
+class StopNode : public Node {
+  protected:
+    std::string name = "Stop Node";
+    Node_Type nt = n_stop;
+  public:
+    StopNode() {/*Nothing*/};
+    Node_Type getType() {return nt;}
+    void print(int d) {pad(d); cout << "STOP NODE\n";}
 };
 
 Node * SemanticStack::pop() {

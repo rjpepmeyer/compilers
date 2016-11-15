@@ -15,7 +15,7 @@ literal, printstatement,
 makeprogram, makeformal, makeformals, makedef, makedefs, makebody,
 makestatement, makestatements, makeprint, makereturn, makeif, makenot, 
 makefncall, makenegate, makeblock, makebinexp, makeexpr, makeidentifier,
-maketype, makeoperator, makenumber, makeboolean, makeexprs};
+maketype, makeoperator, makenumber, makeboolean, makeexprs, makestop};
 
 class token {
   public:

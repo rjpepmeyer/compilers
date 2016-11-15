@@ -105,11 +105,13 @@ string toString(enum tokenType input) {
     case makeblock:      return "<make-block> "; break;
     case makebinexp:     return "<make-binexp>"; break;
     case makeexpr:       return "<make-expr>  "; break;
+    case makeexprs:      return "<make-exprs> "; break;
     case makeidentifier: return "<make-identifier>";break;
     case maketype:       return "<make-type>  "; break;
     case makeoperator:   return "<make-operator>";break;
     case makenumber:     return "<make-number>"; break;
     case makeboolean:    return "<make-boolean>";break;
+    case makestop:       return "STOP LIST    "; break;
     default:             return "<invalid>    "; break;
     
   }
