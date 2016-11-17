@@ -87,16 +87,16 @@ class FormalList : public Node {
     FormalList      *next;
   public:
     Node_Type getType() {return nt;}
+    FormalList(FormalParamNode *f, FormalList *n) {
+      value = f;
+      next  = n;
+    }
     FormalList(FormalParamNode *f) {
       value = f;
     }
     void add(FormalParamNode * f) {
-      if (next == NULL) {
-        next = new FormalList(f);
-      }
-      else {
-        next->add(f);
-      }
+      next  = new FormalList(value, next);
+      value = f; 
     }
     void print(int d) {
       if (value != NULL) {(*value).print(d);}
@@ -135,16 +135,16 @@ class DefList : public Node {
     DefList *next;
   public:
     Node_Type getType() {return nt;}
+    DefList(Node *v, DefList *n) {
+      value = v;
+      next = n;
+    }
     DefList(Node *d) {
       value = d;
     }
     void add(DefNode *d) {
-      if (next == NULL) {
-        next = new DefList(d);
-      }
-      else {
-        next->add(d);
-      }
+      next  = new DefList(value, next);
+      value = d; 
     }
     void print(int d) {
       if (value != NULL) {(*value).print(d);}
@@ -208,14 +208,14 @@ class StatementList : public Node {
     StatementList *next;
   public:
     Node_Type getType() {return nt;}
+    StatementList(StatementNode *v, StatementList *n) {
+      value = v;
+      next  = n;
+    }
     StatementList(StatementNode *s) {value = s;}
     void add(StatementNode *s) {
-      if (next == NULL) {
-        next = new StatementList(s);
-      }
-      else {
-        (*next).add(s);
-      }
+      next = new StatementList(value, next);
+      value = s;
     }
     void print(int d) {
       if (value != NULL) {(*value).print(d);}
@@ -391,16 +391,16 @@ class ExpressionList : public Node {
     ExpressionList *next;
   public:
     Node_Type getType() {return nt;}
+    ExpressionList(ExpressionNode *v, ExpressionList *n) {
+      value = v;
+      next  = n;
+    }
     ExpressionList(ExpressionNode *e) {
       value = e;
     }
     void add(ExpressionNode *e) {
-      if (next == NULL) {
-        next = new ExpressionList(e);
-      }
-      else {
-        (*next).add(e);
-      }
+      next  = new ExpressionList(value, next);
+      value = e;
     }
     void print(int d) {
       if (value != NULL) {(*value).print(d);}
