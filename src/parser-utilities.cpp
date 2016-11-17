@@ -88,7 +88,7 @@ unsigned int table(tokenType row, token col) {
     case factorprime:
       if (col.value == "<")   return 18;
       if (col.value == "=")   return 19;
-      if (col.value == ",")   return 42;
+      if (col.value == ",")   return 36; // WAS 42
       if (col.value == "or")  return 22;
       if (col.value == "+")   return 23;
       if (col.value == "-")   return 24;

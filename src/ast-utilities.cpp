@@ -13,13 +13,8 @@ class TypeNode : public Node {
     TypeNode() {
       value = "";
     }
-    TypeNode(tokenType val) {
-      if (val == booleanvalue) {
-        value = "boolean";
-      }
-      else if (val == number) {
-        value = "number";
-      }
+    TypeNode(std::string val) {
+      value = val;
     }
     void print(int d) {
       pad(d);
@@ -104,10 +99,8 @@ class FormalList : public Node {
       }
     }
     void print(int d) {
-      pad(d);
-      cout << name << ":" << '\n';
-      if (value != NULL) {(*value).print(d+1);}
-      if (next != NULL) {(*next).print(d+1);}
+      if (value != NULL) {(*value).print(d);}
+      if (next != NULL) {(*next).print(d);}
     }
 };
 
@@ -154,10 +147,8 @@ class DefList : public Node {
       }
     }
     void print(int d) {
-      pad(d);
-      cout << name << ":" << '\n';
-      if (value != NULL) {(*value).print(d+1);}
-      if (next  != NULL) { (*next).print(d+1);}
+      if (value != NULL) {(*value).print(d);}
+      if (next  != NULL) { (*next).print(d);}
     }
 };
 
@@ -189,11 +180,11 @@ class PrintStmtNode : public StatementNode {
   protected:
     std::string     name = "Print statement";
     Node_Type       nt   = n_print;
-    ExpressionNode *value;
+    Node *value;
   public:
     Node_Type getType() {return nt;}
-    void setValue(ExpressionNode *e) {value = e;}
-    PrintStmtNode (ExpressionNode *e) {setValue(e);}
+    void setValue(Node *e) {value = e;}
+    PrintStmtNode (Node *e) {setValue(e);}
     void print(int);
 };
 
@@ -227,10 +218,8 @@ class StatementList : public Node {
       }
     }
     void print(int d) {
-      pad(d);
-      cout << name << ":\n";
-      if (value != NULL) {(*value).print(d+1);}
-      if (next  != NULL) { (*next).print(d+1);}
+      if (value != NULL) {(*value).print(d);}
+      if (next  != NULL) { (*next).print(d);}
     }
 };
 

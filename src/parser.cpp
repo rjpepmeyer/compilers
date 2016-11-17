@@ -16,27 +16,22 @@ bool parser(tokenList * input, bool debug, Node ** ast) {
   SemanticStack semStack;
   token A = parserStack.peek();
   token B = A; // last terminal
-  while (A.type != eos) {/*
+  while (A.type != eos) {
   //DEBUGGING
   if (debug) {
     cout << '\n' << "Top of stack " << toString(A.type) << " " << A.value 
     << '\n';
     cout << "Next token   " << toString(currentToken.type) << " " <<
     currentToken.value << '\n' << '\n';
-  }*/
+  }
   
     if (isTerminal(A)) {
       if (parserStack.peek().type == currentToken.type ||
-      parserStack.peek().value == currentToken.value) {/*
+      parserStack.peek().value == currentToken.value) {
         //DEBUGGING
         if (debug) {
           cout << "POP AND ADVANCE" << '\n';
-        }*//*
-        if (A.type == number || A.type == booleanvalue || A.type == typent || 
-            A.type == identifier || A.type == booleanop || A.type == equals ||
-            A.type == lessthan || A.type == op) {
-          B = currentToken;
-        }*/
+        }
         B = currentToken;
         parserStack.pop();
         stream.advance();
@@ -50,12 +45,12 @@ bool parser(tokenList * input, bool debug, Node ** ast) {
         return false;
       }
     } else if (!isMake(A)) {
-      A = parserStack.pop();/*
+      A = parserStack.pop();
       //DEBUGGING
       if (debug) {
         cout << "IMPLEMENTING RULE " << table(A.type,currentToken) 
         << '\n';
-      }*/
+      }
       switch (table(A.type,currentToken)) {
         case 1:
           parserStack.push(make(makeprogram));
@@ -311,6 +306,7 @@ bool parser(tokenList * input, bool debug, Node ** ast) {
           semStack.push(node1);
           *ast = node1;
           break;
+
         case makedef:
           node4 = semStack.pop();
           node3 = semStack.pop();
@@ -319,6 +315,7 @@ bool parser(tokenList * input, bool debug, Node ** ast) {
           node1 = new DefNode(node1, node2, node3, node4);
           semStack.push(node1);
           break;
+
         case makedefs:
           if (semStack.peek()->getType() == n_def) {
             node1 = new DefList(static_cast<DefNode*>(semStack.pop()));
@@ -332,6 +329,7 @@ bool parser(tokenList * input, bool debug, Node ** ast) {
           }
           semStack.push(node1);
           break;
+
         case makeformal:
           node2 = semStack.pop();
           node1 = semStack.pop();
@@ -339,6 +337,7 @@ bool parser(tokenList * input, bool debug, Node ** ast) {
               static_cast<TypeNode*>(node2));
           semStack.push(node1);
           break;
+
         case makeformals:
           if (semStack.peek()->getType() == n_formal) {
             node1 = new FormalList(static_cast<FormalParamNode*>(semStack.pop()));
@@ -353,11 +352,13 @@ bool parser(tokenList * input, bool debug, Node ** ast) {
           }
           semStack.push(node1);
           break;
+
         case makebody:
           node1 = semStack.pop();
           node2 = new BodyNode(node1);
           semStack.push(node2);
           break;
+
         case makestatements:
           if (isStatement(semStack.peek()->getType())) {
             node1 = new StatementList(static_cast<StatementNode*>(semStack.pop()));
@@ -372,11 +373,37 @@ bool parser(tokenList * input, bool debug, Node ** ast) {
           }
           semStack.push(node1);
           break;
+
         case makereturn:
           node1 = semStack.pop();
           node2 = new ReturnStmtNode(node1);
           semStack.push(node2);
           break;
+        
+        case makeprint:
+          node1 = semStack.pop();
+          node1 = new PrintStmtNode(node1);
+          semStack.push(node1);
+          break;
+
+        case makenot:
+          node1 = semStack.pop();
+          node1 = new BlockExprNode(static_cast<ExpressionNode*>(node1));
+          semStack.push(node1);
+          break;
+
+        case makenegate:
+          node1 = semStack.pop();
+          node1 = new BlockExprNode(static_cast<ExpressionNode*>(node1));
+          semStack.push(node1);
+          break;
+
+        case makeblock:
+          node1 = semStack.pop();
+          node1 = new BlockExprNode(static_cast<ExpressionNode*>(node1));
+          semStack.push(node1);
+          break;
+
         case makeexprs:
           if (isExpression(semStack.peek()->getType())) {
             node1 = new ExpressionList
@@ -393,6 +420,7 @@ bool parser(tokenList * input, bool debug, Node ** ast) {
           if (semStack.peek()->getType() == n_stop) {semStack.pop();}
           semStack.push(node1);
           break;
+
         case makefncall:
           node2 = semStack.pop();
           node1 = semStack.pop();
@@ -400,6 +428,7 @@ bool parser(tokenList * input, bool debug, Node ** ast) {
               static_cast<ExpressionList*>(node2));
           semStack.push(node1);
           break;
+
         case makeif:
           node3 = semStack.pop();
           node2 = semStack.pop();
@@ -409,18 +438,27 @@ bool parser(tokenList * input, bool debug, Node ** ast) {
               static_cast<ExpressionNode*>(node3));
           semStack.push(node1);
           break;
+
         case makenumber:
           node1 = new NumberNode(B.value);
           semStack.push(node1);
           break;
+
+        case makeboolean:
+          node1 = new BooleanNode(B.value);
+          semStack.push(node1);
+          break;
+
         case makeidentifier:
           node1 = new IdentifierNode(B.value);
           semStack.push(node1);
           break;
+
         case maketype:
-          node1 = new TypeNode(B.type);
+          node1 = new TypeNode(B.value);
           semStack.push(node1);
           break;
+
         case makebinexp:
           node3 = semStack.pop();
           node2 = semStack.pop();
@@ -431,14 +469,17 @@ bool parser(tokenList * input, bool debug, Node ** ast) {
               static_cast<ExpressionNode*>(node3));
           semStack.push(node1);
           break;
+
         case makeoperator:
           node1 = new BinaryOpNode(B.value);
           semStack.push(node1);
           break;
+
         case makestop:
           node1 = new StopNode();
           semStack.push(node1);
           break;
+
         default:
           break;
       }
