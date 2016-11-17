@@ -99,8 +99,8 @@ class FormalList : public Node {
       value = f; 
     }
     void print(int d) {
-      if (value != NULL) {(*value).print(d);}
-      if (next != NULL) {(*next).print(d);}
+      if (value != NULL) value->print(d);
+      if (next != NULL)  next->print(d);
     }
 };
 
@@ -500,11 +500,11 @@ void ProgramNode::print(int d) {
   pad(d);
   cout << name << '\n';
   pad(d+1); cout << "Program parameters\n";
-  if (formals != NULL) {(*formals).print(d+2);}
+  if (formals != NULL) formals->print(d+2);
   pad(d+1); cout << "Program function definitions\n";
-  if (defs != NULL) {(*defs).print(d+2);}
+  if (defs != NULL) defs->print(d+2);
   pad(d+1); cout << "Program body\n";
-  (*body).print(d+2);
+  if (body != NULL) body->print(d+2);
 }
 
 
@@ -512,48 +512,14 @@ void FormalParamNode::print(int d) {
   pad(d);
   cout << name << '\n';
   pad(d+1); cout << "Parameter identifier\n";
-  value->print(d+2);
+  if (value != NULL) value->print(d+2);
   pad(d+1); cout << "Parameter type\n";
-  type->print(d+2);
+  if (type != NULL)  type->print(d+2);
 }
+
 /**************************************
-            Semantic stack
-**************************************/
-
-enum SType {sprogram, sformal, sdef, sbody, sstatement, sprint, sreturn, sif,
-  snot, sfncall, snegate, sblock, sbinexp, sexpr, sidentifier, stype,
-  soperator, snumber, sboolean, sformals, sdefs, sstatements, sexprs};
-
-class SemanticStack {
-  protected:
-    SemanticNode * item;
-  public:
-    SemanticStack() {item = NULL;}
-    void push(Node * i);
-    Node * pop();
-    Node * peek();
-};
-
-class SemanticNode {
-  protected:
-    Node           * value;
-    SemanticNode   * next;
-  public:
-    SemanticNode(Node * n, SemanticNode * p) {
-      value = n;
-      next  = p;
-    }
-    Node * getValue() {
-      return value;
-    }
-    SemanticNode * getNext() {
-      return next;
-    }
-};
-
-void SemanticStack::push(Node * i) {
-  item = new SemanticNode(i, item);
-}
+    Nodes that aren't part of syntax  
+ *************************************/
 
 class InvalidNode : public Node {
   protected:
@@ -575,24 +541,3 @@ class StopNode : public Node {
     void print(int d) {pad(d); cout << "STOP NODE\n";}
 };
 
-Node * SemanticStack::pop() {
-  Node * n;
-  if (item != NULL) {
-    n = (*item).getValue();
-    // TODO: fix memory leak
-    item = (*item).getNext();
-    return n;
-  }
-  else {
-    return new InvalidNode();
-  }
-}
-
-Node * SemanticStack::peek() {
-  if (item != NULL) {
-    return item->getValue();
-  }
-  else {
-    return new InvalidNode();
-  }
-}

@@ -1,6 +1,7 @@
 #include <string>
 #include "parser-utilities.cpp"
 #include "ast-utilities.cpp"
+#include "semantic-stack.cpp"
 
 bool parser(tokenList * input, bool debug, Node ** ast) {
   tokenList stream = *input;        // Input stream!
@@ -488,7 +489,7 @@ bool parser(tokenList * input, bool debug, Node ** ast) {
         semStack.peek()->print(0);
         cout << '\n';
       }
-      parserStack.pop();  
+      parserStack.pop(); 
     }
     //Advance stream
     A = parserStack.peek();
