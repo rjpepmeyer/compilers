@@ -22,7 +22,7 @@ void print(token item) {
   cout << item.line << " ";
   cout << toString(item.type);
   if (item.value.length() > 1 || item.type == op || item.type 
-  == number) {
+  == number || item.type == identifier) {
     cout << item.value;
   }
   cout << '\n';

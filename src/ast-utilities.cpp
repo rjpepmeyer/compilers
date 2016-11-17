@@ -3,15 +3,242 @@
 #include <sstream>
 #include "ast-utilities.hpp"
 
-/**************************************
-           BASIC NODE TYPES
-**************************************/
-
-class IdentifierNode : public Node {
+class TypeNode : public Node {
   protected:
-    std::string name = "Identifier";
+    Node_Type   nt   = n_type;
+    std::string name = "Type";
     std::string value;
   public:
+    Node_Type getType() {return nt;}
+    TypeNode() {
+      value = "";
+    }
+    TypeNode(std::string val) {
+      value = val;
+    }
+    void print(int d) {
+      pad(d);
+      cout << name << ": " << value << '\n';
+    }
+};
+
+class BinaryOpNode : public Node {
+  protected:
+    std::string  name = "Binary Operator";
+    Node_Type    nt   = n_operator; 
+    std::string  value;
+  public:
+    Node_Type getType() {return nt;}
+    BinaryOpNode(std::string val) {
+      value = val;
+    }
+    BinaryOpNode() {}
+    void print(int d) {
+      pad(d);
+      cout << name << ": " << value << '\n';
+    }
+};
+
+class ProgramNode : public Node {
+  protected:
+    std::string     name = "Program";
+    Node_Type       nt   = n_program;
+    Node * value;
+    Node * formals;
+    Node * defs;
+    Node * body;
+  public:
+    Node_Type getType() {return nt;}
+    void setValue  (Node *i) {value   = i;};
+    void setFormals(Node *i) {formals = i;};
+    void setDefs   (Node *i) {defs    = i;};
+    void setBody   (Node *i) {body    = i;};
+    ProgramNode(Node * v, Node * f, Node * d, Node * b){
+      setValue(v);
+      setFormals(f);
+      setDefs(d);
+      setBody(b);
+    }
+    void print(int);
+};
+
+class FormalParamNode : public Node {
+  protected:
+    std::string      name = "Formal Parameter";
+    Node_Type        nt   = n_formal;
+    Node * value;
+    Node * type;
+  public:
+    Node_Type getType() {return nt;}
+    void setValue(Node *i) {value = i;}
+    void setType (Node *t) {type  = t;}
+    FormalParamNode(Node * i, Node * t) {
+      setValue(i);
+      setType(t);
+    }
+    void print(int d);
+};
+
+class FormalList : public Node {
+  protected:
+    std::string      name = "Formal parameters";
+    Node_Type        nt   = n_formals;
+    FormalParamNode *value;
+    FormalList      *next;
+  public:
+    Node_Type getType() {return nt;}
+    FormalList(FormalParamNode *f, FormalList *n) {
+      value = f;
+      next  = n;
+    }
+    FormalList(FormalParamNode *f) {
+      value = f;
+    }
+    void add(FormalParamNode * f) {
+      next  = new FormalList(value, next);
+      value = f; 
+    }
+    void print(int d) {
+      if (value != NULL) {(*value).print(d);}
+      if (next != NULL) {(*next).print(d);}
+    }
+};
+
+class DefNode : public Node {
+  protected:
+    std::string      name = "Function definition";
+    Node_Type        nt   = n_def;
+    Node * value;
+    Node * formals;
+    Node * type;
+    Node * body;
+  public:
+    Node_Type getType() {return nt;}
+    void setValue  (Node *v) {value = v;};
+    void setFormals(Node *f) {formals = f;};
+    void setType   (Node *t) {type = t;};
+    void setBody   (Node *b) {body = b;};
+    DefNode(Node *v, Node *f, Node *t, Node *b) {
+      setValue(v);
+      setFormals(f);
+      setType(t);
+      setBody(b);
+    }
+    void print(int);
+};
+
+class DefList : public Node {
+  protected:
+    std::string  name = "Function definitions";
+    Node_Type    nt   = n_defs;
+    Node    *value;
+    DefList *next;
+  public:
+    Node_Type getType() {return nt;}
+    DefList(Node *v, DefList *n) {
+      value = v;
+      next = n;
+    }
+    DefList(Node *d) {
+      value = d;
+    }
+    void add(DefNode *d) {
+      next  = new DefList(value, next);
+      value = d; 
+    }
+    void print(int d) {
+      if (value != NULL) {(*value).print(d);}
+      if (next  != NULL) { (*next).print(d);}
+    }
+};
+
+class BodyNode : public Node {
+  protected:
+    std::string    name = "Body";
+    Node_Type      nt   = n_body;
+    Node *value;
+  public:
+    Node_Type getType() {return nt;}
+    BodyNode(Node *s) {
+      value = s;
+    }
+    void print(int);
+};
+
+class StatementNode : public Node {
+  protected:
+    std::string      name;
+    Node_Type        nt;
+    ExpressionNode * value;
+  public:
+    Node_Type getType() {return nt;}
+    void setValue(ExpressionNode *e) {value = e;}
+    virtual void print(int) =0;
+};
+
+class PrintStmtNode : public StatementNode {
+  protected:
+    std::string     name = "Print statement";
+    Node_Type       nt   = n_print;
+    Node *value;
+  public:
+    Node_Type getType() {return nt;}
+    void setValue(Node *e) {value = e;}
+    PrintStmtNode (Node *e) {setValue(e);}
+    void print(int);
+};
+
+class ReturnStmtNode : public StatementNode {
+  protected:
+    std::string     name = "Return statement";
+    Node_Type       nt   = n_return;
+    Node *value;
+  public:
+    Node_Type getType() {return nt;}
+    void setValue(Node *e) {value = e;}
+    ReturnStmtNode (Node *e) {setValue(e);}
+    void print(int);
+};
+
+class StatementList : public Node {
+  protected:
+    std::string    name = "Statement list";
+    Node_Type      nt   = n_statements;
+    StatementNode *value;
+    StatementList *next;
+  public:
+    Node_Type getType() {return nt;}
+    StatementList(StatementNode *v, StatementList *n) {
+      value = v;
+      next  = n;
+    }
+    StatementList(StatementNode *s) {value = s;}
+    void add(StatementNode *s) {
+      next = new StatementList(value, next);
+      value = s;
+    }
+    void print(int d) {
+      if (value != NULL) {(*value).print(d);}
+      if (next  != NULL) { (*next).print(d);}
+    }
+};
+
+class ExpressionNode : public Node {
+  protected:
+    std::string name;
+    Node_Type   nt;
+  public:
+    Node_Type getType() {return nt;}
+    virtual void print(int)=0;
+};
+
+class IdentifierNode : public ExpressionNode {
+  protected:
+    std::string name = "Identifier";
+    Node_Type   nt   = n_identifier;
+    std::string value;
+  public:
+    Node_Type getType() {return nt;}
     IdentifierNode() {
       value = "";
     }
@@ -24,48 +251,13 @@ class IdentifierNode : public Node {
     }
 };
 
-class TypeNode : public Node {
-  protected:
-    std::string name = "Type";
-    std::string value;
-  public:
-    TypeNode() {
-      value = "";
-    }
-    TypeNode(tokenType val) {
-      if (val == booleanvalue) {
-        value = "boolean";
-      }
-      else if (val == number) {
-        value = "number";
-      }
-    }
-    void print(int d) {
-      pad(d);
-      cout << name << ": " << value << '\n';
-    }
-};
-
-class BinaryOpNode : public Node {
-  protected:
-    std::string name = "Binary Operator";
-    char        value;
-  public:
-    BinaryOpNode(char val) {
-      value = val;
-    }
-    BinaryOpNode() {}
-    void print(int d) {
-      pad(d);
-      cout << name << ": " << value << '\n';
-    }
-};
-
-class NumberNode : public Node {
+class NumberNode : public ExpressionNode {
   protected:
     std::string  name = "Number";
+    Node_Type    nt   = n_number;
     unsigned int value;
   public:
+    Node_Type getType() {return nt;}
     NumberNode(std::string val) {
       istringstream(val) >> value;
     }
@@ -75,11 +267,13 @@ class NumberNode : public Node {
     }
 };
 
-class BooleanNode : public Node {
+class BooleanNode : public ExpressionNode {
   protected:
     std::string name = "Boolean";
+    Node_Type   nt   = n_boolean; 
     bool        value;
   public:
+    Node_Type getType() {return nt;}
     BooleanNode(std::string val) {
       if (val.front() == 't') {
         value = true;
@@ -96,205 +290,15 @@ class BooleanNode : public Node {
     }
 };
 
-/***************************************
-            Complex nodes!
-***************************************/
-
-class ProgramNode : public Node {
+class IfExprNode : public ExpressionNode {
   protected:
-    std::string     name = "Program";
-    IdentifierNode  value;
-    FormalList     *formals;
-    DefList        *defs;
-    BodyNode       *body;
-  public:
-    void setValue(IdentifierNode *i) {value = *i;};
-    void setFormals(FormalList *i) {formals = i;};
-    void setDefs(DefList *i) {defs = i;};
-    void setBody(BodyNode *i) {body = i;};
-    ProgramNode(IdentifierNode *v, FormalList *f, DefList *d, BodyNode *b){
-      setValue(v);
-      setFormals(f);
-      setDefs(d);
-      setBody(b);
-    }
-    void print(int);
-};
-
-class FormalParamNode : public Node {
-  protected:
-    std::string    name = "Formal Parameter";
-    IdentifierNode value;
-    TypeNode       type;
-  public:
-    void setValue(IdentifierNode i) {value = i;}
-    void setType(TypeNode t) {type = t;}
-    FormalParamNode(IdentifierNode i, TypeNode t) {
-      setValue(i);
-      setType(t);
-    }
-    void print(int d) {
-      pad(d);
-      cout << name << '\n';
-      value.print(d+1);
-      type.print(d+1);
-    }
-};
-
-class FormalList : public Node {
-  protected:
-    std::string      name = "List of formal parameters";
-    FormalParamNode *value;
-    FormalList      *next;
-  public:
-    FormalList(FormalParamNode *f) {
-      value = f;
-    }
-    void addFormal(FormalParamNode f) {
-      if (next == NULL) {
-        next = new FormalList(&f);
-      }
-      else {
-        (*next).addFormal(f);
-      }
-    }
-    void print(int d) {
-      if (value != NULL) {(*value).print(d);}
-      if (next != NULL) {(*next).print(d);}
-    }
-};
-
-class DefNode : public Node {
-  protected:
-    std::string     name = "Definition";
-    IdentifierNode  value;
-    FormalList     *formals;
-    TypeNode        type;
-    BodyNode       *body;
-  public:
-    void setValue(IdentifierNode *v) {value = *v;};
-    void setFormals(FormalList *f) {formals = f;};
-    void setType(TypeNode *t) {type = *t;};
-    void setBody(BodyNode *b) {body = b;};
-    DefNode(IdentifierNode *v, FormalList *f, TypeNode *t, BodyNode *b) {
-      setValue(v);
-      setFormals(f);
-      setType(t);
-      setBody(b);
-    }
-    void print(int);
-};
-
-class DefList : public Node {
-  protected:
-    std::string  name = "Definitions List";
-    DefNode     *value;
-    DefList     *next;
-  public:
-    DefList(DefNode *d) {
-      value = d;
-    }
-    void addDef(DefNode d) {
-      if (next == NULL) {
-        next = new DefList(&d);
-      }
-      else {
-        (*next).addDef(d);
-      }
-    }
-    void print(int d) {
-      if (value != NULL) {(*value).print(d);}
-      if (next  != NULL) { (*next).print(d);}
-    }
-};
-
-class BodyNode : public Node {
-  protected:
-    std::string    name = "Body";
-    StatementList *value;
-  public:
-    BodyNode(StatementList *s) {
-      value = s;
-    }
-    void print(int);
-};
-
-enum StatementType {printstmt, returnstmt};
-
-class PrintStmtNode : public Node {
-  protected:
-    std::string     name = "Print Statement";
-    ExpressionNode *value;
-  public:
-    void setValue(ExpressionNode *e) {value = e;}
-    PrintStmtNode (ExpressionNode *e) {setValue(e);}
-    void print(int);
-};
-
-class ReturnStmtNode : public Node {
-  protected:
-    std::string     name = "Return Statement";
-    ExpressionNode *value;
-  public:
-    void setValue(ExpressionNode *e) {value = e;}
-    ReturnStmtNode (ExpressionNode *e) {setValue(e);}
-    void print(int);
-};
-
-class StatementNode : public Node {
-  protected:
-    std::string    name = "Statement";
-    StatementType  type;
-    void          *value;
-  public:
-    void setValue(PrintStmtNode *p) {
-      type  = printstmt;
-      value = p;
-    }
-    void setValue(ReturnStmtNode *r) {
-      type = returnstmt;
-      value = r;
-    }
-    StatementNode(PrintStmtNode  *p) {setValue(p);}
-    StatementNode(ReturnStmtNode *r) {setValue(r);}
-    void print(int d) {
-      switch(type) {
-        case printstmt:
-          (*static_cast<PrintStmtNode*>(value)).print(d);break;
-        case returnstmt:
-          (*static_cast<ReturnStmtNode*>(value)).print(d);break;
-      }
-    }
-};
-
-class StatementList : public Node {
-  protected:
-    std::string    name = "Statement List";
-    StatementNode *value;
-    StatementList *next;
-  public:
-    StatementList(StatementNode *s) {value = s;}
-    void addStatement(StatementNode s) {
-      if (next == NULL) {
-        next = new StatementList(&s);
-      }
-      else {
-        (*next).addStatement(s);
-      }
-    }
-    void print(int d) {
-      if (value != NULL) {(*value).print(d);}
-      if (next  != NULL) { (*next).print(d);}
-    }
-};
-
-class IfExprNode : public Node {
-  protected:
-    std::string     name = "If Expression";
+    std::string     name = "If statement";
+    Node_Type       nt   = n_if;
     ExpressionNode *test;
     ExpressionNode *thenClause;
     ExpressionNode *elseClause;
   public:
+    Node_Type getType() {return nt;}
     void setTest(ExpressionNode *e) {test = e;}
     void setThen(ExpressionNode *e) {thenClause = e;}
     void setElse(ExpressionNode *e) {elseClause = e;}
@@ -306,23 +310,27 @@ class IfExprNode : public Node {
     void print(int);
 };
 
-class NotExprNode : public Node {
+class NotExprNode : public ExpressionNode {
   protected:
-    std::string     name = "Not Expression";
+    std::string     name = "Not expression";
+    Node_Type       nt   = n_not;
     ExpressionNode *value;
   public:
+    Node_Type getType() {return nt;}
     void setValue(ExpressionNode *e) {value = e;}
     NotExprNode (ExpressionNode *e) {setValue(e);}
     void print(int);
 };
 
-class FunctionCallNode : public Node {
+class FunctionCallNode : public ExpressionNode {
   protected:
-    std::string     name = "Function Call";
-    IdentifierNode  functionName;
+    std::string     name = "Function call";
+    Node_Type       nt   = n_fncall;
+    IdentifierNode *functionName;
     ExpressionList *functionBody;
   public:
-    void setName(IdentifierNode *i) {functionName = *i;}
+    Node_Type getType() {return nt;}
+    void setName(IdentifierNode *i) {functionName = i;}
     void setBody(ExpressionList *e) {functionBody = e;}
     FunctionCallNode(IdentifierNode *i, ExpressionList *e) {
       setName(i);
@@ -331,35 +339,41 @@ class FunctionCallNode : public Node {
     void print(int);
 };
 
-class NegateExprNode : public Node {
+class NegateExprNode : public ExpressionNode {
   protected:
-    std::string     name = "Negate Expression";
+    std::string     name = "Negation expression";
+    Node_Type       nt   = n_negate;
     ExpressionNode *value;
   public:
+    Node_Type getType() {return nt;}
     void setValue(ExpressionNode *e) {value = e;}
     NegateExprNode(ExpressionNode *e) {setValue(e);}
     void print(int);
 };
 
-class BlockExprNode : public Node {
+class BlockExprNode : public ExpressionNode {
   protected:
-    std::string     name = "Block Expression";
+    std::string     name = "Block";
+    Node_Type       nt   = n_block;
     ExpressionNode *value;
   public:
+    Node_Type getType() {return nt;}
     void setValue(ExpressionNode *e) {value = e;}
     BlockExprNode(ExpressionNode *e) {setValue(e);}
     void print(int);
 };
 
-class BinaryExprNode : public Node {
+class BinaryExprNode : public ExpressionNode {
   protected:
-    std::string     name = "Binary Expression";
+    std::string     name = "Binary expression";
+    Node_Type       nt   = n_binexp;
     ExpressionNode *left;
-    BinaryOpNode    op;
+    BinaryOpNode   *op;
     ExpressionNode *right;
   public:
+    Node_Type getType() {return nt;}
     void setLeft (ExpressionNode *e) {left  = e;}
-    void setOp   (BinaryOpNode *o)   {op    = *o;}
+    void setOp   (BinaryOpNode *o)   {op    = o;}
     void setRight(ExpressionNode *e) {right = e;}
     BinaryExprNode(ExpressionNode *l, BinaryOpNode *o, ExpressionNode *r) {
       setLeft(l);
@@ -369,106 +383,24 @@ class BinaryExprNode : public Node {
     void print(int);
 };
 
-/**************************************
-           Expression node!
-         (this one's a doozy)
-**************************************/
-
-enum ExpressionType {binaryexpr, ifexpr, notexpr, functioncall,
-identifierexpr, numberexpr, booleanexpr, negateexpr, blockexpr};
-
-class ExpressionNode : public Node {
-  protected:
-    std::string     name = "Expression";
-    ExpressionType  type;
-    void           *value;
-  public:
-    void setValue(BinaryExprNode *b) {
-      type = binaryexpr;
-      value = b;
-    }
-    void setValue(IfExprNode *i) {
-      type = ifexpr;
-      value = i;
-    }
-    void setValue(NotExprNode *n) {
-      type = notexpr;
-      value = n;
-    }
-    void setValue(FunctionCallNode *f) {
-      type = functioncall;
-      value = f;
-    }
-    void setValue(IdentifierNode *i) {
-      type = identifierexpr;
-      value = i;
-    }
-    void setValue(NumberNode *n) {
-      type = numberexpr;
-      value = n;
-    }
-    void setValue(BooleanNode *b) {
-      type = booleanexpr;
-      value = b;
-    }
-    void setValue(NegateExprNode *n) {
-      type = negateexpr;
-      value = n;
-    }
-    void setValue(BlockExprNode *b) {
-      type = blockexpr;
-      value = b;
-    }
-    ExpressionNode(BinaryExprNode   *e) {setValue(e);}
-    ExpressionNode(IfExprNode       *e) {setValue(e);}
-    ExpressionNode(NotExprNode      *e) {setValue(e);}
-    ExpressionNode(FunctionCallNode *e) {setValue(e);}
-    ExpressionNode(IdentifierNode   *e) {setValue(e);}
-    ExpressionNode(NumberNode       *e) {setValue(e);}
-    ExpressionNode(BooleanNode      *e) {setValue(e);}
-    ExpressionNode(NegateExprNode   *e) {setValue(e);}
-    ExpressionNode(BlockExprNode    *e) {setValue(e);}
-    void print(int d) {
-      switch(type) {
-        case binaryexpr:
-          (*static_cast<BinaryExprNode*>(value)).print(d);break;
-        case ifexpr:
-          (*static_cast<IfExprNode*>(value)).print(d);break;
-        case notexpr:
-          (*static_cast<NotExprNode*>(value)).print(d);break;
-        case functioncall:
-          (*static_cast<FunctionCallNode*>(value)).print(d);break;
-        case identifierexpr:
-          (*static_cast<IdentifierNode*>(value)).print(d);break;
-        case numberexpr:
-          (*static_cast<NumberNode*>(value)).print(d);break;
-        case booleanexpr:
-          (*static_cast<BooleanNode*>(value)).print(d);break;
-        case negateexpr:
-          (*static_cast<NegateExprNode*>(value)).print(d);break;
-        case blockexpr:
-          (*static_cast<BlockExprNode*>(value)).print(d);break;
-        default: break;
-      }
-    }
-};
-
 class ExpressionList : public Node {
   protected:
-    std::string     name = "Expression List";
+    std::string     name = "Expression list";
+    Node_Type       nt   = n_exprs;
     ExpressionNode *value;
     ExpressionList *next;
   public:
+    Node_Type getType() {return nt;}
+    ExpressionList(ExpressionNode *v, ExpressionList *n) {
+      value = v;
+      next  = n;
+    }
     ExpressionList(ExpressionNode *e) {
       value = e;
     }
-    void addExpression(ExpressionNode e) {
-      if (next == NULL) {
-        next = new ExpressionList(&e);
-      }
-      else {
-        (*next).addExpression(e);
-      }
+    void add(ExpressionNode *e) {
+      next  = new ExpressionList(value, next);
+      value = e;
     }
     void print(int d) {
       if (value != NULL) {(*value).print(d);}
@@ -484,9 +416,13 @@ down here to avoid forward declarations
 void BinaryExprNode::print(int d) {
   pad(d);
   cout << name << '\n';
-  (*left ).print(d+1);
-  op.print(d+1);
-  (*right).print(d+1);
+  pad(d+1);
+  cout << "Left\n";
+  left->print(d+2);
+  op->print(d+1);
+  pad(d+1);
+  cout << "Right\n";
+  right->print(d+2);
 }
 
 void BlockExprNode::print(int d) {
@@ -504,8 +440,12 @@ void NegateExprNode::print(int d) {
 void FunctionCallNode::print(int d) {
   pad(d);
   cout << name << '\n';
-  functionName.print(d+1);
-  (*functionBody).print(d+1);
+  pad(d+1);
+  cout << "Function name\n";
+  functionName->print(d+2);
+  pad(d+1);
+  cout << "Function arguments\n";
+  (*functionBody).print(d+2);
 }
 
 void NotExprNode::print(int d) {
@@ -517,9 +457,12 @@ void NotExprNode::print(int d) {
 void IfExprNode::print(int d) {
   pad(d);
   cout << name << '\n';
-  (*test).print(d+1);
-  (*thenClause).print(d+1);
-  (*elseClause).print(d+1);
+  pad(d+1); cout << "Test\n";
+  (*test).print(d+2);
+  pad(d+1); cout << "Then clause\n";
+  (*thenClause).print(d+2);
+  pad(d+1); cout << "Else clause\n";
+  (*elseClause).print(d+2);
 }
 
 void ReturnStmtNode::print(int d) {
@@ -537,26 +480,42 @@ void PrintStmtNode::print(int d) {
 void BodyNode::print(int d) {
   pad(d);
   cout << name << '\n';
-  (*value).print(d+1);
+  value->print(d+1);
 }
 
 void DefNode::print(int d) {
   pad(d);
   cout << name << '\n';
-  value.print(d+1);
-  if (formals != NULL) {(*formals).print(d+1);}
-  type.print(d+1);
-  (*body).print(d+1);
+  pad(d+1); cout << "Function name\n";
+  value->print(d+2);
+  pad(d+1); cout << "Function parameters\n";
+  if (formals != NULL) {formals->print(d+2);}
+  pad(d+1); cout << "Function type\n";
+  type->print(d+2);
+  pad(d+1); cout << "Function body\n";
+  body->print(d+2);
 }
 
 void ProgramNode::print(int d) {
   pad(d);
   cout << name << '\n';
-  if (formals != NULL) {(*formals).print(d+1);}
-  if (defs != NULL) {(*defs).print(d+1);}
-  (*body).print(d+1);
+  pad(d+1); cout << "Program parameters\n";
+  if (formals != NULL) {(*formals).print(d+2);}
+  pad(d+1); cout << "Program function definitions\n";
+  if (defs != NULL) {(*defs).print(d+2);}
+  pad(d+1); cout << "Program body\n";
+  (*body).print(d+2);
 }
 
+
+void FormalParamNode::print(int d) {
+  pad(d);
+  cout << name << '\n';
+  pad(d+1); cout << "Parameter identifier\n";
+  value->print(d+2);
+  pad(d+1); cout << "Parameter type\n";
+  type->print(d+2);
+}
 /**************************************
             Semantic stack
 **************************************/
@@ -565,59 +524,26 @@ enum SType {sprogram, sformal, sdef, sbody, sstatement, sprint, sreturn, sif,
   snot, sfncall, snegate, sblock, sbinexp, sexpr, sidentifier, stype,
   soperator, snumber, sboolean, sformals, sdefs, sstatements, sexprs};
 
-class SemanticObject {
-  protected:
-    SType  type;
-    void * item;
-  public:
-    SemanticObject(ProgramNode      * p) {type = sprogram;    item = p;}
-    SemanticObject(FormalParamNode  * f) {type = sformal;     item = f;}
-    SemanticObject(DefNode          * d) {type = sdef;        item = d;}
-    SemanticObject(BodyNode         * b) {type = sbody;       item = b;}
-    SemanticObject(StatementNode    * s) {type = sstatement;  item = s;}
-    SemanticObject(PrintStmtNode    * p) {type = sprint;      item = p;}
-    SemanticObject(ReturnStmtNode   * r) {type = sreturn;     item = r;}
-    SemanticObject(IfExprNode       * i) {type = sif;         item = i;}
-    SemanticObject(NotExprNode      * n) {type = snot;        item = n;}
-    SemanticObject(FunctionCallNode * f) {type = sfncall;     item = f;}
-    SemanticObject(NegateExprNode   * n) {type = snegate;     item = n;}
-    SemanticObject(BlockExprNode    * b) {type = sblock;      item = b;}
-    SemanticObject(BinaryExprNode   * b) {type = sbinexp;     item = b;}
-    SemanticObject(ExpressionNode   * e) {type = sexpr;       item = e;}
-    SemanticObject(IdentifierNode   * i) {type = sidentifier; item = i;}
-    SemanticObject(TypeNode         * t) {type = stype;       item = t;}
-    SemanticObject(BinaryOpNode     * o) {type = soperator;   item = o;}
-    SemanticObject(NumberNode       * n) {type = snumber;     item = n;}
-    SemanticObject(BooleanNode      * b) {type = sboolean;    item = b;}
-    SemanticObject(FormalList       * l) {type = sformals;    item = l;}
-    SemanticObject(DefList          * l) {type = sdefs;       item = l;}
-    SemanticObject(StatementList    * l) {type = sstatements; item = l;}
-    SemanticObject(ExpressionList   * l) {type = sexprs;      item = l;}
-    SemanticObject() {type = sprogram; item = NULL;}
-    SType  getType() {return type;}
-    void * getPtr()  {return item;}
-};
-
 class SemanticStack {
   protected:
     SemanticNode * item;
   public:
-    void push(SemanticObject i);
-    SemanticObject pop();
-    SType  peekType();
-    void * peekPtr();
+    SemanticStack() {item = NULL;}
+    void push(Node * i);
+    Node * pop();
+    Node * peek();
 };
 
 class SemanticNode {
   protected:
-    SemanticObject   value;
+    Node           * value;
     SemanticNode   * next;
   public:
-    SemanticNode(SemanticObject o, SemanticNode * p) {
-      value = o;
+    SemanticNode(Node * n, SemanticNode * p) {
+      value = n;
       next  = p;
     }
-    SemanticObject getValue() {
+    Node * getValue() {
       return value;
     }
     SemanticNode * getNext() {
@@ -625,26 +551,48 @@ class SemanticNode {
     }
 };
 
-SType SemanticStack::peekType() {
-  return (*item).getValue().getType();
-}
-
-void * SemanticStack::peekPtr() {
-  return (*item).getValue().getPtr();
-}
-
-
-void SemanticStack::push(SemanticObject i) {
+void SemanticStack::push(Node * i) {
   item = new SemanticNode(i, item);
 }
 
-SemanticObject SemanticStack::pop() {
-  SemanticNode * copy = item;
-  SemanticObject value = (*item).getValue();
+class InvalidNode : public Node {
+  protected:
+    std::string name = "Invalid Node";
+    Node_Type nt = n_invalid;
+  public:
+    InvalidNode() {/*Nothing*/};
+    Node_Type getType() {return nt;}
+    void print(int d) {pad(d); cout << "INVALID NODE\n";}
+};
+
+class StopNode : public Node {
+  protected:
+    std::string name = "Stop Node";
+    Node_Type nt = n_stop;
+  public:
+    StopNode() {/*Nothing*/};
+    Node_Type getType() {return nt;}
+    void print(int d) {pad(d); cout << "STOP NODE\n";}
+};
+
+Node * SemanticStack::pop() {
+  Node * n;
+  if (item != NULL) {
+    n = (*item).getValue();
+    // TODO: fix memory leak
+    item = (*item).getNext();
+    return n;
+  }
+  else {
+    return new InvalidNode();
+  }
 }
 
-/**************************************
-           Semantic actions
-**************************************/
-
-
+Node * SemanticStack::peek() {
+  if (item != NULL) {
+    return item->getValue();
+  }
+  else {
+    return new InvalidNode();
+  }
+}
