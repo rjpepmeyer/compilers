@@ -4,7 +4,7 @@
 #include "scanner-utilities.cpp"
 #include "token-utilities.cpp"
 #include "scanner.cpp"
-#include "parser.cpp"
+#include "parser-limited.cpp"
 
 using namespace std;
 
@@ -15,9 +15,8 @@ int main(int argc, char *argv[]) {
   // Run scanner on input file
   tokenList * streamOfTokens = scanner(argv[1]);
 
-  Node * ast; //Dummy value in this context
   // Check if is valid program
-  if (parser(streamOfTokens,debug,&ast)) {
+  if (parser(streamOfTokens,debug)) {
     cout << "Valid flair program" << '\n';
   }
   else {
