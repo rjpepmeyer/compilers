@@ -341,13 +341,11 @@ bool parser(tokenList * input, bool debug, Node ** ast) {
         case makeformals:
           if (semStack.peek()->getType() == n_formal) {
             node1 = new FormalList(static_cast<FormalParamNode*>(semStack.pop()));
-            std::cout << "BEFORE WHILE\n";//DEBUG
             while(semStack.peek()->getType() == n_formal) {
               node2 = semStack.pop();
               static_cast<FormalList*>(node1)->
                 add(static_cast<FormalParamNode*>(node2));
             }
-            std::cout << "AFTER WHILE\n";//DEBUG
           }
           else {
             node1 = new FormalList(NULL);
