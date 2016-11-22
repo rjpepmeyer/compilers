@@ -93,6 +93,7 @@ class FormalList : public Node {
     }
     FormalList(FormalParamNode *f) {
       value = f;
+      next  = NULL;
     }
     void add(FormalParamNode * f) {
       next  = new FormalList(value, next);
@@ -141,6 +142,7 @@ class DefList : public Node {
     }
     DefList(Node *d) {
       value = d;
+      next  = NULL;
     }
     void add(DefNode *d) {
       next  = new DefList(value, next);
@@ -212,7 +214,10 @@ class StatementList : public Node {
       value = v;
       next  = n;
     }
-    StatementList(StatementNode *s) {value = s;}
+    StatementList(StatementNode *s) {
+        value = s;
+        next  = NULL;
+    }
     void add(StatementNode *s) {
       next = new StatementList(value, next);
       value = s;
@@ -397,6 +402,7 @@ class ExpressionList : public Node {
     }
     ExpressionList(ExpressionNode *e) {
       value = e;
+      next  = NULL;
     }
     void add(ExpressionNode *e) {
       next  = new ExpressionList(value, next);
