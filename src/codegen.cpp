@@ -1,7 +1,8 @@
 #include <string>
 #include <iostream>
 #include <sstream>
-#include "ast-utilities.cpp"
+
+using namespace std;
 
 //PrintOneTM
 const char *printOneTM = 
@@ -10,28 +11,34 @@ const char *printOneTM =
   "2: HALT 0,0,0";
 
 //PrintOneAST
-const char printOneAST = ""
-  ;
+const char printOneAST = 1;
 
-void registerRo(line,code,r1,r2,r3,comment = "") {
+//Initialize values
+int line;
+std::string code;
+std::string registerStr;
+int r1;
+int r2;
+int r3;
+std::string comment;
+
+class registerRo() {
+public:
   registerStr = r1","r2","r3;
-  cout << (line,code,registerStr,comment) <<}
+  void print() {
+    cout << line << "," << code << "," << registerStr << "," << comment << }};
 
-void registerRm(line,code,r1,difference,r2,comment) {
+class registerRm() {
+public:
   registerStr2 = r1","difference"("r2")";
-  cout << (line,code,registerStr2,comment); }
+  void print() {
+    cout << line << "," << code << "," << registerStr2 "," << comment << }};
 
 //This is our print procedure
-generatePrint(line, program) {
-  for r in range(0,3);
-    //generate code to prepare for code of left subtree
-    //generateCode(tree.leftChild());
-    //generate code to prepare for code of right subtree
-    //generateCode(tree.rightChild());
-    registerRm(line,"LDC","0","1","0","Adds one to the register");
+int hardCodeLine = 0;
+void generatePrint(registerRm, registerRo) {
+    registerRm(line,"LDC","0","1","0"," #Adds one to the register");
     line += 1;
-    registerRo(line,"OUT","0","0","0","Prints 1");
+    registerRo(line,"OUT",0,0,0," #Prints 1");
     line += 1;
-    registerRo(line,"HALT","0","0","0","Halts the TM code"); }}
-    //generate code to implement tree's behavior   
-
+    registerRo(line,"HALT",0,0,0," #Ends the TM code"); }   
