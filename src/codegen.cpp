@@ -10,7 +10,7 @@ const char *printOneTM =
   "2: HALT 0,0,0";
 
 //PrintOneAST
-const char printOneAST = 
+const char printOneAST = ""
   ;
 
 void registerRo(line,code,r1,r2,r3,comment = "") {
@@ -22,12 +22,12 @@ void registerRm(line,code,r1,difference,r2,comment) {
   cout << (line,code,registerStr2,comment); }
 
 //This is our print procedure
-generateCode("AST Tree") {
-  if("AST Tree" != null) {
+generatePrint(line, program) {
+  for r in range(0,3);
     //generate code to prepare for code of left subtree
     //generateCode(tree.leftChild());
     //generate code to prepare for code of right subtree
-    generateCode(tree.rightChild());
+    //generateCode(tree.rightChild());
     registerRm(line,"LDC","0","1","0","Adds one to the register");
     line += 1;
     registerRo(line,"OUT","0","0","0","Prints 1");
