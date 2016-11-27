@@ -5,34 +5,27 @@
 using namespace std;
 
 //PrintOneTM
-const char *printOneTM = 
-  "0: LDC  0,1(0)"
-  "1: OUT  0,0,0"
-  "2: HALT 0,0,0";
+const char printOneTM[] = "0: LDC  0,1(0)\n1: OUT  0,0,0\n2: HALT 0,0,0";
 
 //PrintOneAST
 const char printOneAST = 1;
 
 //Initialize values
-int line;
-std::string code;
-std::string registerStr;
-int r1;
-int r2;
-int r3;
-std::string comment;
+std::string code, comment;
+int r1, r2, r3, line;
 
-class registerRo() {
-public:
-  registerStr = r1","r2","r3;
-  void print() {
-    cout << line << "," << code << "," << registerStr << "," << comment << }};
+void registerRo(string line, string code, int r1, int r2, int r3, string comment) {
 
-class registerRm() {
+    cout << line << "," << code << "," << r1 << "," << r2 << "," << r3 << "," << comment;
+};
+/*
+class registerRm {
 public:
-  registerStr2 = r1","difference"("r2")";
+  registerStr2 = r1+","+difference+"("+r2+")";
   void print() {
-    cout << line << "," << code << "," << registerStr2 "," << comment << }};
+    cout<<line<<","<<code<<","<<registerStr2<<","<<comment
+  }
+};
 
 //This is our print procedure
 int hardCodeLine = 0;
@@ -41,4 +34,6 @@ void generatePrint(registerRm, registerRo) {
     line += 1;
     registerRo(line,"OUT",0,0,0," #Prints 1");
     line += 1;
-    registerRo(line,"HALT",0,0,0," #Ends the TM code"); }   
+    registerRo(line,"HALT",0,0,0," #Ends the TM code");
+}
+*/
