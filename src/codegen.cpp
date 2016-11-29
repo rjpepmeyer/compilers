@@ -15,7 +15,6 @@ std::string code, comment;
 int r1, r2, r3, line;
 
 void registerRo(string line, string code, int r1, int r2, int r3, string comment) {
-
     cout << line << "," << code << "," << r1 << "," << r2 << "," << r3 << "," << comment;
 };
 /*
