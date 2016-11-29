@@ -10,7 +10,7 @@ int main(int argc, char *argv[]) {
     cout << "Usage: <./flairc> <fileName>\n";
     return 0; }
   else {
-    if(string(argv[1]) == "print-one.flr") {
+    if((string(argv[1]) == "print-one.flr")||(string(argv[1]) == "print-one")) {
       //Logic for Project 5      
       ofstream tmFile("print-one.tm");
       registerRm(line," LDC    ",0,1,0," #Adds one to the register\n");
@@ -20,6 +20,7 @@ int main(int argc, char *argv[]) {
       registerRo(line," HALT   ",0,0,0," #Ends the TM code\n");
       return 0;        
       }
+/*
     else if(string(argv[1]) == "print-one") {
       //Same logic as above, but allows for the removal of .flr
       ofstream tmFile("print-one.tm");
@@ -30,6 +31,7 @@ int main(int argc, char *argv[]) {
       registerRo(line," HALT   ",0,0,0," #Ends the TM code\n");
       return 0;
       }
+*/
     else {
       //Break program on anything that is not print-one
       cout << "Whoops, you entered a file other than print-one...\n"; }}}
