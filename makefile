@@ -12,6 +12,9 @@ flairf:
 flairp:
 	g++ -std=c++0x src/flairp.cpp -o flairp
 
+flairc:
+	g++ -std=c++0x src/flairc.cpp -o flairc
+
 clean:
 	rm -f *~
 	rm -f *.o
