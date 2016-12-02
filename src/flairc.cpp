@@ -2,6 +2,11 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include "compiler.hpp"
+#include "scanner-utilities.cpp"
+#include "token-utilities.cpp"
+#include "scanner.cpp"
+#include "parser.cpp"
 
 using namespace std;
 
