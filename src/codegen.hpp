@@ -17,8 +17,8 @@ const char printOneAST =
 */
 
 //Initialize values
-string code, comment;
-int r1, r2, r3, offset, line = 0;
+//string code, comment;
+//int r1, r2, r3, offset, line = 0;
 
 void registerRo(int line, string code, int r1, int r2, int r3, string comment) {
     cout << line << ":" << code << r1 << "," << r2 << "," << r3 << "," << comment;
