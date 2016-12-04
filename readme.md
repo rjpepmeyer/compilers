@@ -40,3 +40,13 @@ Compiling: `make flairp`
 Running: `./flairp file-name.flr`
     
 Produces as output an abstract syntax tree representing the input program.
+
+**TM output for print-one**
+
+*Instruction:s*
+
+Compiling: `make flairc`
+
+Running: `./flairc flair-programs/print-one.flr' | './flairc flair-programs/print-one`
+
+Produces TM language as output for the print-one function.

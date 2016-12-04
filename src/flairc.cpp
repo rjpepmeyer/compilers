@@ -1,4 +1,4 @@
-#include <fstream>
+d#include <fstream>
 #include <iostream>
 #include <string>
 #include "compiler.hpp"
@@ -22,8 +22,8 @@ int main(int argc, char *argv[]) {
     cout << "Usage: <./flairc> <fileName>\n";
     return 1; }
   else {
-    if((string(argv[1]) == "print-one.flr")||
-       (string(argv[1]) == "print-one")) {
+    if((string(argv[1]) == "flair-programs/print-one.flr")||
+       (string(argv[1]) == "flair-programs/print-one")) {
       // Populate Tokens
       tokens = scanner(argv[1]);
       // Populate AST
