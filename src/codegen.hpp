@@ -1,14 +1,11 @@
 #include <string>
 #include <iostream>
 #include <sstream>
-//#include "scanner-utilities.cpp"
+#include "ast-utilities.cpp"
 
 using namespace std;
 
 /*
-//PrintOneTM
-const char printOneTM[] = "0: LDC  0,1(0)\n1: OUT  0,0,0\n2: HALT 0,0,0";
-
 //PrintOneAST
 const char printOneAST = 
    program main();
@@ -17,9 +14,16 @@ const char printOneAST =
    end.
 */
 
-//Initialize values
-//string code, comment;
-//int r1, r2, r3, offset, line = 0;
+void printOne(Node ** ast) {
+  // Sort through an AST
+  for (const Node &ast : ast){
+    // Find the print node
+    cout << "Node\n";
+    
+    // Send info from print node to regRo and regRm
+    
+  }
+}
 
 void registerRo(int line, string code, int r1, int r2, int r3, string comment) {
     cout << line << ":" << code << r1 << "," << r2 << "," << r3 << "," << comment;
