@@ -42,12 +42,15 @@ int main(int argc, char *argv[]) {
       if (parser(tokens, debug, &ast)){
         // Walk through AST and send the nodes for "print 1" to codegen
         ofstream tmFile("print-one.tm");
+        printOne(&ast);
+/*
         registerRm(line," LDC    ",0,1,0," #Adds one to the register\n");
         line += 1;
         registerRo(line," OUT    ",0,0,0," #Prints 1\n");
         line += 1;
         registerRo(line," HALT   ",0,0,0," #Ends the TM code\n");
         return 0; 
+*/
         tmFile.close();
       }
       else {
