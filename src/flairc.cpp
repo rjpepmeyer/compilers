@@ -1,6 +1,7 @@
-d#include <fstream>
+#include <fstream>
 #include <iostream>
-#include <string>
+#include <string.h>
+#include <stdio.h>
 #include "compiler.hpp"
 #include "scanner-utilities.cpp"
 #include "token-utilities.cpp"
@@ -16,6 +17,9 @@ int main(int argc, char *argv[]) {
   tokenList * tokens;
   bool debug = false;
   int line = 0;
+  string inputFile(argv[1]);
+  string ext(".flr");
+  char * iFileName;  
 
   // Main Code
   if(argc > 2) {
@@ -25,7 +29,14 @@ int main(int argc, char *argv[]) {
     if((string(argv[1]) == "flair-programs/print-one.flr")||
        (string(argv[1]) == "flair-programs/print-one")) {
       // Populate Tokens
-      tokens = scanner(argv[1]);
+      if(inputFile == "flair-programs/print-one"){
+        inputFile+=ext;
+        iFileName = new char[inputFile.length() + 1];
+        strcpy(iFileName, inputFile.c_str());
+        tokens = scanner(iFileName);
+      } else {
+        tokens = scanner(argv[1]);
+      }
       // Populate AST
       if (parser(tokens, debug, &ast)){
         // Walk through AST and send the nodes for "print 1" to codegen
