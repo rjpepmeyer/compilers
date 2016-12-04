@@ -43,10 +43,10 @@ Produces as output an abstract syntax tree representing the input program.
 
 **TM output for print-one**
 
-*Instructions*
+*Instruction:s*
 
-Compiling: 'make flairc'
+Compiling: `make flairc`
 
-Running: './flairc print-one.flr' | './flairc print-one'
+Running: `./flairc print-one.flr' | './flairc print-one`
 
 Produces TM language as output for the print-one function.
