@@ -47,6 +47,6 @@ Produces as output an abstract syntax tree representing the input program.
 
 Compiling: `make flairc`
 
-Running: `./flairc print-one.flr' | './flairc print-one`
+Running: `./flairc flair-programs/print-one.flr' | './flairc flair-programs/print-one`
 
 Produces TM language as output for the print-one function.
