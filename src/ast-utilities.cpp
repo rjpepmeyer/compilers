@@ -542,12 +542,12 @@ void FormalParamNode::print(int d) {
 
 void ProgramNode::printTM() {
   if (body != NULL) body->printTM();
-  registerRo(2," HALT    ",0,0,0," #Ends the TM code\n");
+  registerRo(2," HALT   ",0,0,0," #Ends the TM code\n");
 }
 
 void BodyNode::printTM() {
   if (value != NULL) value->printTM();
-  cout << "Body TM\n";
+  //cout << "Body TM\n";
 }
 
 void ReturnStmtNode::printTM() {
@@ -561,12 +561,12 @@ void ReturnStmtNode::printTM() {
 
 void PrintStmtNode::printTM() {
   if (value != NULL) value->printTM();
-  cout << "Print Statement TM\n";
+  //cout << "Print Statement TM\n";
 }
 
 void NumberNode::printTM() {
   int reg = 0;
-  cout << "Number TM\n";
+  //cout << "Number TM\n";
   //TODO getReg function for a free register
   registerRm(0," LDC    ",reg,value,0," #Adds one to the register\n");
   //TODO return reg;
@@ -574,7 +574,7 @@ void NumberNode::printTM() {
 
 void StatementList::printTM() {
   if (value != NULL) value->printTM();
-  cout << "StatementList TM\n";
+  //cout << "StatementList TM\n";
 }
 
 /**************************************

@@ -17,7 +17,7 @@ void printOne(Node ** ast) {
   // Sort through an AST
 //  for (const Node &ast : ast){ //method one
 //  for (unsigned int i=0;i< sizeof(ast)/sizeof(ast[0]);i=i+1){ //method two
-    ast[0]->print(0);
+    //ast[0]->print(0);
     ast[0]->printTM();
     // Find the print node
     
