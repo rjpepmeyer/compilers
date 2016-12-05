@@ -7,7 +7,6 @@
 #include "token-utilities.cpp"
 #include "scanner.cpp"
 #include "parser.cpp"
-#include "codegen.hpp"
 
 using namespace std;
 
