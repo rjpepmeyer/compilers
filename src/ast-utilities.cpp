@@ -3,6 +3,11 @@
 #include <sstream>
 #include "ast-utilities.hpp"
 
+/* Index
+   print Functions     Line 424
+   printTM Functions   Line 534
+*/
+
 class TypeNode : public Node {
   protected:
     Node_Type   nt   = n_type;
@@ -60,6 +65,7 @@ class ProgramNode : public Node {
       setBody(b);
     }
     void print(int);
+    void printTM();
 };
 
 class FormalParamNode : public Node {
@@ -147,7 +153,7 @@ class DefList : public Node {
     void add(DefNode *d) {
       next  = new DefList(value, next);
       value = d; 
-    }
+}
     void print(int d) {
       if (value != NULL) {(*value).print(d);}
       if (next  != NULL) { (*next).print(d);}
@@ -165,6 +171,7 @@ class BodyNode : public Node {
       value = s;
     }
     void print(int);
+    void printTM();
 };
 
 class StatementNode : public Node {
@@ -188,6 +195,7 @@ class PrintStmtNode : public StatementNode {
     void setValue(Node *e) {value = e;}
     PrintStmtNode (Node *e) {setValue(e);}
     void print(int);
+    void printTM();
 };
 
 class ReturnStmtNode : public StatementNode {
@@ -200,6 +208,7 @@ class ReturnStmtNode : public StatementNode {
     void setValue(Node *e) {value = e;}
     ReturnStmtNode (Node *e) {setValue(e);}
     void print(int);
+    void printTM();
 };
 
 class StatementList : public Node {
@@ -226,6 +235,7 @@ class StatementList : public Node {
       if (value != NULL) {(*value).print(d);}
       if (next  != NULL) { (*next).print(d);}
     }
+    void printTM();
 };
 
 class ExpressionNode : public Node {
@@ -270,6 +280,7 @@ class NumberNode : public ExpressionNode {
       pad(d);
       cout << name << ": " << value << '\n';
     }
+    void printTM();
 };
 
 class BooleanNode : public ExpressionNode {
@@ -521,6 +532,41 @@ void FormalParamNode::print(int d) {
   if (value != NULL) value->print(d+2);
   pad(d+1); cout << "Parameter type\n";
   if (type != NULL)  type->print(d+2);
+}
+
+
+/**************************************
+    printTM functions  
+ *************************************/
+
+void ProgramNode::printTM() {
+  if (body != NULL) body->printTM();
+  cout << "Program TM\n";
+}
+
+void BodyNode::printTM() {
+  if (value != NULL) value->printTM();
+  cout << "Body TM\n";
+}
+
+void ReturnStmtNode::printTM() {
+  if (value != NULL) value->printTM();
+  cout << "Return Statement TM\n";
+}
+
+void PrintStmtNode::printTM() {
+  if (value != NULL) value->printTM();
+  cout << "Print Statement TM\n";
+}
+
+void NumberNode::printTM() {
+  this->print(1);
+  cout << "Number TM\n";
+}
+
+void StatementList::printTM() {
+  if (value != NULL) value->printTM();
+  cout << "StatementList TM\n";
 }
 
 /**************************************
