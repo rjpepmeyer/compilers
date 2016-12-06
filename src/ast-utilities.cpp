@@ -550,6 +550,11 @@ void BodyNode::printTM() {
   //cout << "Body TM\n";
 }
 
+void StatementList::printTM() {
+  if (value != NULL) value->printTM();
+  //cout << "StatementList TM\n";
+}
+
 void ReturnStmtNode::printTM() {
   int reg = 0;
   if (value != NULL) {
@@ -565,11 +570,6 @@ void NumberNode::printTM() {
   //TODO getReg function for a free register
   registerRm(0," LDC    ",reg,value,0," #Adds one to the register\n");
   //TODO return reg;
-}
-
-void StatementList::printTM() {
-  if (value != NULL) value->printTM();
-  //cout << "StatementList TM\n";
 }
 
 /**************************************
