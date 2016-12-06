@@ -1,4 +1,0 @@
-program foo();
-begin
-return	gcd(a-b,a)
-end.
