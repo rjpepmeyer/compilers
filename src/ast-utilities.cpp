@@ -559,11 +559,6 @@ void ReturnStmtNode::printTM() {
   }
 }
 
-void PrintStmtNode::printTM() {
-  if (value != NULL) value->printTM();
-  //cout << "Print Statement TM\n";
-}
-
 void NumberNode::printTM() {
   int reg = 0;
   //cout << "Number TM\n";
