@@ -541,6 +541,7 @@ void FormalParamNode::print(int d) {
  *************************************/
 
 void ProgramNode::printTM() {
+  
   if (body != NULL) body->printTM();
   registerRo(2," HALT   ",0,0,0," #Ends the TM code\n");
 }
@@ -560,7 +561,11 @@ void ReturnStmtNode::printTM() {
   if (value != NULL) {
     reg = 0; //TODO handle passing a register back from ExprNode types
     value->printTM();
+    //TM
     registerRo(1," OUT    ",reg,0,0," #Prints 1\n");
+    //TAC
+    "t4 := t1
+    "return t4"
   }
 }
 
@@ -570,6 +575,8 @@ void NumberNode::printTM() {
   //TODO getReg function for a free register
   registerRm(0," LDC    ",reg,value,0," #Adds one to the register\n");
   //TODO return reg;
+  //TAC
+  tmBuild->addLine("t1 = " + value)
 }
 
 /**************************************
