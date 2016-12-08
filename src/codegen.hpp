@@ -19,18 +19,21 @@ void codeGen(Node * ast) {
     TACs *myTACs = NULL;
     int count = 0;
     int line  = 0;
+    string comment = "";
     ast->makeTAC(&myTACs, &count);
     if (myTACs != NULL) {
-      cout << " 0:  LDA 6,1(7)\n" <<
-              " 1:  LDA 7,4(0)\n" <<
-              " 2:  OUT 1,0,0 \n" <<
-              " 3: HALT 0,0,0 \n";
+      cout << " 0:  LDA 6,1(7) #Places the address 1 into register 6\n" << 
+              " 1:  LDA 7,4(0) #Places the address 4 into register 7\n" <<
+              " 2:  OUT 1,0,0  #Outputs the contects of register 1\n" <<
+              " 3: HALT 0,0,0  #Ends the program\n";
       line = 4;
       if (myTACs->getValue().getOp() == t_ass) {
-        registerRm(line," LDC",1,myTACs->getValue().get1(),0,"");
+        //comment = "#Placing the number " + 
+        //           string(myTACs->getValue().get1()) + "into register 1\n";
+        registerRm(line," LDC",1,myTACs->getValue().get1(),0,comment);
         line++;
       }
-      registerRm(line," LDA",7,0,6,"");
+      registerRm(line," LDA",7,0,6,comment);
     }
     else {
       cout << "Sad\n";
