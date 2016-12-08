@@ -1,0 +1,18 @@
+*Assumptions
+no recursive functions
+
+*Plan of Implementation
+return statment working
+-generate 3AC for return statement
+-generate TM for return statement
+-adding prologue (Ron's got it written down alread)
+binary math operations
+boolean values
+comparison operations
+
+
+*todo list
+implement 3AC
+Start symbol table
+  create dicionary for this
+

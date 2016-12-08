@@ -20,17 +20,25 @@ void codeGen(Node * ast) {
     int count = 0;
     int line  = 0;
     string comment = "";
+    string r1;
+    string off;
+    string r2;
+    string r3;
+    stringstream ss;
+
     ast->makeTAC(&myTACs, &count);
     if (myTACs != NULL) {
-      cout << " 0:  LDA 6,1(7) #Places the address 1 into register 6\n" << 
-              " 1:  LDA 7,4(0) #Places the address 4 into register 7\n" <<
+      cout << " 0:  LDA 6,1(7) #Places the address 1 into return address register 6\n" << 
+              " 1:  LDA 7,4(0) #Places the address 4 into program counter 7\n" <<
               " 2:  OUT 1,0,0  #Outputs the contects of register 1\n" <<
               " 3: HALT 0,0,0  #Ends the program\n";
       line = 4;
       if (myTACs->getValue().getOp() == t_ass) {
-        //comment = "#Placing the number " + 
-        //           string(myTACs->getValue().get1()) + "into register 1\n";
+        ss << myTACs->getValue().get1();
+        off = ss.str();        
+        comment = " #Placing the number " + off + "into register 1";
         registerRm(line," LDC",1,myTACs->getValue().get1(),0,comment);
+        comment = "";
         line++;
       }
       registerRm(line," LDA",7,0,6,comment);
