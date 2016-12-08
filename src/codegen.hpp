@@ -33,18 +33,31 @@ void codeGen(Node * ast) {
               " 2:  OUT 1,0,0  #Outputs the contects of register 1\n" <<
               " 3: HALT 0,0,0  #Ends the program\n";
       line = 4;
-      if (myTACs->getValue().getOp() == t_ass) {
-        ss << myTACs->getValue().get1();
-        off = ss.str();        
-        comment = " #Places the offset " + off + " into register 1";
-        registerRm(line," LDC",1,myTACs->getValue().get1(),0,comment);
-        comment = "";
-        line++;
-      }
+      switch (myTACs->getValue().getOp()) {      
+        case t_ass :
+          ss << myTACs->getValue().get1();
+          off = ss.str();        
+          comment = " #Places the offset " + off + " into register 1";
+          registerRm(line," LDC",1,myTACs->getValue().get1(),0,comment);
+          comment = "";
+          line++;
+          break;
+        case t_add :
+          cout << "I haven't implemented TM for t_add yet";
+          break;
+        case t_sub :
+          cout << "I haven't implemented TM for t_sub yet";
+          break;
+        case t_mul :
+          cout << "I haven't implemented TM for t_mul yet";
+          break;
+        case t_div :
+          cout << "I haven't implemented TM for t_div yet";
+          break;
+        }
       comment = " #Loads the return address from reg 6 into the program counter";
-      registerRm(line," LDA",7,0,6,comment);
-    }
-    else {
+      registerRm(line," LDA",7,0,6,comment);  
+    } else {
       cout << "Sad\n";
     }
 }
