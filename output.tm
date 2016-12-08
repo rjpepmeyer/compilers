@@ -1,6 +1,6 @@
- 0:  LDA 6,1(7) #Places the address 1 into register 6
- 1:  LDA 7,4(0) #Places the address 4 into register 7
+ 0:  LDA 6,1(7) #Places the offset 1 into return address register 6
+ 1:  LDA 7,4(0) #Places the offset 4 into program counter 7
  2:  OUT 1,0,0  #Outputs the contects of register 1
  3: HALT 0,0,0  #Ends the program
- 4:  LDC 1,1(0)
+ 4:  LDC 1,1(0) #Placing the number 1into register 1
  5:  LDA 7,0(6)
