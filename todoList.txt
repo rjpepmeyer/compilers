@@ -12,7 +12,8 @@ comparison operations
 
 
 *todo list
-implement 3AC
-Start symbol table
-  create dicionary for this
+Binary Operators
+Boolean Values
+Boolean Expressions
+Comparitive Expressions
 
