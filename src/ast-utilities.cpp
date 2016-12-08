@@ -6,7 +6,7 @@
 
 /* Index
    print Functions     Line 424
-   printTM Functions   Line 534
+   makeTAC Functions   Line 534
 */
 
 class TypeNode : public Node {
@@ -66,7 +66,7 @@ class ProgramNode : public Node {
       setBody(b);
     }
     void print(int);
-    void printTM();
+    void makeTAC();
 };
 
 class FormalParamNode : public Node {
@@ -172,7 +172,7 @@ class BodyNode : public Node {
       value = s;
     }
     void print(int);
-    void printTM();
+    void makeTAC();
 };
 
 class StatementNode : public Node {
@@ -196,7 +196,6 @@ class PrintStmtNode : public StatementNode {
     void setValue(Node *e) {value = e;}
     PrintStmtNode (Node *e) {setValue(e);}
     void print(int);
-    void printTM();
 };
 
 class ReturnStmtNode : public StatementNode {
@@ -209,7 +208,7 @@ class ReturnStmtNode : public StatementNode {
     void setValue(Node *e) {value = e;}
     ReturnStmtNode (Node *e) {setValue(e);}
     void print(int);
-    void printTM();
+    void makeTAC();
 };
 
 class StatementList : public Node {
@@ -236,7 +235,7 @@ class StatementList : public Node {
       if (value != NULL) {(*value).print(d);}
       if (next  != NULL) { (*next).print(d);}
     }
-    void printTM();
+    void makeTAC();
 };
 
 class ExpressionNode : public Node {
@@ -281,7 +280,7 @@ class NumberNode : public ExpressionNode {
       pad(d);
       cout << name << ": " << value << '\n';
     }
-    void printTM();
+    void makeTAC();
 };
 
 class BooleanNode : public ExpressionNode {
@@ -537,46 +536,46 @@ void FormalParamNode::print(int d) {
 
 
 /**************************************
-    printTM functions  
+    makeTAC functions  
  *************************************/
 
-void ProgramNode::printTM() {
+void ProgramNode::makeTAC() {
   
-  if (body != NULL) body->printTM();
+  if (body != NULL) body->makeTAC();
   registerRo(2," HALT   ",0,0,0," #Ends the TM code\n");
 }
 
-void BodyNode::printTM() {
-  if (value != NULL) value->printTM();
+void BodyNode::makeTAC() {
+  if (value != NULL) value->makeTAC();
   //cout << "Body TM\n";
 }
 
-void StatementList::printTM() {
-  if (value != NULL) value->printTM();
+void StatementList::makeTAC() {
+  if (value != NULL) value->makeTAC();
   //cout << "StatementList TM\n";
 }
 
-void ReturnStmtNode::printTM() {
+void ReturnStmtNode::makeTAC() {
   int reg = 0;
   if (value != NULL) {
     reg = 0; //TODO handle passing a register back from ExprNode types
-    value->printTM();
+    value->makeTAC();
     //TM
     registerRo(1," OUT    ",reg,0,0," #Prints 1\n");
     //TAC
-    "t4 := t1
-    "return t4"
+    //"t4 := t1"
+    //"return t4"
   }
 }
 
-void NumberNode::printTM() {
+void NumberNode::makeTAC() {
   int reg = 0;
   //cout << "Number TM\n";
   //TODO getReg function for a free register
   registerRm(0," LDC    ",reg,value,0," #Adds one to the register\n");
   //TODO return reg;
   //TAC
-  tmBuild->addLine("t1 = " + value)
+  //tmBuild->addLine("t1 = " + value)
 }
 
 /**************************************
