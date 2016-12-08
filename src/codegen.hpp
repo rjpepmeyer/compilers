@@ -54,6 +54,9 @@ void codeGen(Node * ast) {
         case t_div :
           cout << "I haven't implemented TM for t_div yet";
           break;
+        case t_neg :
+          cout << "I haven't implemented TM for t_div yet";
+          break;
         }
       comment = " #Loads the return address from reg 6 into the program counter";
       registerRm(line," LDA",7,0,6,comment);  
