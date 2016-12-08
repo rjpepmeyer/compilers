@@ -305,6 +305,7 @@ class BooleanNode : public ExpressionNode {
       if (value) cout << "true"; else cout << "false";
       cout << '\n';
     }
+    void makeTAC(TACs**,int*);
 };
 
 class IfExprNode : public ExpressionNode {
@@ -576,6 +577,24 @@ void NumberNode::makeTAC(TACs **t, int *count) {
   }
 }
 
+void BooleanNode::makeTAC(TACs **t, int *count) {
+  cout << "3AC for boolean node...\n";
+  TAC myTAC;
+  myTAC.setOp(t_ass);
+  if (value){
+    myTAC.set1(1);
+  } else {
+    myTAC.set1(0);
+  }
+  myTAC.set2(0);
+  myTAC.setRes(0);
+  if (*t == NULL) {
+    *t = new TACs(myTAC, NULL);
+  }
+  else {
+    (**t).add(myTAC);
+  }
+}
 /**************************************
     Nodes that aren't part of syntax  
  *************************************/
