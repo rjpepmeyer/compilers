@@ -1,6 +1,7 @@
 #include <string>
 #include <iostream>
 #include <sstream>
+#include "tacClass.cpp"
 #include "ast-utilities.hpp"
 #include "codegen.hpp"
 
@@ -66,7 +67,7 @@ class ProgramNode : public Node {
       setBody(b);
     }
     void print(int);
-    void makeTAC();
+    void makeTAC(TACs**,int*);
 };
 
 class FormalParamNode : public Node {
@@ -172,7 +173,7 @@ class BodyNode : public Node {
       value = s;
     }
     void print(int);
-    void makeTAC();
+    void makeTAC(TACs**,int*);
 };
 
 class StatementNode : public Node {
@@ -208,7 +209,7 @@ class ReturnStmtNode : public StatementNode {
     void setValue(Node *e) {value = e;}
     ReturnStmtNode (Node *e) {setValue(e);}
     void print(int);
-    void makeTAC();
+    void makeTAC(TACs**,int*);
 };
 
 class StatementList : public Node {
@@ -235,7 +236,7 @@ class StatementList : public Node {
       if (value != NULL) {(*value).print(d);}
       if (next  != NULL) { (*next).print(d);}
     }
-    void makeTAC();
+    void makeTAC(TACs**,int*);
 };
 
 class ExpressionNode : public Node {
@@ -280,7 +281,7 @@ class NumberNode : public ExpressionNode {
       pad(d);
       cout << name << ": " << value << '\n';
     }
-    void makeTAC();
+    void makeTAC(TACs**,int*);
 };
 
 class BooleanNode : public ExpressionNode {
@@ -539,43 +540,40 @@ void FormalParamNode::print(int d) {
     makeTAC functions  
  *************************************/
 
-void ProgramNode::makeTAC() {
-  
-  if (body != NULL) body->makeTAC();
-  registerRo(2," HALT   ",0,0,0," #Ends the TM code\n");
+void ProgramNode::makeTAC(TACs **t, int *count) {
+  cout << "3AC for program...\n";
+  if (body != NULL) body->makeTAC(t,count);
 }
 
-void BodyNode::makeTAC() {
-  if (value != NULL) value->makeTAC();
-  //cout << "Body TM\n";
+void BodyNode::makeTAC(TACs **t, int *count) {
+  cout << "3AC for body...\n";
+  if (value != NULL) value->makeTAC(t,count);
 }
 
-void StatementList::makeTAC() {
-  if (value != NULL) value->makeTAC();
-  //cout << "StatementList TM\n";
+void StatementList::makeTAC(TACs **t, int *count) {
+  cout << "3AC for statement list...\n";
+  if (value != NULL) value->makeTAC(t,count);
+  // LATER -- support for multiple statements
 }
 
-void ReturnStmtNode::makeTAC() {
-  int reg = 0;
-  if (value != NULL) {
-    reg = 0; //TODO handle passing a register back from ExprNode types
-    value->makeTAC();
-    //TM
-    registerRo(1," OUT    ",reg,0,0," #Prints 1\n");
-    //TAC
-    //"t4 := t1"
-    //"return t4"
+void ReturnStmtNode::makeTAC(TACs **t, int *count) {
+  cout << "3AC for return statement...\n";
+  if (value != NULL) value->makeTAC(t,count);
+}
+
+void NumberNode::makeTAC(TACs **t, int *count) {
+  cout << "3AC for number node...\n";
+  TAC myTAC;
+  myTAC.setOp(t_ass);
+  myTAC.set1(value);
+  myTAC.set2(0);
+  myTAC.setRes(0);
+  if (*t == NULL) {
+    *t = new TACs(myTAC, NULL);
   }
-}
-
-void NumberNode::makeTAC() {
-  int reg = 0;
-  //cout << "Number TM\n";
-  //TODO getReg function for a free register
-  registerRm(0," LDC    ",reg,value,0," #Adds one to the register\n");
-  //TODO return reg;
-  //TAC
-  //tmBuild->addLine("t1 = " + value)
+  else {
+    (**t).add(myTAC);
+  }
 }
 
 /**************************************
