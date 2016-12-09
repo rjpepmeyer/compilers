@@ -25,9 +25,13 @@ void codeGen(Node * ast) {
     int line  = 0;
     string comment = "";
     string r1;
+    int r1i;
     string off;
+    int offi;
     string r2;
+    int r2i;
     string r3;
+    int r3i;
     stringstream ss;
 
     cout << " 0:  LDA 6,1(7) #Places line 2 into return address register 6\n" << 
@@ -40,10 +44,11 @@ void codeGen(Node * ast) {
     while (myTACs != NULL) {
       switch (myTACs->getValue().getOp()) {      
         case t_ass :
-          ss << myTACs->getValue().get1();
+          offi = myTACs->getValue().get1();
+          ss << offi;
           off = ss.str();
           comment = " #Places the value " + off + " into register 2";
-          registerRm(line," LDA",2,myTACs->getValue().get1(),0,comment);
+          registerRm(line," LDA",2,offi,0,comment);
           ss.str("");
           ss << count;
           off = ss.str();
