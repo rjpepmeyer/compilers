@@ -577,9 +577,14 @@ void BinaryExprNode::makeTAC(TACs **t, int *count) {
   string s;
   if (op->getValue().compare(a) == 0){
     myTAC.setOp(t_add);
+    TACs myTACs(myTAC, NULL);
+    myTACs.add(left->makeTAC(t,count));
+    myTACs.add(right->makeTAC(t,count));
   }//finish with the rest of the operators later
+/*
   if (int(left->getType()) == n_number){ 
     s = left->getValue();
+    cout << "left = " << s << "\n";
     stringstream convert(s);
     convert >> i;
     myTAC.set1(i);
@@ -597,6 +602,7 @@ void BinaryExprNode::makeTAC(TACs **t, int *count) {
   else {
     (**t).add(myTAC);
   }
+*/
 }
 
 void NumberNode::makeTAC(TACs **t, int *count) {
