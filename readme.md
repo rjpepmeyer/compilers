@@ -1,8 +1,9 @@
-Flair Compiler
-==============
+===============================================
     
 For Translation of Programming Languages CS 4550
     
+================================================
+
 **Contributors:**
 * Keane Haase
 * Chad Gilmer
@@ -11,42 +12,28 @@ For Translation of Programming Languages CS 4550
     
 Implementation language: C++ (at minimum, std=0x for some string methods)
     
-**Scanner**
-    
-*Instructions:*
-        
-Compiling: `make flairs`
-    
-Running: `./flairs file-name.flr`
-    
-Produces as output a list of tokens, including the type of the token and the line number where it occured.
-    
-**Verifying parser**
-    
-*Instructions:*
-        
-Compiling: `make flairv`
-    
-Running: `./flairv file-name.flr`
-    
-Produces as output whether the input file represents a valid flair program, syntactically.
-    
-**Tree-producing parser**
-    
-*Instructions:*
-        
-Compiling: `make flairp`
-    
-Running: `./flairp file-name.flr`
-    
-Produces as output an abstract syntax tree representing the input program.
+Basic Description of the Project: 
 
-**Code generator**
+  It compiles flair programs to an abstract syntax tree, and a subset of those programs to TM assembly code.
 
-*Instructions:*
+Features Not Implemented:
 
-Compiling: `make flairc`
+  Function calls, if statement, command line arguments, outputing to file (as opposed to std output), boolean comparisons.
+  Working features include returning the result of binary arithmetic expressions (e.g. 1 + 2 * 3).
 
-Running: `./flairc flair-programs/file-name.flr' | './flairc flair-programs/file-name`
+List of Known Bugs:
 
-Produces as output TM code from the input flair program.
+  N/A
+
+Optimizations Implemented:
+
+  N/A
+
+How to build our compiler:
+
+  make clean 
+  make flairc
+
+How to run compiler:
+ 
+   ./flairc test-programs/<input file>

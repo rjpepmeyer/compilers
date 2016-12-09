@@ -8,12 +8,17 @@
 
 using namespace std;
 
+string inputFile;
+string outputFile;
+string alteredFile;
+
 int main(int argc, char *argv[]) {
+ 
   // Determine if debugging
   bool debug;
   debug = (argc >= 3);
   // Run scanner on input file
-  tokenList * streamOfTokens = scanner(argv[1]);
+  tokenList * streamOfTokens = scanner(argv[1]);  
 
   Node * ast;
   if (parser(streamOfTokens,debug,&ast)) {

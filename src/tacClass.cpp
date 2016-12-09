@@ -40,7 +40,12 @@ class TACs {
       setNext(n);
     }
     void add(TAC v) {
-      next = new TACs(v, NULL);
+      if (next == NULL) {
+        next = new TACs(v, NULL);
+      }
+      else {
+        next->add(v);
+      }
     }
     TAC getValue() {return value;}
     TACs * getNext() {return next;}
