@@ -13,13 +13,7 @@ string outputFile;
 string alteredFile;
 
 int main(int argc, char *argv[]) {
-
-  inputFile = string(argv[1]);
-  size_t extension = inputFile.find_last_of(".");
-  alteredFile = inputFile.substr(0, extension);
-  outputFile = alteredFile+".tm";
-  cin >> outputFile;  
-  
+ 
   // Determine if debugging
   bool debug;
   debug = (argc >= 3);
