@@ -550,28 +550,27 @@ void FormalParamNode::print(int d) {
  *************************************/
 
 void ProgramNode::makeTAC(TACs **t, int *count) {
-//  cout << "3AC for program...\n";
+  cout << "*3AC for program...\n";
   if (body != NULL) body->makeTAC(t,count);
 }
 
 void BodyNode::makeTAC(TACs **t, int *count) {
-//  cout << "3AC for body...\n";
+  cout << "*3AC for body...\n";
   if (value != NULL) value->makeTAC(t,count);
 }
 
 void StatementList::makeTAC(TACs **t, int *count) {
-//  cout << "3AC for statement list...\n";
+  cout << "*3AC for statement list...\n";
   if (value != NULL) value->makeTAC(t,count);
   // LATER -- support for multiple statements
 }
 
 void ReturnStmtNode::makeTAC(TACs **t, int *count) {
-//  cout << "3AC for return statement...\n";
+  cout << "*3AC for return statement...\n";
   if (value != NULL) value->makeTAC(t,count);
 }
 
 void BinaryExprNode::makeTAC(TACs **t, int *count) {
-//  cout << "3AC for binary expression...\n";
   TAC myTAC;
   int left_addr, right_addr;
   // Make TAC of left and store result's dmem address
@@ -581,6 +580,7 @@ void BinaryExprNode::makeTAC(TACs **t, int *count) {
   right->makeTAC(t,count);
   right_addr = (*count)-1;
   // Recall the results from memory
+  cout << "*3AC for binary expression...\n";
   if (op->getValue() == "+") {myTAC.setOp(t_add);}
   myTAC.set1(left_addr);
   myTAC.set2(right_addr);
@@ -590,7 +590,7 @@ void BinaryExprNode::makeTAC(TACs **t, int *count) {
 }
 
 void NumberNode::makeTAC(TACs **t, int *count) {
-//  cout << "3AC for number node...\n";
+  cout << "*3AC for number node...\n";
   TAC myTAC;
   myTAC.setOp(t_ass);
   myTAC.set1(value);

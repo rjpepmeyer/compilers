@@ -42,19 +42,22 @@ void codeGen(Node * ast) {
 
     ast->makeTAC(&myTACs, &count);
     while (myTACs != NULL) {
+        cout << "*" << myTACs->getValue().getOp() << myTACs->getValue().get1() << myTACs->getValue().get2() << myTACs->getValue().getRes() << '\n';
       switch (myTACs->getValue().getOp()) {      
         case t_ass :
+          cout << "* Processing an assignment\n";
           offi = myTACs->getValue().get1();
           ss << offi;
           off = ss.str();
           comment = " #Places the value " + off + " into register 2";
           registerRm(line," LDA",2,offi,0,comment);
           ss.str("");
-          ss << count;
+          offi = myTACs->getValue().getRes();
+          ss << offi;
           off = ss.str();
           line++;
           comment = " #Stores the value of register 2 in dmem location " + off;
-          registerRm(line,"  ST",2,count,0,comment);
+          registerRm(line,"  ST",2,offi,0,comment);
           comment = "\n";
           line++;
           break;
@@ -72,7 +75,18 @@ void codeGen(Node * ast) {
 	  line++;
 	  registerRo(line," ADD",1,2,3,comment);
 	  line++;*/
-          cout << "I haven't finished TM for t_add yet\n";
+          r1i = myTACs->getValue().get1();
+          offi = myTACs->getValue().get2();
+          r2i = myTACs->getValue().getRes();
+          comment = "";
+          registerRm(line, "  LD",2,r1i,0,comment);
+          line++;
+          registerRm(line, "  LD",3,offi,0,comment);
+          line++;
+          registerRo(line, " ADD",2,2,3,comment);
+          line++;
+          registerRm(line, "  ST",2,r2i,0,comment);
+          line++;
           break;
         case t_sub :
 /*	  registerRm(line," LDC",2,myTACs->getValue().get1(),0,comment);
@@ -96,19 +110,19 @@ void codeGen(Node * ast) {
 	  registerRo(line," DIV",1,2,3,comment);*/
           break;
         case t_neg :
-          cout << "I haven't implemented TM for t_div yet\n";
+          cout << "*I haven't implemented TM for t_div yet\n";
           break;
         default:
           cout << "Codegen can't figure out the op type of the TAC\n";
         }
-      comment = " #Puts the last saved number into register 1";
-      registerRm(line,"  LD",1,count,0,comment);
-      line++;
-      comment = " #Loads the return address from reg 6 into the program counter";
-      registerRm(line," LDA",7,0,6,comment);  
       if (myTACs->getNext() == NULL) break;
       myTACs->increment();
     }
+  comment = " #Puts the last saved number into register 1";
+  registerRm(line,"  LD",1,count-1,0,comment);
+  line++;
+  comment = " #Loads the return address from reg 6 into the program counter";
+  registerRm(line," LDA",7,0,6,comment);  
 }
 
 
