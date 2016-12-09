@@ -37,7 +37,6 @@ void codeGen(Node * ast) {
     line = 4;
 
     ast->makeTAC(&myTACs, &count);
-
     while (myTACs != NULL) {
       switch (myTACs->getValue().getOp()) {      
         case t_ass :
@@ -69,7 +68,7 @@ void codeGen(Node * ast) {
 	  line++;
 	  registerRo(line," ADD",1,2,3,comment);
 	  line++;*/
-          cout << "FInish me\n";
+          cout << "I haven't finished TM for t_add yet\n";
           break;
         case t_sub :
           cout << "I haven't implemented TM for t_sub yet\n";
@@ -84,7 +83,7 @@ void codeGen(Node * ast) {
           cout << "I haven't implemented TM for t_div yet\n";
           break;
         default:
-          cout << "I'm dumb and can't figure out the op type of the TAC\n";
+          cout << "Codegen can't figure out the op type of the TAC\n";
         }
       if (myTACs->getNext() == NULL) break;
       myTACs->increment();
