@@ -573,6 +573,9 @@ void BinaryExprNode::makeTAC(TACs **t, int *count) {
   cout << "You made it to the Binary Expression Node!\nGood Job!\n";
   TAC myTAC;
   string a = "+";
+  string d = "/";
+  string u = "-";
+  string m = "*";
   int i;
   string s;
   if (op->getValue().compare(a) == 0){

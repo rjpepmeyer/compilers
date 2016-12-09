@@ -34,10 +34,10 @@ void codeGen(Node * ast) {
     if (myTACs != NULL) {
       cout << " 0:  LDA 6,1(7) #Places the offset 1 into return address register 6\n" << 
               " 1:  LDA 7,5(0) #Places the offset 5 into program counter\n" <<
-              " 2:   LD 1,0(0) #Loads the value stored in dmem 0 to register 1\n" <<
               " 3:  OUT 1,0,0  #Outputs the contects of register 1\n" <<
               " 4: HALT 0,0,0  #Ends the program\n";
       line = 5;
+      //Move to function inside a loop to allow calling this switch on children
       switch (myTACs->getValue().getOp()) {      
         case t_ass :
           ss << myTACs->getValue().get1();
@@ -69,7 +69,7 @@ void codeGen(Node * ast) {
 	  line++;
 	  registerRo(line," ADD",1,2,3,comment);
 	  line++;*/
-          cout << "FInish me\n";
+          cout << "I haven't finished TM for t_add yet\n";
           break;
         case t_sub :
           cout << "I haven't implemented TM for t_sub yet\n";
@@ -84,13 +84,17 @@ void codeGen(Node * ast) {
           cout << "I haven't implemented TM for t_div yet\n";
           break;
         default:
-          cout << "I'm dumb and can't figure out the op type of the TAC\n";
+          cout << "Codegen can't figure out the op type of the TAC\n";
         }
       comment = " #Loads the return address from reg 6 into the program counter";
       registerRm(line," LDA",7,0,6,comment);  
+      count--; 
+      cout << " 2:   LD 1," << count << "(0) #Loads the value stored in dmem " <<
+              count << " to register 1\n";
     } else {
       cout << "Sad\n";
     }
+
 }
 
 
