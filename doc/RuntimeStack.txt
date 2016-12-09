@@ -1,0 +1,19 @@
+Runtime Stack Outline
+
+We never implemented an actual stack. Currently, the program
+operates by storing all of the 3AC in postfix and then reads
+and returns values using postfix. This results in nested
+operations executing properly using standard order of opera-
+tions.
+
+We do have 5 reserved registers: 0,1,2,3 and 6. Register 1 is used
+store the return value dmem location, and register 6 is used
+to store the return location of the calling function. Since
+we have not implemented functions yet, this just holds the
+address to return to the program call.
+
+Registers 2 and 3 are our standard left and right registers
+for binary operations. Results are stored in register 2
+before being loaded into their dmem location for later.
+
+Register 0 is used for the number zero.
