@@ -7,7 +7,8 @@ Project Members:
 
 Features Not Implemented:
 
-  N/A
+  Function calls, if statement, command line arguments, outputing to file (as opposed to std output), boolean comparisons.
+  Working features include returning the result of binary arithmetic expressions (e.g. 1 + 2 * 3).
 
 List of Known Bugs:
 
@@ -24,5 +25,5 @@ How to build Project 5:
 
 How to run Project 5:
 
-  ./flairc test-programs/print-one.flr
+  ./flairc test-programs/<input file>
 

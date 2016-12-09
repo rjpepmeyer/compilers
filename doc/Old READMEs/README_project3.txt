@@ -11,7 +11,7 @@ Features Not Implemented:
 
 List of Known Bugs:
 
-  N/A
+  Mystery problem with lib.flr and is-excellent.flr where the function name is a function definition (should be an identifier).
 
 Description of Optimization Implemented:
 
