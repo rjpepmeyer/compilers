@@ -404,6 +404,7 @@ class BinaryExprNode : public ExpressionNode {
       setOp(o);
       setRight(r);
     }
+    BinaryOpNode * getOp() {return op;}
     void print(int);
     void makeTAC(TACs**,int*);
 };
@@ -570,39 +571,22 @@ void ReturnStmtNode::makeTAC(TACs **t, int *count) {
 }
 
 void BinaryExprNode::makeTAC(TACs **t, int *count) {
-  cout << "You made it to the Binary Expression Node!\nGood Job!\n";
+  cout << "3AC for binary expression...\n";
   TAC myTAC;
-  string a = "+";
-  int i;
-  string s;
-  if (op->getValue().compare(a) == 0){
-    myTAC.setOp(t_add);
-    TACs myTACs(myTAC, NULL);
-    //myTACs.add(left->makeTAC(t,count));
-    //myTACs.add(right->makeTAC(t,count));
-  }//finish with the rest of the operators later
-/*
-  if (int(left->getType()) == n_number){ 
-    s = left->getValue();
-    cout << "left = " << s << "\n";
-    stringstream convert(s);
-    convert >> i;
-    myTAC.set1(i);
-  }
-  if (int(right->getType()) == n_number  ){ 
-    s = left->getValue();
-    stringstream convert(s);
-    convert >> i;
-    myTAC.set2(i);
-  }
-  myTAC.setRes(0);
-  if (*t == NULL) {
-    *t = new TACs(myTAC, NULL);
-  }
-  else {
-    (**t).add(myTAC);
-  }
-*/
+  int left_addr, right_addr;
+  // Make TAC of left and store result's dmem address
+  left->makeTAC(t,count);
+  left_addr  = (*count)-1;
+  // Make TAC of right and store result's dmem address
+  right->makeTAC(t,count);
+  right_addr = (*count)-1;
+  // Recall the results from memory
+  if (op->getValue() == "+") {myTAC.setOp(t_add);}
+  myTAC.set1(left_addr);
+  myTAC.set2(right_addr);
+  myTAC.setRes(*count);
+  (*count)++;
+  (**t).add(myTAC);
 }
 
 void NumberNode::makeTAC(TACs **t, int *count) {
@@ -611,7 +595,8 @@ void NumberNode::makeTAC(TACs **t, int *count) {
   myTAC.setOp(t_ass);
   myTAC.set1(value);
   myTAC.set2(0);
-  myTAC.setRes(0);
+  myTAC.setRes(*count);
+  (*count)++;
   if (*t == NULL) {
     *t = new TACs(myTAC, NULL);
   }

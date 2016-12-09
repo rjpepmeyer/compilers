@@ -30,14 +30,15 @@ void codeGen(Node * ast) {
     string r3;
     stringstream ss;
 
+    cout << " 0:  LDA 6,1(7) #Places line 2 into return address register 6\n" << 
+            " 1:  LDA 7,4(0) #Places line 4 into program counter\n" <<
+            " 2:  OUT 1,0,0  #Outputs the contects of register 1\n" <<
+            " 3: HALT 0,0,0  #Ends the program\n";
+    line = 4;
+
     ast->makeTAC(&myTACs, &count);
-    if (myTACs != NULL) {
-      cout << " 0:  LDA 6,1(7) #Places the offset 1 into return address register 6\n" << 
-              " 1:  LDA 7,5(0) #Places the offset 5 into program counter\n" <<
-              " 2:   LD 1,0(0) #Loads the value stored in dmem 0 to register 1\n" <<
-              " 3:  OUT 1,0,0  #Outputs the contects of register 1\n" <<
-              " 4: HALT 0,0,0  #Ends the program\n";
-      line = 5;
+
+    while (myTACs != NULL) {
       switch (myTACs->getValue().getOp()) {      
         case t_ass :
           ss << myTACs->getValue().get1();
@@ -50,7 +51,6 @@ void codeGen(Node * ast) {
           line++;
           comment = " #Stores the value of register 2 in dmem location " + off;
           registerRm(line,"  ST",2,count,0,comment);
-          count++;
           comment = "\n";
           line++;
           break;
@@ -86,11 +86,14 @@ void codeGen(Node * ast) {
         default:
           cout << "I'm dumb and can't figure out the op type of the TAC\n";
         }
-      comment = " #Loads the return address from reg 6 into the program counter";
-      registerRm(line," LDA",7,0,6,comment);  
-    } else {
-      cout << "Sad\n";
+      if (myTACs->getNext() == NULL) break;
+      myTACs->increment();
     }
+    comment = " #Puts the last saved number into register 1";
+    registerRm(line,"  LD",1,count,0,comment);
+    line++;
+    comment = " #Loads the return address from reg 6 into the program counter";
+    registerRm(line," LDA",7,0,6,comment);  
 }
 
 
