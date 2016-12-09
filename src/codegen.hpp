@@ -47,7 +47,15 @@ void codeGen(Node * ast) {
           line++;
           break;
         case t_add :
-          cout << "I haven't implemented TM for t_add yet\n";
+          ss << myTACs->getValue().get1();
+	  off = ss.str();
+	  comment = " #places the value " + off + " into register 1";
+	  registerRm(line," LDC",2,myTACs->getValue().get1(),0,comment);
+	  line++;
+	  registerRm(line," LDc",3,myTACs->getValue().get2(),0,comment);
+	  line++;
+	  registerRo(line," ADD",1,2,3,comment);
+	  line++;
           break;
         case t_sub :
           cout << "I haven't implemented TM for t_sub yet\n";
