@@ -16,6 +16,10 @@ void registerRm(int line, string code, int r1, int offset, int r2, string commen
 }
 
 void codeGen(Node * ast) {
+    // Register 1 = return value register
+    // Register 6 = return address register
+    // Register 7 = program counter
+
     TACs *myTACs = NULL;
     int count = 0;
     int line  = 0;
