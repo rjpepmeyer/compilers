@@ -55,8 +55,7 @@ void codeGen(Node * ast) {
           line++;
           break;
         case t_add :
-/*
-          ss << myTACs->getValue().get1();
+/*          ss << myTACs->getValue().get1();
 	  off = ss.str();
           cout << myTACs->getValue().get1() << " offset value\n";
 	  comment = " #places the value " + off + " into register 2";
@@ -72,13 +71,25 @@ void codeGen(Node * ast) {
           cout << "I haven't finished TM for t_add yet\n";
           break;
         case t_sub :
-          cout << "I haven't implemented TM for t_sub yet\n";
+/*	  registerRm(line," LDC",2,myTACs->getValue().get1(),0,comment);
+	  line++;
+	  registerRm(line," LDC",3,myTACs->getValue().get1(),0,comment);
+	  line++;
+	  registerRo(line," SUB",1,2,3,comment);
           break;
         case t_mul :
-          cout << "I haven't implemented TM for t_mul yet\n";
+	  registerRm(line," LDC",2,myTACs->getValue().get1(),0,comment);
+	  line++;
+	  registerRm(line," LDC",3,myTACs->getValue().get2(),0,comment);
+	  line++;
+	  registerRo(line," MUL",1,2,3,comment);
           break;
         case t_div :
-          cout << "I haven't implemented TM for t_div yet\n";
+	  registerRm(line," LDC",2,myTACs->getValue().get1(),0,comment);
+	  line++;
+	  registerRm(line," LDC",3,myTACs->getValue().get2(),0,comment);
+	  line++;
+	  registerRo(line," DIV",1,2,3,comment);*/
           break;
         case t_neg :
           cout << "I haven't implemented TM for t_div yet\n";
