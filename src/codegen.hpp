@@ -58,62 +58,99 @@ void codeGen(Node * ast) {
           line++;
           comment = " #Stores the value of register 2 in dmem location " + off;
           registerRm(line,"  ST",2,offi,0,comment);
+          ss.str("");
           comment = "\n";
           line++;
           break;
         case t_add :
-/*          ss << myTACs->getValue().get1();
-	  off = ss.str();
-          cout << myTACs->getValue().get1() << " offset value\n";
-	  comment = " #places the value " + off + " into register 2";
-	  registerRm(line," LDC",2,myTACs->getValue().get1(),0,comment);
-	  line++;
-          ss << myTACs->getValue().get2();
-	  r2 = ss.str();
-	  comment = " #Places the value " + r2 + " into register 3";
-	  registerRm(line," LDC",3,myTACs->getValue().get2(),0,comment);
-	  line++;
-	  registerRo(line," ADD",1,2,3,comment);
-	  line++;*/
+          ss.str("");
+          r1i = myTACs->getValue().get1();
+          ss << offi;
+          off = ss.str();
+          offi = myTACs->getValue().get2();
+          ss.str("");
+          r2i = myTACs->getValue().getRes();
+          comment = "";
+          registerRm(line, "  LD",2,r1i,0,comment);
+          ss.str("");
+          line++;
+          registerRm(line, "  LD",3,offi,0,comment);
+          ss.str("");
+          line++;
+          registerRo(line, " ADD",2,2,3,comment);
+          ss.str("");
+          line++;
+          registerRm(line, "  ST",2,r2i,0,comment);
+          ss.str("");
+          line++;
+          break;
+        case t_mul :
+          ss.str("");
+          r1i = myTACs->getValue().get1();
+          ss << offi;
+          off = ss.str();
+          offi = myTACs->getValue().get2();
+          ss.str("");
+          r2i = myTACs->getValue().getRes();
+          comment = "";
+          registerRm(line, "  LD",2,r1i,0,comment);
+          ss.str("");
+          line++;
+          registerRm(line, "  LD",3,offi,0,comment);
+          ss.str("");
+          line++;
+          registerRo(line, " MUL",2,2,3,comment);
+          ss.str("");
+          line++;
+          registerRm(line, "  ST",2,r2i,0,comment);
+          ss.str("");
+          line++;
+          break;
+        case t_div :
+          ss.str("");
+          r1i = myTACs->getValue().get1();
+          ss << offi;
+          off = ss.str();
+          offi = myTACs->getValue().get2();
+          ss.str("");
+          r2i = myTACs->getValue().getRes();
+          comment = "";
+          registerRm(line, "  LD",2,r1i,0,comment);
+          ss.str("");
+          line++;
+          registerRm(line, "  LD",3,offi,0,comment);
+          ss.str("");
+          line++;
+          registerRo(line, " DIV",2,2,3,comment);
+          ss.str("");
+          line++;
+          registerRm(line, "  ST",2,r2i,0,comment);
+          ss.str("");
+          line++;
+          break;
+        case t_sub :
           r1i = myTACs->getValue().get1();
           offi = myTACs->getValue().get2();
           r2i = myTACs->getValue().getRes();
           comment = "";
           registerRm(line, "  LD",2,r1i,0,comment);
+          ss.str("");
           line++;
           registerRm(line, "  LD",3,offi,0,comment);
+          ss.str("");
           line++;
-          registerRo(line, " ADD",2,2,3,comment);
+          registerRo(line, " SUB",2,2,3,comment);
+          ss.str("");
           line++;
           registerRm(line, "  ST",2,r2i,0,comment);
+          ss.str("");
           line++;
           break;
-        case t_sub :
-/*	  registerRm(line," LDC",2,myTACs->getValue().get1(),0,comment);
-	  line++;
-	  registerRm(line," LDC",3,myTACs->getValue().get1(),0,comment);
-	  line++;
-	  registerRo(line," SUB",1,2,3,comment);
-          break;
-        case t_mul :
-	  registerRm(line," LDC",2,myTACs->getValue().get1(),0,comment);
-	  line++;
-	  registerRm(line," LDC",3,myTACs->getValue().get2(),0,comment);
-	  line++;
-	  registerRo(line," MUL",1,2,3,comment);
-          break;
-        case t_div :
-	  registerRm(line," LDC",2,myTACs->getValue().get1(),0,comment);
-	  line++;
-	  registerRm(line," LDC",3,myTACs->getValue().get2(),0,comment);
-	  line++;
-	  registerRo(line," DIV",1,2,3,comment);*/
-          break;
         case t_neg :
-          cout << "*I haven't implemented TM for t_div yet\n";
+          cout << "*Negation TM not written yet\n";
           break;
         default:
-          cout << "Codegen can't figure out the op type of the TAC\n";
+          cout << "*Codegen can't figure out the op type of the TAC\n";
         }
       if (myTACs->getNext() == NULL) break;
       myTACs->increment();
