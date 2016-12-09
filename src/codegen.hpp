@@ -48,7 +48,7 @@ void codeGen(Node * ast) {
           ss << count;
           off = ss.str();
           line++;
-          comment = " #Stores the value of register 2 in dmem location " + off +"\n";
+          comment = " #Stores the value of register 2 in dmem location " + off;
           registerRm(line,"  ST",2,count,0,comment);
           count++;
           comment = "\n";
