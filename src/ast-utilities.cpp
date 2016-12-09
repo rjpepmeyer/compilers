@@ -584,7 +584,7 @@ void BinaryExprNode::makeTAC(TACs **t, int *count) {
   if (op->getValue() == "+") {myTAC.setOp(t_add);}
   if (op->getValue() == "*") {myTAC.setOp(t_mul);}
   if (op->getValue() == "-") {myTAC.setOp(t_sub);}
-  if (op->getValue() == "\\") {myTAC.setOp(t_div);}
+  if (op->getValue() == "/") {myTAC.setOp(t_div);}
   myTAC.set1(left_addr);
   myTAC.set2(right_addr);
   myTAC.setRes(*count);
