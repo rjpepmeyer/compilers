@@ -578,8 +578,8 @@ void BinaryExprNode::makeTAC(TACs **t, int *count) {
   if (op->getValue().compare(a) == 0){
     myTAC.setOp(t_add);
     TACs myTACs(myTAC, NULL);
-    myTACs.add(left->makeTAC(t,count));
-    myTACs.add(right->makeTAC(t,count));
+    //myTACs.add(left->makeTAC(t,count));
+    //myTACs.add(right->makeTAC(t,count));
   }//finish with the rest of the operators later
 /*
   if (int(left->getType()) == n_number){ 

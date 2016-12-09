@@ -33,7 +33,7 @@ void codeGen(Node * ast) {
     ast->makeTAC(&myTACs, &count);
     if (myTACs != NULL) {
       cout << " 0:  LDA 6,1(7) #Places the offset 1 into return address register 6\n" << 
-              " 1:  LDA 7,4(0) #Places the offset 4 into program counter\n" <<
+              " 1:  LDA 7,5(0) #Places the offset 5 into program counter\n" <<
               " 2:   LD 1,0(0) #Loads the value stored in dmem 0 to register 1\n" <<
               " 3:  OUT 1,0,0  #Outputs the contects of register 1\n" <<
               " 4: HALT 0,0,0  #Ends the program\n";
@@ -44,10 +44,11 @@ void codeGen(Node * ast) {
           off = ss.str();
           comment = " #Places the value " + off + " into register 2";
           registerRm(line," LDA",2,myTACs->getValue().get1(),0,comment);
+          ss.str("");
           ss << count;
           off = ss.str();
           line++;
-          comment = " #Stores the value of register 2 in dmem location" + off +"\n";
+          comment = " #Stores the value of register 2 in dmem location " + off +"\n";
           registerRm(line,"  ST",2,count,0,comment);
           count++;
           comment = "\n";
