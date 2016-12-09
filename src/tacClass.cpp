@@ -43,7 +43,7 @@ class TACs {
       next = new TACs(v, NULL);
     }
     TAC getValue() {return value;}
-    TACs getNext() {return next;}
+    TACs * getNext() {return next;}
     void increment() {
       if (next != NULL) {
         value = next->getValue();
