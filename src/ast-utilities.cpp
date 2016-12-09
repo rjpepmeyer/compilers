@@ -44,7 +44,7 @@ class BinaryOpNode : public Node {
       pad(d);
       cout << name << ": " << value << '\n';
     }
-    std::string getValue(){return value;}
+    string getValue(){return value;}
 };
 
 class ProgramNode : public Node {
@@ -247,7 +247,6 @@ class ExpressionNode : public Node {
   public:
     Node_Type getType() {return nt;}
     virtual void print(int)=0;
-    virtual int getValue();
 };
 
 class IdentifierNode : public ExpressionNode {
@@ -284,7 +283,11 @@ class NumberNode : public ExpressionNode {
       cout << name << ": " << value << '\n';
     }
     void makeTAC(TACs**,int*);
-    virtual int getValue();
+    string getValue(){
+      stringstream ss;
+      ss << value;
+      return ss.str();
+    }
 };
 
 class BooleanNode : public ExpressionNode {
@@ -570,16 +573,24 @@ void BinaryExprNode::makeTAC(TACs **t, int *count) {
   cout << "You made it to the Binary Expression Node!\nGood Job!\n";
   TAC myTAC;
   string a = "+";
-  if (op->getValue().compare(a)){
+  int i;
+  string s;
+  if (op->getValue().compare(a) == 0){
     myTAC.setOp(t_add);
   }//finish with the rest of the operators later
-  if (left->getType() == n_number){ 
-    myTAC.set1(left->getValue());
+  if (int(left->getType()) == n_number){ 
+    s = left->getValue();
+    stringstream convert(s);
+    convert >> i;
+    myTAC.set1(i);
   }
-  if (right->getType() == n_number  ){ 
-    myTAC.set2(right->getValue());
+  if (int(right->getType()) == n_number  ){ 
+    s = left->getValue();
+    stringstream convert(s);
+    convert >> i;
+    myTAC.set2(i);
   }
-  myTAC.setRes();
+  myTAC.setRes(0);
   if (*t == NULL) {
     *t = new TACs(myTAC, NULL);
   }

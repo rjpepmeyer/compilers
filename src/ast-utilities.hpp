@@ -47,6 +47,7 @@ class Node {
   public:
     virtual Node_Type getType()=0;
     virtual void print(int)=0;
+    string getValue(){return "";};
     virtual void makeTAC(TACs**,int*){std::cout << name << "\n";};
 };
 

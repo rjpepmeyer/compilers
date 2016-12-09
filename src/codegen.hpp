@@ -37,26 +37,28 @@ void codeGen(Node * ast) {
         case t_ass :
           ss << myTACs->getValue().get1();
           off = ss.str();        
-          comment = " #Places the offset " + off + " into register 1";
+          comment = " #Places the value " + off + " into register 1";
           registerRm(line," LDC",1,myTACs->getValue().get1(),0,comment);
           comment = "";
           line++;
           break;
         case t_add :
-          cout << "I haven't implemented TM for t_add yet";
+          cout << "I haven't implemented TM for t_add yet\n";
           break;
         case t_sub :
-          cout << "I haven't implemented TM for t_sub yet";
+          cout << "I haven't implemented TM for t_sub yet\n";
           break;
         case t_mul :
-          cout << "I haven't implemented TM for t_mul yet";
+          cout << "I haven't implemented TM for t_mul yet\n";
           break;
         case t_div :
-          cout << "I haven't implemented TM for t_div yet";
+          cout << "I haven't implemented TM for t_div yet\n";
           break;
         case t_neg :
-          cout << "I haven't implemented TM for t_div yet";
+          cout << "I haven't implemented TM for t_div yet\n";
           break;
+        default:
+          cout << "I'm dumb and can't figure out the op type of the TAC\n";
         }
       comment = " #Loads the return address from reg 6 into the program counter";
       registerRm(line," LDA",7,0,6,comment);  
