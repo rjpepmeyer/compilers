@@ -1,0 +1,4 @@
+program main();
+begin
+  return 5 + 7 * 11
+end.
