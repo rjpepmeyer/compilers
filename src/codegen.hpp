@@ -85,14 +85,14 @@ void codeGen(Node * ast) {
         default:
           cout << "Codegen can't figure out the op type of the TAC\n";
         }
+      comment = " #Puts the last saved number into register 1";
+      registerRm(line,"  LD",1,count,0,comment);
+      line++;
+      comment = " #Loads the return address from reg 6 into the program counter";
+      registerRm(line," LDA",7,0,6,comment);  
       if (myTACs->getNext() == NULL) break;
       myTACs->increment();
     }
-    comment = " #Puts the last saved number into register 1";
-    registerRm(line,"  LD",1,count,0,comment);
-    line++;
-    comment = " #Loads the return address from reg 6 into the program counter";
-    registerRm(line," LDA",7,0,6,comment);  
 }
 
 
